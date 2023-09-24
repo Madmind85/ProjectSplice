@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "D:\Source control\Mostriciattolo5\Source\Mostriciattolo5\Components\BehaviourComponent.h"
+#include "Mostriciattolo5\Components\BehaviourComponent.h"
 
 // Sets default values for this component's properties
 UBehaviourComponent::UBehaviourComponent()
