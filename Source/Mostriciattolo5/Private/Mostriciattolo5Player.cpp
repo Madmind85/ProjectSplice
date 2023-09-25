@@ -6,8 +6,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/ArrowComponent.h"
-#include "D:\Source control\Mostriciattolo5\Source\Mostriciattolo5\Mostriciattolo5GameMode.h"
-#include "D:\Source control\Mostriciattolo5\Source\Mostriciattolo5\Public\MostriciattoloPlayerController.h"
+#include "Mostriciattolo5\Mostriciattolo5GameMode.h"
+#include "Mostriciattolo5\Public\MostriciattoloPlayerController.h"
 #include "GameFramework/GameModeBase.h"
 
 
