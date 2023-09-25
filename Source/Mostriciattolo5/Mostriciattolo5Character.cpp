@@ -13,7 +13,7 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "D:\Source control\Mostriciattolo5\Source\Mostriciattolo5\Mostriciattolo5GameMode.h"
+#include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 
 
 //////////////////////////////////////////////////////////////////////////
