@@ -31,7 +31,8 @@ public:
 	//altezza dal centro della seconda line trace per intercettare il possess socket per la possessione
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float PossessLineHeight2 = 20.f;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Possession")
+	float MBlendCameraTime = 1.5f;
 	UPROPERTY(BlueprintReadWrite)
 	bool NoCollisionTarget = false;
 

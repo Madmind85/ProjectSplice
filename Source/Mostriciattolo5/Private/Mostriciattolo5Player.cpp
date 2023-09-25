@@ -25,8 +25,19 @@ void AMostriciattolo5Player::AttachToPossessPoint()
     UArrowComponent* PossessS = GetCurrentPossessed()->PossessArrowTarget;
     FVector Target = PossessS->GetComponentLocation();// +PossessS->GetForwardVector() * 50.f;
     //UE_LOG(LogTemp, Warning, TEXT(" targetto %s"), *Target.ToString()) 
+
+    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
+    AttachToComponent(GetCurrentPossessed()->GetPossessSocket(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+    GetCurrentPossessed()->AfterPossession(this);
     
-    StartTeleporting(GetActorLocation(), GetCurrentPossessed()->GetActorLocation(), PossessTeleportTime);
+    if (MGameMode)
+    {
+        MGameMode->ControllNPC(GetCurrentPossessed());
+    }
+    
+    
+    //StartTeleporting(GetActorLocation(), GetCurrentPossessed()->GetActorLocation(), PossessTeleportTime);
 }
 
 AMostriciattolo5Character* AMostriciattolo5Player::GetCurrentPossessed()
@@ -52,12 +63,18 @@ void AMostriciattolo5Player::JumpOut()
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);
 
-        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, 0.1f, EViewTargetBlendFunction::VTBlend_Linear);
+        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
         //alla fine del teletrasporto triggera on teleport finished()
-        StartTeleporting(Start, End, PossessTeleportTime);
+        //StartTeleporting(Start, End, PossessTeleportTime);
         //logica in bp per riavviare il BT
+
+        MGameMode->ReturnControlToAI();
+        //quando si è allontanato lo puo' di nuovo allertare toccandolo
+        NoCollisionTarget = false;
+        IsTarget = true;
+
         GetCurrentPossessed()->AfterDepossessed(this);
-        //DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         GetCurrentPossessed()->IsTarget = false;
         SetCurrentPossessed(nullptr);
         SetActorHiddenInGame(false);
@@ -120,6 +137,9 @@ void AMostriciattolo5Player::InterceptPossessPoint()
 
     if (bHit || bHit2)
     {
+        if (Hit.GetActor()) { UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(Hit.GetActor(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);}
+         /*
+        
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         
         if (HitComponent && HitComponent->ComponentTags.Contains(TEXT("Possess")))
@@ -134,6 +154,8 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                 AttachToPossessPoint();
             }
         }
+
+        */
     }
 }
 
