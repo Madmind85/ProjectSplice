@@ -37,12 +37,15 @@ void AMostriciattolo5GameMode::ReturnControlToAI()
     if (Mostriciattolo_OS && LastPossessed)
     {
         APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-        //Liberiamo l' NPC posseduto dal player controller
-        PC->UnPossess();
-        //L'ai controller prende l ' NPC (appena liberatodal player controller)
-        LastAIController->Possess(LastPossessed);
-        // il player controller possiede il nuovo character
-       PC->Possess(Mostriciattolo_OS);
-       LastPossessed = nullptr;
+        if (PC && Mostriciattolo_OS)
+        {
+            //Liberiamo l' NPC posseduto dal player controller
+            PC->UnPossess();
+            //L'ai controller prende l ' NPC (appena liberatodal player controller)
+            LastAIController->Possess(LastPossessed);
+            // il player controller possiede il nuovo character
+            PC->Possess(Mostriciattolo_OS);
+            LastPossessed = nullptr;
+        }
     }
 }

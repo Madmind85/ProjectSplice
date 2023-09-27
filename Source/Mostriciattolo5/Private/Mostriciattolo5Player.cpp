@@ -31,13 +31,29 @@ void AMostriciattolo5Player::AttachToPossessPoint()
 
     GetCurrentPossessed()->AfterPossession(this);
     
-    if (MGameMode)
+        // Posticipa la possessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
+      FTimerHandle TimerHandle;
+      GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
+    
+}
+
+void AMostriciattolo5Player::ControllNPCDelayed()
+{
+    if (GetCurrentPossessed())
     {
-        MGameMode->ControllNPC(GetCurrentPossessed());
+        if (MGameMode)
+        {
+
+            MGameMode->ControllNPC(GetCurrentPossessed());
+        }  
     }
-    
-    
-    //StartTeleporting(GetActorLocation(), GetCurrentPossessed()->GetActorLocation(), PossessTeleportTime);
+    else if (MGameMode)
+    {
+        MGameMode->ReturnControlToAI();
+        //quando si è allontanato lo puo' di nuovo allertare toccandolo
+        NoCollisionTarget = false;
+        IsTarget = true;
+    }
 }
 
 AMostriciattolo5Character* AMostriciattolo5Player::GetCurrentPossessed()
@@ -58,20 +74,21 @@ void AMostriciattolo5Player::JumpOut()
     {
         FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
         FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
-        FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -1000.f;
-        SetActorLocation(Start);
+        FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -150.f;
+        SetActorLocation(End);
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);
 
         UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
-        //alla fine del teletrasporto triggera on teleport finished()
-        //StartTeleporting(Start, End, PossessTeleportTime);
-        //logica in bp per riavviare il BT
-
-        MGameMode->ReturnControlToAI();
+  
         //quando si è allontanato lo puo' di nuovo allertare toccandolo
         NoCollisionTarget = false;
         IsTarget = true;
+
+
+        // Posticipa la possessione/depossessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
+        FTimerHandle TimerHandle;
+        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
 
         GetCurrentPossessed()->AfterDepossessed(this);
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
@@ -97,25 +114,25 @@ void AMostriciattolo5Player::OnTeleportFinished()
 {
     if (GetCurrentPossessed())
     {
-       //SetActorHiddenInGame(true);
-        //UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(CurrentPossessed, 0.1f, EViewTargetBlendFunction::VTBlend_Linear);
+        //SetActorHiddenInGame(true);
+         //UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(CurrentPossessed, 0.1f, EViewTargetBlendFunction::VTBlend_Linear);
         if (MGameMode)
         {
-             MGameMode->ControllNPC(GetCurrentPossessed());
+            MGameMode->ControllNPC(GetCurrentPossessed());
         }
-       AttachToComponent(GetCurrentPossessed()->GetPossessSocket(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-        
-      GetCurrentPossessed()->AfterPossession(this);
+        AttachToComponent(GetCurrentPossessed()->GetPossessSocket(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+        GetCurrentPossessed()->AfterPossession(this);
 
         //SetActorLocation(FVector(0.f, 0.f, 0.f));
     }
     else if (MGameMode)
-     {
-          MGameMode->ReturnControlToAI();
-          //quando si è allontanato lo puo' di nuovo allertare toccandolo
-          NoCollisionTarget = false;
-          IsTarget = true;
-     }
+    {
+        MGameMode->ReturnControlToAI();
+        //quando si è allontanato lo puo' di nuovo allertare toccandolo
+        NoCollisionTarget = false;
+        IsTarget = true;
+    }
 }
 
 void AMostriciattolo5Player::InterceptPossessPoint()
@@ -137,9 +154,7 @@ void AMostriciattolo5Player::InterceptPossessPoint()
 
     if (bHit || bHit2)
     {
-        if (Hit.GetActor()) { UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(Hit.GetActor(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);}
-         /*
-        
+       
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         
         if (HitComponent && HitComponent->ComponentTags.Contains(TEXT("Possess")))
@@ -154,8 +169,7 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                 AttachToPossessPoint();
             }
         }
-
-        */
+        
     }
 }
 
