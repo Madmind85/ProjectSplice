@@ -28,7 +28,7 @@ void AMostriciattolo5Player::AttachToPossessPoint()
 
     UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
     AttachToComponent(GetCurrentPossessed()->GetPossessSocket(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
+    SetActorLocation(Target);
    
     
         // Posticipa la possessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
@@ -52,7 +52,7 @@ void AMostriciattolo5Player::ControllNPCDelayed()
 void AMostriciattolo5Player::ControllMainDelayed()
 {
     if (MGameMode)
-    {
+    { 
         MGameMode->ReturnControlToAI();
     }
     if (GetCurrentPossessed())
@@ -83,7 +83,7 @@ void AMostriciattolo5Player::JumpOut()
     {
         FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
         FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
-        FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -150.f;
+        FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -100.f;
         SetActorLocation(End);
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);

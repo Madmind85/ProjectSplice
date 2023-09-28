@@ -37,7 +37,7 @@ void AMostriciattolo5GameMode::ReturnControlToAI()
     if (Mostriciattolo_OS && LastPossessed)
     {
         APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-        if (PC && Mostriciattolo_OS)
+        if (PC )
         {
             //Liberiamo l' NPC posseduto dal player controller
             PC->UnPossess();
