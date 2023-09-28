@@ -55,5 +55,6 @@ protected:
 
 private:
 	void ControllNPCDelayed();
+	void ControllMainDelayed();
 	AMostriciattolo5Character* CurrentPossessed = nullptr;
 };

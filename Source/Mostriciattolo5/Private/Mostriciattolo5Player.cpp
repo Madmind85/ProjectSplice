@@ -29,7 +29,7 @@ void AMostriciattolo5Player::AttachToPossessPoint()
     UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
     AttachToComponent(GetCurrentPossessed()->GetPossessSocket(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
-    GetCurrentPossessed()->AfterPossession(this);
+   
     
         // Posticipa la possessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
       FTimerHandle TimerHandle;
@@ -41,19 +41,27 @@ void AMostriciattolo5Player::ControllNPCDelayed()
 {
     if (GetCurrentPossessed())
     {
-        if (MGameMode)
-        {
-
-            MGameMode->ControllNPC(GetCurrentPossessed());
-        }  
+        GetCurrentPossessed()->AfterPossession(this);
     }
-    else if (MGameMode)
+    if (MGameMode)
+    {
+        MGameMode->ControllNPC(GetCurrentPossessed());
+    }  
+}
+void AMostriciattolo5Player::ControllMainDelayed()
+{
+    if (MGameMode)
     {
         MGameMode->ReturnControlToAI();
-        //quando si è allontanato lo puo' di nuovo allertare toccandolo
-        NoCollisionTarget = false;
-        IsTarget = true;
     }
+    if (GetCurrentPossessed())
+    {
+        GetCurrentPossessed()->AfterDepossessed(this);
+    }
+    //quando si è allontanato lo puo' di nuovo allertare toccandolo
+    NoCollisionTarget = false;
+    IsTarget = true;
+    SetCurrentPossessed(nullptr);
 }
 
 AMostriciattolo5Character* AMostriciattolo5Player::GetCurrentPossessed()
@@ -88,12 +96,12 @@ void AMostriciattolo5Player::JumpOut()
 
         // Posticipa la possessione/depossessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
         FTimerHandle TimerHandle;
-        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
+        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, MBlendCameraTime, false);
 
-        GetCurrentPossessed()->AfterDepossessed(this);
+       
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         GetCurrentPossessed()->IsTarget = false;
-        SetCurrentPossessed(nullptr);
+       
         SetActorHiddenInGame(false);
     }
 }
