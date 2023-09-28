@@ -61,6 +61,9 @@ public:
 	/**va da start a end con velocità Speed, quindi il tempo varia a seconda della distanza*/
 	void StartTeleportingWithSpeed(FVector Start, FVector End, float Speed);
 
+	UFUNCTION(BlueprintCallable)
+	AMostriciattolo5Character* FindCharacterToTarget(USceneComponent* Camera);
+
 	UCapsuleComponent* GetPossessSocket();
 
 protected:
@@ -99,6 +102,11 @@ public:
 	float TargetLastSeen = 0.f;
 	UPROPERTY(BlueprintReadWrite)
 	bool IsTarget = false;
+
+	//forse mettere private con getter
+	UPROPERTY(BlueprintReadWrite)
+	AMostriciattolo5Character* PreviousActor = nullptr;
+
 	/**velocità di corsa quando ti insegue come suo target*/
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float ChaseSpeed = 500.f;
@@ -114,13 +122,17 @@ public:
 	/**percentuale della sight radius (settabile su pawn sensing) appartenente al cono interno*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Behaviour")
 	float InnerConeLength = 75.f;
-	
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float RotationSpeed = 50.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Possession")
+	float FindCharacterToTargetReach = 2000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UArrowComponent* PossessArrowTarget;
 	/**quanto ci mette in secondi a spostarsi dalla poszione che ha  ora ad appiccicato al possession point quando  possiede*/
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float PossessTeleportTime = 3.0f;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	class UCameraComponent* MCamera = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	NPCStatus CurrentNPCStatus = NPCStatus::Tranquillo;
 
@@ -130,13 +142,18 @@ public:
 	void AfterDepossessed(AMostriciattolo5Player* Possessor);
 	UFUNCTION(BlueprintImplementableEvent)
 	void AfterPossession(AMostriciattolo5Player* Possessor);
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_SetTarget();
 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBeingPossessed = false;
 	
 	UFUNCTION(BlueprintCallable)
 	void Depossess();
-	
+	UFUNCTION(BlueprintCallable)
+	AMostriciattolo5Character* GetCurrentTarget();
+	UFUNCTION(BlueprintCallable)
+	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
@@ -149,6 +166,7 @@ private:
 	float CurrentTeleportTime = 0.f;
 	float MInterpolationTime = 2.0f;
 	bool CanTeleport = false;
-	
+	AMostriciattolo5Character* CurrentTarget = nullptr;
+	void RotatePlayerTowardsTarget();
 };
 

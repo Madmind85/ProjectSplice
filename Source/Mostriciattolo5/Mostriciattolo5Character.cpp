@@ -13,6 +13,7 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "DrawDebugHelpers.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 
 
@@ -99,6 +100,39 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 	MStartTime = GetWorld()->GetTimeSeconds();
 	MInterpolationTime = FVector::Distance(Start, End) / Speed;
 	CanTeleport = true;
+}
+
+AMostriciattolo5Character* AMostriciattolo5Character::FindCharacterToTarget(USceneComponent* Camera)
+{
+	if (!Camera) {  UE_LOG(LogTemp, Warning, TEXT("BADA non è settata la camera in mostriciattolo5character->fidcharactertotarget ")) return nullptr; }
+
+	FHitResult Hit;
+	FVector Start = Camera->GetComponentLocation();
+	FVector End = Camera->GetComponentLocation() + Camera->GetForwardVector() * FindCharacterToTargetReach;
+	FQuat Rotation = FQuat::Identity;
+	FCollisionObjectQueryParams ObjectQueryParams;
+	FCollisionShape CollisionShape;
+	FCollisionQueryParams Params;
+	// Imposta la forma del volume di collisione
+	CollisionShape.MakeSphere(800.f);
+
+	//bool bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), Coll_QP);
+	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
+
+	if (bHit)
+	{ 
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor && HitActor != this)
+		{
+			AMostriciattolo5Character* HitChar = Cast<AMostriciattolo5Character>(HitActor);
+			
+			SetCurrenTarget(HitChar);
+			
+			BP_SetTarget();
+			return HitChar;
+		}
+	}
+	 return nullptr; 
 }
 
 void AMostriciattolo5Character::BeginPlay()
@@ -203,21 +237,30 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
+	
 	if (Controller != nullptr)
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-
 		// get forward vector
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
+
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		// add movement 
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+		if (GetCurrentTarget())
+		{
+			RotatePlayerTowardsTarget();
+			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
+		else
+		{
+			// add movement 
+			AddMovementInput(ForwardDirection, MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
 	}
 }
 
@@ -247,6 +290,33 @@ void  AMostriciattolo5Character::Depossess()
 		player->JumpOut();
 	}
 }
+
+AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentTarget()
+{
+	return CurrentTarget;
+}
+
+void AMostriciattolo5Character::SetCurrenTarget(AMostriciattolo5Character* NewTarget)
+{
+	CurrentTarget = NewTarget;
+}
+
+void AMostriciattolo5Character::RotatePlayerTowardsTarget()
+{
+	FVector TargetLocation = GetCurrentTarget()->GetActorLocation();
+	FVector PlayerLocation = GetActorLocation();
+	FVector Direction = TargetLocation - PlayerLocation;
+	FRotator NewRotation = Direction.Rotation();
+	FRotator CurrentRotation = GetActorRotation();
+	FRotator InterpolatedRotation = FMath::RInterpTo(CurrentRotation, NewRotation, GetWorld()->GetDeltaSeconds(), RotationSpeed);
+	SetActorRotation(InterpolatedRotation, ETeleportType::None);
+	if (MCamera)
+	{
+		FHitResult Hit;
+		//MCamera->SetWorldRotation(InterpolatedRotation, false, Hit, ETeleportType::None);
+	}
+}
+
 
 bool AMostriciattolo5Character::CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius)
 {
