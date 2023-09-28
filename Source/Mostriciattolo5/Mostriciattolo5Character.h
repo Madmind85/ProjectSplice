@@ -158,6 +158,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
 	
+	UFUNCTION(BlueprintImplementableEvent)
+	void TurnCameraToTarget();
 private:
 	void MoveActorSmoothly(float DeltaS);
 	FVector MStartLocation;

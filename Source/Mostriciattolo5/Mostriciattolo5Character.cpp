@@ -114,7 +114,7 @@ AMostriciattolo5Character* AMostriciattolo5Character::FindCharacterToTarget(USce
 	FCollisionShape CollisionShape;
 	FCollisionQueryParams Params;
 	// Imposta la forma del volume di collisione
-	CollisionShape.MakeSphere(800.f);
+	CollisionShape.MakeSphere(1000.f);
 
 	//bool bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), Coll_QP);
 	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
@@ -254,6 +254,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 			RotatePlayerTowardsTarget();
 			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 			AddMovementInput(RightDirection, MovementVector.X);
+			TurnCameraToTarget();
 		}
 		else
 		{
@@ -266,6 +267,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 
 void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 {
+	if (GetCurrentTarget()) { return; }
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -310,11 +312,13 @@ void AMostriciattolo5Character::RotatePlayerTowardsTarget()
 	FRotator CurrentRotation = GetActorRotation();
 	FRotator InterpolatedRotation = FMath::RInterpTo(CurrentRotation, NewRotation, GetWorld()->GetDeltaSeconds(), RotationSpeed);
 	SetActorRotation(InterpolatedRotation, ETeleportType::None);
+	/*
 	if (MCamera)
 	{
 		FHitResult Hit;
-		//MCamera->SetWorldRotation(InterpolatedRotation, false, Hit, ETeleportType::None);
+		MCamera->SetWorldRotation(InterpolatedRotation, false, Hit, ETeleportType::None);
 	}
+	*/
 }
 
 
