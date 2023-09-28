@@ -39,14 +39,15 @@ void AMostriciattolo5Player::AttachToPossessPoint()
 
 void AMostriciattolo5Player::ControllNPCDelayed()
 {
-    if (GetCurrentPossessed())
-    {
-        GetCurrentPossessed()->AfterPossession(this);
-    }
+    
     if (MGameMode)
     {
         MGameMode->ControllNPC(GetCurrentPossessed());
     }  
+    if (GetCurrentPossessed())
+    {
+        GetCurrentPossessed()->AfterPossession(this);
+    }
 }
 void AMostriciattolo5Player::ControllMainDelayed()
 {
