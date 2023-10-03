@@ -106,7 +106,8 @@ public:
 	//forse mettere private con getter
 	UPROPERTY(BlueprintReadWrite)
 	AMostriciattolo5Character* PreviousActor = nullptr;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+	FVector TargetBoxShape;
 	/**velocità di corsa quando ti insegue come suo target*/
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float ChaseSpeed = 500.f;

@@ -114,11 +114,11 @@ AMostriciattolo5Character* AMostriciattolo5Character::FindCharacterToTarget(USce
 	FCollisionShape CollisionShape;
 	FCollisionQueryParams Params;
 	// Imposta la forma del volume di collisione
-	CollisionShape.MakeSphere(1000.f);
+	CollisionShape.MakeBox(TargetBoxShape);
 
 	//bool bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), Coll_QP);
 	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
-
+	DrawDebugBox(GetWorld(), Start, TargetBoxShape, FColor::Cyan, false, 0.22f);
 	if (bHit)
 	{ 
 		AActor* HitActor = Hit.GetActor();
