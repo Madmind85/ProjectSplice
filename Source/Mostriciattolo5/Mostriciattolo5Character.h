@@ -87,6 +87,7 @@ protected:
 	virtual void BeginPlay();
 
 public:
+	static bool SortActorDistance(AActor* Actor_A, AActor* Actor_B);
 	/** Returns CameraBoom subobject 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject 
@@ -108,6 +109,10 @@ public:
 	AMostriciattolo5Character* PreviousActor = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	FVector TargetBoxShape;
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+	TArray<float> LineTraceTargetEnd;
+	UPROPERTY(BlueprintReadWrite)
+	UArrowComponent* SelectTargetArrow;
 	/**velocità di corsa quando ti insegue come suo target*/
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float ChaseSpeed = 500.f;
@@ -171,5 +176,9 @@ private:
 	bool CanTeleport = false;
 	AMostriciattolo5Character* CurrentTarget = nullptr;
 	void RotatePlayerTowardsTarget();
+	AMostriciattolo5Character* SelectedPawn = nullptr;
+	float SelectedPawnDistanceToCenter = 100000.f;
+	
+	float GetDistanceFromScreenCenter(AActor* Actor, float& OUTScreenCenter);
 };
 

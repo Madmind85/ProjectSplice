@@ -102,37 +102,103 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 	CanTeleport = true;
 }
 
-AMostriciattolo5Character* AMostriciattolo5Character::FindCharacterToTarget(USceneComponent* Camera)
-{
-	if (!Camera) {  UE_LOG(LogTemp, Warning, TEXT("BADA non è settata la camera in mostriciattolo5character->fidcharactertotarget ")) return nullptr; }
-
-	FHitResult Hit;
-	FVector Start = Camera->GetComponentLocation();
-	FVector End = Camera->GetComponentLocation() + Camera->GetForwardVector() * FindCharacterToTargetReach;
-	FQuat Rotation = FQuat::Identity;
-	FCollisionObjectQueryParams ObjectQueryParams;
-	FCollisionShape CollisionShape;
-	FCollisionQueryParams Params;
-	// Imposta la forma del volume di collisione
-	CollisionShape.MakeBox(TargetBoxShape);
-
-	//bool bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), Coll_QP);
-	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
-	DrawDebugBox(GetWorld(), Start, TargetBoxShape, FColor::Cyan, false, 0.22f);
-	if (bHit)
-	{ 
-		AActor* HitActor = Hit.GetActor();
-		if (HitActor && HitActor != this)
+	AMostriciattolo5Character* AMostriciattolo5Character::FindCharacterToTarget(USceneComponent* Camera)
+	{
+		/*
+		TArray<AActor*> PawnsInView;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
+	
+		TArray<AMostriciattolo5Character*> EnemyPawns;
+	
+	
+		for (AActor* Pawn : PawnsInView)
 		{
-			AMostriciattolo5Character* HitChar = Cast<AMostriciattolo5Character>(HitActor);
+		
+			AMostriciattolo5Character* Enemy = Cast<AMostriciattolo5Character>(Pawn);
+			float MiddleOfScreen;
+			float DistFromCent = GetDistanceFromScreenCenter(Pawn, MiddleOfScreen);
+		
+		
+			if (Enemy)
+			{
+				//Cerca il nemico più vicino allo schhermo
+				if (SelectedPawnDistanceToCenter > fabs(DistFromCent))
+				{
+					SelectedPawn = Enemy;
+				}
+				SelectedPawnDistanceToCenter = DistFromCent;
+
+				//minore è DistfromCent più a sinistra stanno
 			
-			SetCurrenTarget(HitChar);
-			
-			BP_SetTarget();
-			return HitChar;
+			}
+
+			EnemyPawns.Sort(this -> bool {
+				float MiddleOfScreenA, MiddleOfScreenB;
+				float DistA = GetDistanceFromScreenCenter(A, MiddleOfScreenA);
+				float DistB = GetDistanceFromScreenCenter(B, MiddleOfScreenB);
+				return DistA < DistB;
+			});
 		}
-	}
-	 return nullptr; 
+		return nullptr;
+	*/
+	/*
+		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End , ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
+
+		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End+FVector(0.f,0.f,400.f), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
+
+		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End + FVector(0.f, 0.f, -400.f), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
+		*/
+		//bHit = UKismetSystemLibrary::BoxTraceSingle(this, Start, End, FVector(50.f,50.f,200.f), SelectTargetArrow->GetComponentRotation(), ETraceTypeQuery::TraceTypeQuery_MAX, false, ActorsToIgnore,
+			//EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Blue, FLinearColor::Yellow, 0.4f);
+
+		//bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), Params);
+		//bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
+		//DrawDebugLine(GetWorld(), Start, End, FColor::Yellow, false, 0.5f);
+
+	
+	
+	if (!SelectTargetArrow) {  UE_LOG(LogTemp, Warning, TEXT("BADA non è settata la SelectTargetArrow in mostriciattolo5character->fidcharactertotarget ")) return nullptr; }
+
+		FHitResult Hit;
+		
+		FVector Start = SelectTargetArrow->GetComponentLocation();
+		FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector()* FindCharacterToTargetReach;
+		//casino per trasformare la rotazione della camera in FQuat
+		FVector CameraRotation = SelectTargetArrow->GetComponentRotation().Vector();
+		FQuat Rotation = FQuat::MakeFromEuler(CameraRotation);
+
+		FCollisionObjectQueryParams ObjectQueryParams;
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+		FCollisionShape CollisionShape;
+		FCollisionQueryParams Params;
+		// Imposta la forma del volume di collisione	
+		CollisionShape.MakeCapsule(TargetBoxShape);
+		TArray<AActor*> ActorsToIgnore;
+		bool bHit;
+
+		for (float EndM : LineTraceTargetEnd)
+		{
+			bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End + FVector(0.f, 0.f, EndM), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
+			if (bHit)
+			{
+				AActor* HitActor = Hit.GetActor();
+
+				if (HitActor && HitActor != this)
+				{
+					AMostriciattolo5Character* HitChar = Cast<AMostriciattolo5Character>(HitActor);
+					if (HitChar)
+					{
+						SetCurrenTarget(HitChar);
+
+						BP_SetTarget();
+						return HitChar;
+					}
+					
+				}
+			}
+		}
+		
+		 return nullptr; 
 }
 
 void AMostriciattolo5Character::BeginPlay()
@@ -267,7 +333,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 
 void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 {
-	if (GetCurrentTarget()) { return; }
+	//if (GetCurrentTarget()) { return; }
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -319,6 +385,27 @@ void AMostriciattolo5Character::RotatePlayerTowardsTarget()
 		MCamera->SetWorldRotation(InterpolatedRotation, false, Hit, ETeleportType::None);
 	}
 	*/
+}
+
+bool AMostriciattolo5Character::SortActorDistance(AActor* Actor_A, AActor* Actor_B)
+{
+	
+	return false;
+}
+
+float AMostriciattolo5Character::GetDistanceFromScreenCenter(AActor* Actor, float &OUTScreenCenter)
+{
+	if (!Actor) { return 10000.f; }
+	FVector WorldLocation = Actor->GetActorLocation();
+	
+
+	FVector2D ScreenPosition;
+	UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), WorldLocation, ScreenPosition);
+
+	float ScreenWidth = GEngine->GameViewport->Viewport->GetSizeXY().X;
+	float MiddleOfScreen = ScreenWidth / 2.0f;
+	OUTScreenCenter = MiddleOfScreen;
+	return ScreenPosition.X;
 }
 
 
