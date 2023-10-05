@@ -103,46 +103,51 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 }
 
 	void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
-	{/*
+	{
 		//ordina i pawn trovati con la sera dal piu' piccolo al pèiu grande
 		SortFocusActors();
-		
-		if (CurrentFocus)
-		{
-			int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
-			//se l'index non è valido(ovvero non lo trova nell'array), a ci dovrebbe stare perchè è settato il piu centrale quando attiviamo il select mode
-			if (CurrentIndex == -1) { return; };
 
-			//vuole selezionare a sinistra
-			if (TMouseX <= 0)
-			{//se a sinistra c'è un pawn valido lo setta come target
-				
-				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
-				if (NextF)
-				{
-					CurrentFocus->BP_ResetTarget();
-					CurrentFocus = NextF;
-				}
-			}
-			//vuole selezionare a sinistra
-			if (TMouseX > 0)
+if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
+{
+	int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
+	// If the index is not valid (i.e., it does not find it in the array), it should be there because it is set as the most central when we activate the select mode
+	if (CurrentIndex == -1) {  UE_LOG(LogTemp, Warning, TEXT("Gesucristo")) return; };
+
+	// Wants to select on the left
+	if (TMouseX <= 0)
+	{
+		// If there is a valid pawn on the left, set it as target
+		if (CurrentIndex > 0) // Check if there is a valid index on the left
+		{
+			AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
+			if (NextF)
 			{
-				// se a destra c'è un pawn valido lo setta come target
-				if (PawnsInView.Num() > CurrentIndex+1)
-				{
-					AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
-					if (NextF)
-					{
-						CurrentFocus->BP_ResetTarget();
-						CurrentFocus = NextF;
-					}
-				}
+				CurrentFocus->BP_ResetTarget();
+				CurrentFocus = NextF;
+				CurrentFocus->BP_SetTarget();
 			}
 		}
+	}
+	// Wants to select on the right
+	if (TMouseX > 0)
+	{
+		// If there is a valid pawn on the right, set it as target
+		if (PawnsInView.Num() > CurrentIndex+1) // Check if there is a valid index on the right
+		{
+			AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
+			if (NextF)
+			{
+				CurrentFocus->BP_ResetTarget();
+				CurrentFocus = NextF;
+				CurrentFocus->BP_SetTarget();
+			}
+		}
+	}
+}
 
 
 
-		*/
+		
 
 
 
@@ -316,7 +321,7 @@ void AMostriciattolo5Character::StartSelectFocusMode()
 	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 1000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
 	
 	//popola l'array Pawnsinview con gli attori mostriciattolo 
-	for (FHitResult Hit : HitR)
+	for (const FHitResult& Hit : HitR)
 	{
 		AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(Hit.GetActor());
 		if (Most)
@@ -331,13 +336,18 @@ void AMostriciattolo5Character::StartSelectFocusMode()
 		float DistFromCent = Pawn->GetDistanceFromScreenCenter();	
 
 			//fabs =  valore assoluto float		
-			if (SelectedPawnDistanceToCenter > fabs(DistFromCent))
-			{//setta il nemico più vicino al centro come focus
+			if (SelectedPawnDistanceToCenter > DistFromCent)
+			{
+				//se già c e un focus lo resetta senno se ne vedono 2
+				if (CurrentFocus) { CurrentFocus->BP_ResetTarget(); CurrentFocus = nullptr; }
+				//setta il nemico più vicino al centro come focus
 				CurrentFocus = Pawn;
-				CurrentFocus->BP_SetTarget();
+				
 				SelectedPawnDistanceToCenter = DistFromCent;
 			}
 	}
+	if (CurrentFocus) { CurrentFocus->BP_SetTarget(); }
+	
 	return;
 }
 
@@ -345,12 +355,6 @@ void  AMostriciattolo5Character::EndSelectFocusMode()
 {
 	TSelectModeOn = false;
 
-	if (CurrentFocus)
-	{
-		CurrentFocus->BP_ResetTarget();
-	}
-	
-	CurrentFocus = nullptr;
 	PawnsInView.Reset();
 	SelectedPawnDistanceToCenter = 100000.f;
 }
@@ -421,7 +425,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		if (GetCurrentTarget())
+		if (GetCurrentFocus())
 		{
 			RotatePlayerTowardsTarget();
 			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
@@ -439,7 +443,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 
 void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 {
-	if (TSelectModeOn == true) { return; }
+	if (TSelectModeOn == true || CurrentFocus != nullptr) { return; }
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -477,7 +481,7 @@ void AMostriciattolo5Character::SetCurrenTarget(AMostriciattolo5Character* NewTa
 
 void AMostriciattolo5Character::RotatePlayerTowardsTarget()
 {
-	FVector TargetLocation = GetCurrentTarget()->GetActorLocation();
+	FVector TargetLocation = GetCurrentFocus()->GetActorLocation();
 	FVector PlayerLocation = GetActorLocation();
 	FVector Direction = TargetLocation - PlayerLocation;
 	FRotator NewRotation = Direction.Rotation();
@@ -504,10 +508,16 @@ bool AMostriciattolo5Character::SortActorDistance(AActor* Actor_A, AActor* Actor
 	return false;
 }
 
-float AMostriciattolo5Character::GetDistanceFromScreenCenter(AActor* Actor, float &OUTScreenCenter)
+void AMostriciattolo5Character::MClearFocus()
 {
-	if (!Actor) { return 10000.f; }
-	FVector WorldLocation = Actor->GetActorLocation();
+	GetCurrentFocus()->BP_ResetTarget();
+	CurrentFocus = nullptr;
+}
+
+float AMostriciattolo5Character::GetDistanceFromScreenCenter()
+{
+	
+	FVector WorldLocation = GetActorLocation();
 	
 
 	FVector2D ScreenPosition;
@@ -515,19 +525,16 @@ float AMostriciattolo5Character::GetDistanceFromScreenCenter(AActor* Actor, floa
 
 	float ScreenWidth = GEngine->GameViewport->Viewport->GetSizeXY().X;
 	float MiddleOfScreen = ScreenWidth / 2.0f;
-	OUTScreenCenter = MiddleOfScreen;
-	return ScreenPosition.X;
+	float DistanceFromMiddel = fabs(ScreenPosition.X - MiddleOfScreen);
+	return DistanceFromMiddel;
 }
-float AMostriciattolo5Character::GetDistanceFromScreenCenter()
+float AMostriciattolo5Character::GetViewPOsition_X()
 {
 	FVector WorldLocation = GetActorLocation();
 
 
 	FVector2D ScreenPosition;
 	UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), WorldLocation, ScreenPosition);
-
-	float ScreenWidth = GEngine->GameViewport->Viewport->GetSizeXY().X;
-	float MiddleOfScreen = ScreenWidth / 2.0f;
 	
 	return ScreenPosition.X;
 }
@@ -540,7 +547,7 @@ void AMostriciattolo5Character::SortFocusActors()
 	{
 		for (int32 j = 0; j < NumActors - i - 1; j++)
 		{
-			if (PawnsInView[j]->GetDistanceFromScreenCenter() > PawnsInView[j + 1]->GetDistanceFromScreenCenter())
+			if (PawnsInView[j]->GetViewPOsition_X() > PawnsInView[j + 1]->GetViewPOsition_X())
 			{
 				// Swap Actors[j] and Actors[j + 1]
 				AMostriciattolo5Character* Temp = PawnsInView[j];

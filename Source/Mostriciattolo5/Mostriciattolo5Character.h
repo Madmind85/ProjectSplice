@@ -174,6 +174,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
+	UFUNCTION(BlueprintCallable)
+	void MClearFocus();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void TurnCameraToTarget();
@@ -190,8 +192,8 @@ private:
 	AMostriciattolo5Character* SelectedPawn = nullptr;
 	float SelectedPawnDistanceToCenter = 100000.f;
 	
-	float GetDistanceFromScreenCenter(AActor* Actor, float& OUTScreenCenter);
 	float GetDistanceFromScreenCenter();
+	float GetViewPOsition_X();
 	AMostriciattolo5Character* CurrentFocus = nullptr;
 	
 	void SortFocusActors( );
