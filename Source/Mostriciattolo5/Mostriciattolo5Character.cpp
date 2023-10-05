@@ -512,8 +512,11 @@ bool AMostriciattolo5Character::SortActorDistance(AActor* Actor_A, AActor* Actor
 
 void AMostriciattolo5Character::MClearFocus()
 {
-	GetCurrentFocus()->BP_ResetTarget();
-	CurrentFocus = nullptr;
+	if (GetCurrentFocus())
+	{
+		GetCurrentFocus()->BP_ResetTarget();
+		CurrentFocus = nullptr;
+	}
 }
 
 float AMostriciattolo5Character::GetDistanceFromScreenCenter()
