@@ -62,7 +62,7 @@ public:
 	void StartTeleportingWithSpeed(FVector Start, FVector End, float Speed);
 
 	UFUNCTION(BlueprintCallable)
-	AMostriciattolo5Character* FindCharacterToTarget(USceneComponent* Camera);
+	void FindCharacterToTarget(float TMouseX);
 
 	UCapsuleComponent* GetPossessSocket();
 
@@ -103,7 +103,13 @@ public:
 	float TargetLastSeen = 0.f;
 	UPROPERTY(BlueprintReadWrite)
 	bool IsTarget = false;
+	UFUNCTION(BlueprintCallable)
+	void StartSelectFocusMode();
+	UFUNCTION(BlueprintCallable)
+	void EndSelectFocusMode();
 
+	UPROPERTY(BlueprintReadWrite)
+	bool TSelectModeOn = false;
 	//forse mettere private con getter
 	UPROPERTY(BlueprintReadWrite)
 	AMostriciattolo5Character* PreviousActor = nullptr;
@@ -150,16 +156,21 @@ public:
 	void AfterPossession(AMostriciattolo5Player* Possessor);
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_SetTarget();
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ResetTarget();
 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBeingPossessed = false;
-	
+	UPROPERTY(BlueprintReadWrite)
+	TArray<AMostriciattolo5Character*> PawnsInView;
 	UFUNCTION(BlueprintCallable)
 	void Depossess();
 	UFUNCTION(BlueprintCallable)
 	AMostriciattolo5Character* GetCurrentTarget();
 	UFUNCTION(BlueprintCallable)
 	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
+	UFUNCTION(BlueprintCallable)
+	AMostriciattolo5Character* GetCurrentFocus();
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
@@ -180,5 +191,9 @@ private:
 	float SelectedPawnDistanceToCenter = 100000.f;
 	
 	float GetDistanceFromScreenCenter(AActor* Actor, float& OUTScreenCenter);
+	float GetDistanceFromScreenCenter();
+	AMostriciattolo5Character* CurrentFocus = nullptr;
+	
+	void SortFocusActors( );
 };
 

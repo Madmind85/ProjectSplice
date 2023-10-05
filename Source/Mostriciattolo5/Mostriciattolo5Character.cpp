@@ -102,52 +102,103 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 	CanTeleport = true;
 }
 
-	AMostriciattolo5Character* AMostriciattolo5Character::FindCharacterToTarget(USceneComponent* Camera)
-	{
+	void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
+	{/*
+		//ordina i pawn trovati con la sera dal piu' piccolo al pèiu grande
+		SortFocusActors();
+		
+		if (CurrentFocus)
+		{
+			int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
+			//se l'index non è valido(ovvero non lo trova nell'array), a ci dovrebbe stare perchè è settato il piu centrale quando attiviamo il select mode
+			if (CurrentIndex == -1) { return; };
+
+			//vuole selezionare a sinistra
+			if (TMouseX <= 0)
+			{//se a sinistra c'è un pawn valido lo setta come target
+				
+				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
+				if (NextF)
+				{
+					CurrentFocus->BP_ResetTarget();
+					CurrentFocus = NextF;
+				}
+			}
+			//vuole selezionare a sinistra
+			if (TMouseX > 0)
+			{
+				// se a destra c'è un pawn valido lo setta come target
+				if (PawnsInView.Num() > CurrentIndex+1)
+				{
+					AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
+					if (NextF)
+					{
+						CurrentFocus->BP_ResetTarget();
+						CurrentFocus = NextF;
+					}
+				}
+			}
+		}
+
+
+
+		*/
+
+
+
+
+
+
+
+
+
+
 		/*
-		TArray<AActor*> PawnsInView;
+		PawnsInView;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
 	
 		TArray<AMostriciattolo5Character*> EnemyPawns;
-	
 	
 		for (AActor* Pawn : PawnsInView)
 		{
 		
 			AMostriciattolo5Character* Enemy = Cast<AMostriciattolo5Character>(Pawn);
 			float MiddleOfScreen;
-			float DistFromCent = GetDistanceFromScreenCenter(Pawn, MiddleOfScreen);
+			
 		
-		
-			if (Enemy)
-			{
+			if (Enemy && CurrentFocus)
+			{ 
+				float DistFromCent = GetDistanceFromScreenCenter(Enemy, MiddleOfScreen);
+				float FDistFromCent = GetDistanceFromScreenCenter(CurrentFocus, MiddleOfScreen);
+
+				//se il mouse xe negativo sta andando a sinistra
+				if (TMouseX <= 0.f)
+				{	
+				}
 				//Cerca il nemico più vicino allo schhermo
+				//spostare su selectmode on
+				/*
 				if (SelectedPawnDistanceToCenter > fabs(DistFromCent))
 				{
 					SelectedPawn = Enemy;
 				}
 				SelectedPawnDistanceToCenter = DistFromCent;
+				
 
 				//minore è DistfromCent più a sinistra stanno
 			
 			}
-
-			EnemyPawns.Sort(this -> bool {
-				float MiddleOfScreenA, MiddleOfScreenB;
-				float DistA = GetDistanceFromScreenCenter(A, MiddleOfScreenA);
-				float DistB = GetDistanceFromScreenCenter(B, MiddleOfScreenB);
-				return DistA < DistB;
-			});
+			
 		}
 		return nullptr;
-	*/
-	/*
+	
+	
 		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End , ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
 
 		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End+FVector(0.f,0.f,400.f), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
 
 		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End + FVector(0.f, 0.f, -400.f), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
-		*/
+		
 		//bHit = UKismetSystemLibrary::BoxTraceSingle(this, Start, End, FVector(50.f,50.f,200.f), SelectTargetArrow->GetComponentRotation(), ETraceTypeQuery::TraceTypeQuery_MAX, false, ActorsToIgnore,
 			//EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Blue, FLinearColor::Yellow, 0.4f);
 
@@ -155,7 +206,7 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 		//bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
 		//DrawDebugLine(GetWorld(), Start, End, FColor::Yellow, false, 0.5f);
 
-	
+	/*
 	
 	if (!SelectTargetArrow) {  UE_LOG(LogTemp, Warning, TEXT("BADA non è settata la SelectTargetArrow in mostriciattolo5character->fidcharactertotarget ")) return nullptr; }
 
@@ -199,6 +250,7 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 		}
 		
 		 return nullptr; 
+		 */
 }
 
 void AMostriciattolo5Character::BeginPlay()
@@ -248,6 +300,60 @@ bool AMostriciattolo5Character::IsNotTarget()
 	}
 }
 
+void AMostriciattolo5Character::StartSelectFocusMode()
+{
+	TSelectModeOn = true;
+
+	//sweep trace to get the enemies in front
+	TArray<FHitResult> HitR;
+	FVector Start = SelectTargetArrow->GetComponentLocation();
+	FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+	TArray<AActor*>ActorsToIgnore;
+	
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 1000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
+	
+	//popola l'array Pawnsinview con gli attori mostriciattolo 
+	for (FHitResult Hit : HitR)
+	{
+		AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(Hit.GetActor());
+		if (Most)
+		{
+			PawnsInView.AddUnique(Most);
+		}
+	}
+
+	//Cerca il nemico più vicino al centro dello schhermo. 
+	for (AMostriciattolo5Character* Pawn : PawnsInView)
+	{
+		float DistFromCent = Pawn->GetDistanceFromScreenCenter();	
+
+			//fabs =  valore assoluto float		
+			if (SelectedPawnDistanceToCenter > fabs(DistFromCent))
+			{//setta il nemico più vicino al centro come focus
+				CurrentFocus = Pawn;
+				CurrentFocus->BP_SetTarget();
+				SelectedPawnDistanceToCenter = DistFromCent;
+			}
+	}
+	return;
+}
+
+void  AMostriciattolo5Character::EndSelectFocusMode()
+{
+	TSelectModeOn = false;
+
+	if (CurrentFocus)
+	{
+		CurrentFocus->BP_ResetTarget();
+	}
+	
+	CurrentFocus = nullptr;
+	PawnsInView.Reset();
+	SelectedPawnDistanceToCenter = 100000.f;
+}
 
 void AMostriciattolo5Character::MoveActorSmoothly(float DeltaS)
 {
@@ -333,7 +439,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 
 void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 {
-	//if (GetCurrentTarget()) { return; }
+	if (TSelectModeOn == true) { return; }
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -387,6 +493,11 @@ void AMostriciattolo5Character::RotatePlayerTowardsTarget()
 	*/
 }
 
+AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()
+{
+	return CurrentFocus;
+}
+
 bool AMostriciattolo5Character::SortActorDistance(AActor* Actor_A, AActor* Actor_B)
 {
 	
@@ -406,6 +517,85 @@ float AMostriciattolo5Character::GetDistanceFromScreenCenter(AActor* Actor, floa
 	float MiddleOfScreen = ScreenWidth / 2.0f;
 	OUTScreenCenter = MiddleOfScreen;
 	return ScreenPosition.X;
+}
+float AMostriciattolo5Character::GetDistanceFromScreenCenter()
+{
+	FVector WorldLocation = GetActorLocation();
+
+
+	FVector2D ScreenPosition;
+	UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), WorldLocation, ScreenPosition);
+
+	float ScreenWidth = GEngine->GameViewport->Viewport->GetSizeXY().X;
+	float MiddleOfScreen = ScreenWidth / 2.0f;
+	
+	return ScreenPosition.X;
+}
+
+void AMostriciattolo5Character::SortFocusActors()
+{
+	
+	int32 NumActors = PawnsInView.Num();
+	for (int32 i = 0; i < NumActors - 1; i++)
+	{
+		for (int32 j = 0; j < NumActors - i - 1; j++)
+		{
+			if (PawnsInView[j]->GetDistanceFromScreenCenter() > PawnsInView[j + 1]->GetDistanceFromScreenCenter())
+			{
+				// Swap Actors[j] and Actors[j + 1]
+				AMostriciattolo5Character* Temp = PawnsInView[j];
+				PawnsInView[j] = PawnsInView[j + 1];
+				PawnsInView[j + 1] = Temp;
+			}
+		}
+	}
+	/*
+	// Separate actors into negative and positive arrays
+	for (AMostriciattolo5Character* actor : PawnsInView)
+		{
+			
+			if (actor->GetDistanceFromScreenCenter() < 0) 
+			{
+				OUTNegativeActors.Add(actor);
+			}
+			else 
+			{
+				OUTPositiveActors.Add(actor);
+			}
+		}
+
+		// Sort negative actors from closest to 0 to lower value
+		int32 NumNegativeActors = OUTNegativeActors.Num();
+		for (int32 i = 0; i < NumNegativeActors - 1; i++) 
+		{
+			for (int32 j = 0; j < NumNegativeActors - i - 1; j++) 
+			{
+				if (OUTNegativeActors[j]->GetDistanceFromScreenCenter() < OUTNegativeActors[j + 1]->GetDistanceFromScreenCenter())
+				{
+					AMostriciattolo5Character* Temp = OUTNegativeActors[j];
+					OUTNegativeActors[j] = OUTNegativeActors[j + 1];
+					OUTNegativeActors[j + 1] = Temp;
+				}
+			}
+		}
+
+		// Sort positive actors from smallest to bigger
+		int32 NumPositiveActors = OUTPositiveActors.Num();
+		for (int32 i = 0; i < NumPositiveActors - 1; i++) 
+		{
+			for (int32 j = 0; j < NumPositiveActors - i - 1; j++) 
+			{
+				if (OUTPositiveActors[j]->GetDistanceFromScreenCenter() > OUTPositiveActors[j + 1]->GetDistanceFromScreenCenter())
+				{
+					AMostriciattolo5Character* Temp = OUTPositiveActors[j];
+					OUTPositiveActors[j] = OUTPositiveActors[j + 1];
+					OUTPositiveActors[j + 1] = Temp;
+				}
+			}
+		}
+	*/
+
+		
 }
 
 
