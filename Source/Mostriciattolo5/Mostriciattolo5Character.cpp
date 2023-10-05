@@ -125,6 +125,7 @@ if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
 				CurrentFocus->BP_ResetTarget();
 				CurrentFocus = NextF;
 				CurrentFocus->BP_SetTarget();
+				TurnCameraToTarget();
 			}
 		}
 	}
@@ -140,6 +141,7 @@ if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
 				CurrentFocus->BP_ResetTarget();
 				CurrentFocus = NextF;
 				CurrentFocus->BP_SetTarget();
+				TurnCameraToTarget();
 			}
 		}
 	}
