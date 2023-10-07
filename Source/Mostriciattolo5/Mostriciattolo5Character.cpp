@@ -102,49 +102,48 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 	CanTeleport = true;
 }
 
-	void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
-	{
-		//ordina i pawn trovati con la sera dal piu' piccolo al pèiu grande
-		SortFocusActors();
-
-if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
+void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 {
-	int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
-	// If the index is not valid (i.e., it does not find it in the array), it should be there because it is set as the most central when we activate the select mode
-	if (CurrentIndex == -1) {  UE_LOG(LogTemp, Warning, TEXT("Gesucristo")) return; };
+	InitPawnsInViewArray();
 
-	// Wants to select on the left
-	if (TMouseX <= 0)
+	if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
 	{
-		// If there is a valid pawn on the left, set it as target
-		if (CurrentIndex > 0) // Check if there is a valid index on the left
-		{
-			AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
-			if (NextF)
+		int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
+		// If the index is not valid (i.e., it does not find it in the array), it should be there because it is set as the most central when we activate the select mode
+		if (CurrentIndex == -1) {  UE_LOG(LogTemp, Warning, TEXT("Gesucristo")) return; };
+
+		// Wants to select on the left
+		if (TMouseX <= 0)
 			{
-				CurrentFocus->BP_ResetTarget();
-				CurrentFocus = NextF;
-				CurrentFocus->BP_SetTarget();
-				TurnCameraToTarget();
+				// If there is a valid pawn on the left, set it as target
+				if (CurrentIndex > 0) // Check if there is a valid index on the left
+					{
+						AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
+						if (NextF)
+							{
+								CurrentFocus->BP_ResetTarget();
+								CurrentFocus = NextF;
+								CurrentFocus->BP_SetTarget();
+								TurnCameraToTarget();
+							}
+					}
+			}
+		// Wants to select on the right
+		if (TMouseX > 0)
+		{
+			// If there is a valid pawn on the right, set it as target
+			if (PawnsInView.Num() > CurrentIndex+1) // Check if there is a valid index on the right
+			{
+				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
+				if (NextF)
+				{
+					CurrentFocus->BP_ResetTarget();
+					CurrentFocus = NextF;
+					CurrentFocus->BP_SetTarget();
+					TurnCameraToTarget();
+				}
 			}
 		}
-	}
-	// Wants to select on the right
-	if (TMouseX > 0)
-	{
-		// If there is a valid pawn on the right, set it as target
-		if (PawnsInView.Num() > CurrentIndex+1) // Check if there is a valid index on the right
-		{
-			AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
-			if (NextF)
-			{
-				CurrentFocus->BP_ResetTarget();
-				CurrentFocus = NextF;
-				CurrentFocus->BP_SetTarget();
-				TurnCameraToTarget();
-			}
-		}
-	}
 }
 
 
@@ -307,36 +306,22 @@ bool AMostriciattolo5Character::IsNotTarget()
 	}
 }
 
-void AMostriciattolo5Character::StartSelectFocusMode()
+bool AMostriciattolo5Character::StartSelectFocusMode()
 {
-	TSelectModeOn = true;
-
-	//sweep trace to get the enemies in front
-	TArray<FHitResult> HitR;
-	FVector Start = SelectTargetArrow->GetComponentLocation();
-	FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
-	TArray<AActor*>ActorsToIgnore;
-	
-	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
-	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 1000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
-	
-	//popola l'array Pawnsinview con gli attori mostriciattolo 
-	for (const FHitResult& Hit : HitR)
+	if (GetCurrentFocus())
 	{
-		AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(Hit.GetActor());
-		if (Most)
-		{
-			PawnsInView.AddUnique(Most);
-		}
+		MClearFocus();
+		return false;
 	}
-
-	//Cerca il nemico più vicino al centro dello schhermo. 
-	for (AMostriciattolo5Character* Pawn : PawnsInView)
-	{
-		float DistFromCent = Pawn->GetDistanceFromScreenCenter();	
-
+	else
+	{ 
+		InitPawnsInViewArray();
+		SelectedPawnDistanceToCenter = 100000.f;
+		//Cerca il nemico più vicino al centro dello schhermo. 
+		for (AMostriciattolo5Character* Pawn : PawnsInView)
+		{
+			float DistFromCent = Pawn->GetDistanceFromScreenCenter();
+			
 			//fabs =  valore assoluto float		
 			if (SelectedPawnDistanceToCenter > DistFromCent)
 			{
@@ -347,10 +332,16 @@ void AMostriciattolo5Character::StartSelectFocusMode()
 				
 				SelectedPawnDistanceToCenter = DistFromCent;
 			}
+		}
+		if (CurrentFocus) 
+		{	 UE_LOG(LogTemp, Warning, TEXT("diocane ane")) 
+			CurrentFocus->BP_SetTarget(); 
+			TurnCameraToTarget();
+		}
+
+		return true;
 	}
-	if (CurrentFocus) { CurrentFocus->BP_SetTarget(); }
 	
-	return;
 }
 
 void  AMostriciattolo5Character::EndSelectFocusMode()
@@ -445,7 +436,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 
 void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 {
-	if (TSelectModeOn == true || CurrentFocus != nullptr) { return; }
+	if ( CurrentFocus != nullptr) { return; }
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -608,6 +599,34 @@ void AMostriciattolo5Character::SortFocusActors()
 	*/
 
 		
+}
+
+void AMostriciattolo5Character::InitPawnsInViewArray()
+{
+	//pulisce l'array
+	PawnsInView.Reset();
+	//sweep trace per trovarer i nemici di fronte
+	TArray<FHitResult> HitR;
+	FVector Start = SelectTargetArrow->GetComponentLocation();
+	FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+	TArray<AActor*>ActorsToIgnore;
+
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 2000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
+
+	//popola l'array Pawnsinview con gli attori mostriciattolo 
+	for (const FHitResult& Hit : HitR)
+	{
+		AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(Hit.GetActor());
+		if (Most)
+		{
+			PawnsInView.AddUnique(Most);
+		}
+	}
+	//ordina i pawn trovati con la sera dal piu' piccolo al pèiu grande
+	SortFocusActors();
 }
 
 

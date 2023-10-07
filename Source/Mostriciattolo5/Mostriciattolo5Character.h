@@ -104,7 +104,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool IsTarget = false;
 	UFUNCTION(BlueprintCallable)
-	void StartSelectFocusMode();
+	bool StartSelectFocusMode();
 	UFUNCTION(BlueprintCallable)
 	void EndSelectFocusMode();
 
@@ -174,8 +174,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
-	UFUNCTION(BlueprintCallable)
-	void MClearFocus();
+	
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void TurnCameraToTarget();
@@ -197,5 +196,9 @@ private:
 	AMostriciattolo5Character* CurrentFocus = nullptr;
 	
 	void SortFocusActors( );
+	//popola e ordina l'array pawns in view
+	void InitPawnsInViewArray();
+	void MClearFocus();
+
 };
 
