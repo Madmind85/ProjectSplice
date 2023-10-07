@@ -147,6 +147,10 @@ public:
 	class UCameraComponent* MCamera = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	NPCStatus CurrentNPCStatus = NPCStatus::Tranquillo;
+	UPROPERTY(BlueprintReadWrite)
+	bool StartPossessionAnim = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool StartPossessedAnim = false;
 
 	class AMostriciattolo5GameMode* MGameMode;
 	

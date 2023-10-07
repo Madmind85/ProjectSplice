@@ -41,6 +41,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentPossessed(AMostriciattolo5Character* CharacterToSet);
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_LockToPossessSocket(AMostriciattolo5Character* Target);
 
 	void JumpOut();
 

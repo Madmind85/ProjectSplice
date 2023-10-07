@@ -54,7 +54,7 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 	PossessSocket->ComponentTags.Add(FName("Possess"));
 
 	PossessArrowTarget = CreateDefaultSubobject<UArrowComponent>(TEXT("PossessArrowTarget"));
-	PossessSocket->SetupAttachment(RootComponent);
+	PossessArrowTarget->SetupAttachment(RootComponent);
 
 	/*Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -334,7 +334,7 @@ bool AMostriciattolo5Character::StartSelectFocusMode()
 			}
 		}
 		if (CurrentFocus) 
-		{	 UE_LOG(LogTemp, Warning, TEXT("diocane ane")) 
+		{	 
 			CurrentFocus->BP_SetTarget(); 
 			TurnCameraToTarget();
 		}
