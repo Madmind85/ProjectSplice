@@ -126,6 +126,8 @@ void AMostriciattolo5Player::BeginPlay()
 
 void AMostriciattolo5Player::OnTeleportFinished()
 {
+    BP_AttachAnimation();
+    /*
     if (GetCurrentPossessed())
     {
         //SetActorHiddenInGame(true);
@@ -147,6 +149,7 @@ void AMostriciattolo5Player::OnTeleportFinished()
         NoCollisionTarget = false;
         IsTarget = true;
     }
+    */
 }
 
 void AMostriciattolo5Player::InterceptPossessPoint()
