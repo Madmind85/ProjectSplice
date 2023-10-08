@@ -19,40 +19,36 @@ void AMostriciattolo5Player::Tick(float DeltaSeconds)
 
 void AMostriciattolo5Player::AttachToPossessPoint()
 {
+    //BASITO la stessa identica cosa in bp (BP_AttachAnimation) funziona correttamente, questa funzione no
     if (!GetCurrentPossessed()) { return; }
+    DisableInput(GetWorld()->GetFirstPlayerController());
+    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    AttachToComponent(GetCurrentPossessed()->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName(TEXT("PossessSocket")));
+    
+   
+    //GetMesh()->SetSimulatePhysics(false);
     //senno si gira quando lo possiede o lo depossiede
     NoCollisionTarget = true;
-   // UArrowComponent* PossessS = GetCurrentPossessed()->PossessArrowTarget;
-   // FVector Target = PossessS->GetComponentLocation();// +PossessS->GetForwardVector() * 50.f;
-    //UE_LOG(LogTemp, Warning, TEXT(" targetto %s"), *Target.ToString()) 
-    /*
-    if (UCapsuleComponent* CComponent = Cast<UCapsuleComponent>(GetRootComponent()))
-    {
-        CComponent->SetSimulatePhysics(false);
-    }
-    */
-    BP_LockToPossessSocket(GetCurrentPossessed());
-   //    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), 0.1f, EViewTargetBlendFunction::VTBlend_Linear);
-    //(AttachToComponent(GetCurrentPossessed()->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName(TEXT("PossessSocket")));
-   // SetActorLocation(Target);
+    
+    
+    StartPossessionAnim = true;
+    GetCurrentPossessed()->StartPossessedAnim = true;
 
-    
-        // Posticipa la possessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
-     FTimerHandle TimerHandle;
-    // GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
-    
+    FTimerHandle TimerHandle;
+    GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
+   
 }
 
 void AMostriciattolo5Player::ControllNPCDelayed()
 {
     
-    if (MGameMode)
+    if (MGameMode && GetCurrentPossessed())
     {
+        StartPossessedAnim = false;
+        GetCurrentPossessed()->StartPossessedAnim = false;
         MGameMode->ControllNPC(GetCurrentPossessed());
-    }  
-    if (GetCurrentPossessed())
-    {
         GetCurrentPossessed()->AfterPossession(this);
+        EnableInput(GetWorld()->GetFirstPlayerController());
     }
 }
 void AMostriciattolo5Player::ControllMainDelayed()
@@ -126,6 +122,8 @@ void AMostriciattolo5Player::BeginPlay()
 
 void AMostriciattolo5Player::OnTeleportFinished()
 {
+    
+    //AttachToPossessPoint();
     BP_AttachAnimation();
     /*
     if (GetCurrentPossessed())
@@ -181,13 +179,16 @@ void AMostriciattolo5Player::InterceptPossessPoint()
             AMostriciattolo5Character* Char = Cast<AMostriciattolo5Character>(Hit.GetActor());
             if (Char)
             {
-               
                 SetCurrentPossessed(Char);
-                //il target diventa il posseduto
-                GetCurrentPossessed()->CanBeTarget = true;
-                IsTarget = false;
-                AttachToPossessPoint();
-                StartPossessionAnim = false;
+                if (GetCurrentPossessed())
+                {
+                    //il target diventa il posseduto
+                    GetCurrentPossessed()->CanBeTarget = true;
+                    IsTarget = false;
+                    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), 0.01f, EViewTargetBlendFunction::VTBlend_Linear);
+                    StartTeleportingWithSpeed(GetActorLocation(), GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket"))), 1000.f);
+                    
+                }
             }
         }
         
