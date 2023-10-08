@@ -104,6 +104,8 @@ void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector
 
 void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 {
+	if (!GetCurrentFocus()) { return; }
+
 	InitPawnsInViewArray();
 
 	if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
@@ -335,7 +337,7 @@ bool AMostriciattolo5Character::StartSelectFocusMode()
 		}
 		if (CurrentFocus) 
 		{	 
-			CurrentFocus->BP_SetTarget(); 
+			CurrentFocus->BP_SetTarget();
 			TurnCameraToTarget();
 		}
 
@@ -365,7 +367,7 @@ void AMostriciattolo5Character::MoveActorSmoothly(float DeltaS)
 	SetActorLocation(NewLocation);
 	
 	// Check if the interpolation is complete
-	if (LerpAlpha >= 0.1f)
+	if (LerpAlpha >= 1.f)
 	{
 		CurrentTeleportTime = 0.f;
 		MStartTime = 0.f;

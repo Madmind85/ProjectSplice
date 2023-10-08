@@ -57,8 +57,10 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	/**Va da start a end nel tempo time*/
+	UFUNCTION(BlueprintCallable)
 	void StartTeleporting(FVector Start, FVector End, float Time);
 	/**va da start a end con velocità Speed, quindi il tempo varia a seconda della distanza*/
+	UFUNCTION(BlueprintCallable)
 	void StartTeleportingWithSpeed(FVector Start, FVector End, float Speed);
 
 	UFUNCTION(BlueprintCallable)
