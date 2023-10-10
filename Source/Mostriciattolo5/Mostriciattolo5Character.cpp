@@ -336,14 +336,18 @@ bool AMostriciattolo5Character::StartSelectFocusMode()
 				if (CurrentFocus) { CurrentFocus->BP_ResetTarget(); CurrentFocus = nullptr; }
 				//setta il nemico più vicino al centro come focus
 				CurrentFocus = Pawn;
-				CurrentFocus->BP_SetTarget();
+
+				Pawn->BP_SetTarget();
 				SelectedPawnDistanceToCenter = DistFromCent;
 			}
 		}
 		if (CurrentFocus) 
-		{	 
-			CurrentFocus->BP_SetTarget();
+		{
+			
 			TurnCameraToTarget();
+			CurrentFocus->BP_SetTarget();
+			//debug perchè la funzione qua sotto mette a fuoco e queta no
+			
 		}
 
 		return true;
