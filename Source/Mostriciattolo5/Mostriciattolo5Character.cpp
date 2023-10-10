@@ -261,6 +261,11 @@ void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 		 */
 }
 
+void AMostriciattolo5Character::SetCurrentFocus(AMostriciattolo5Character* FocusToSet)
+{
+	CurrentFocus = FocusToSet;
+}
+
 void AMostriciattolo5Character::BeginPlay()
 {
 	// Call the base class  
@@ -331,7 +336,7 @@ bool AMostriciattolo5Character::StartSelectFocusMode()
 				if (CurrentFocus) { CurrentFocus->BP_ResetTarget(); CurrentFocus = nullptr; }
 				//setta il nemico più vicino al centro come focus
 				CurrentFocus = Pawn;
-				
+				CurrentFocus->BP_SetTarget();
 				SelectedPawnDistanceToCenter = DistFromCent;
 			}
 		}

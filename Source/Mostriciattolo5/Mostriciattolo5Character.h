@@ -65,6 +65,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void FindCharacterToTarget(float TMouseX);
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentFocus(AMostriciattolo5Character* FocusToSet);
 
 	UCapsuleComponent* GetPossessSocket();
 
