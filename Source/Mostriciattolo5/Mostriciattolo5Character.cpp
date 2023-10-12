@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Public/Mostriciattolo5Player.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/ValueOverTimeComponent.h"
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -30,6 +31,7 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
+	
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f); // ...at this rotation rate
@@ -631,6 +633,7 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 	for (const FHitResult& Hit : HitR)
 	{
 		AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(Hit.GetActor());
+		//se è un nemico ed è visibile
 		if (Most)
 		{
 			PawnsInView.AddUnique(Most);

@@ -2,6 +2,7 @@
 
 
 #include "ValueOverTimeComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values for this component's properties
 UValueOverTimeComponent::UValueOverTimeComponent()
@@ -20,15 +21,49 @@ void UValueOverTimeComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+	CameraSpringArm = GetOwner()->FindComponentByClass<USpringArmComponent>();
 	
 }
 
 
-// Called every frame
-void UValueOverTimeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	// Called every frame
+	void UValueOverTimeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+	{
+		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+		// ...
+		
+		if (CanCameraMovetOverTime == true)
+		{
+	
+			CameraMoveOverTime(DeltaTime);
+			
+		}
+	
+	}
 
-	// ...
-}
+		void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
+		{
+
+			if (!CameraSpringArm) {
+				UE_LOG(LogTemp, Warning, TEXT("BADA camera not set in ValueOverTimeComponent"))
+					return;
+			}
+
+			float TargetOffset = CameraRightToLeft ? CameraOffset_Left : CameraOffset_Right;
+
+			if (!FMath::IsNearlyEqual(CurrentCameraOffset, TargetOffset, 1.f)) 
+			{
+				float Alpha = FMath::Clamp(CameraOffset_Speed * DeltaTime, 0.f, 1.f);
+				CurrentCameraOffset = FMath::Lerp(CurrentCameraOffset, TargetOffset, Alpha);
+				BP_ChangeSpringArmOffset(CurrentCameraOffset, CameraSpringArm);
+			}
+	
+		}
+
+	void UValueOverTimeComponent::StartCameraMoveOverTime(bool RightToLeft)
+	{
+		CanCameraMovetOverTime = true;
+		CameraRightToLeft = RightToLeft;
+	}
 
