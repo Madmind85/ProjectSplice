@@ -216,8 +216,6 @@ private:
 	//popola e ordina l'array pawns in view
 	void InitPawnsInViewArray();
 	void MClearFocus();
-
-
-	bool GetIsVisibleOnScreen();
+	bool GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen);
 };
 

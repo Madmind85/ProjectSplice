@@ -71,6 +71,13 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	if (GetCurrentFocus())
+	{//se non è piu visibile toglie il focus
+		if (!GetIsVisibleOnScreen(GetCurrentFocus()))
+		{
+			MClearFocus();
+		}
+	}
 
 	if (CanTeleport) 
 	{
@@ -627,7 +634,7 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 	TArray<AActor*>ActorsToIgnore;
 
 	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
-	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 2000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 2000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::None, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
 
 	//popola l'array Pawnsinview con gli attori mostriciattolo 
 	for (const FHitResult& Hit : HitR)
@@ -636,7 +643,11 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 		//se è un nemico ed è visibile
 		if (Most)
 		{
-			PawnsInView.AddUnique(Most);
+			if (GetIsVisibleOnScreen(Most))
+			{
+				PawnsInView.AddUnique(Most);
+			}
+			
 		}
 	}
 	//ordina i pawn trovati con la sera dal piu' piccolo al pèiu grande
@@ -674,3 +685,72 @@ bool AMostriciattolo5Character::CheckInnerSightAngle(AMostriciattolo5Character* 
 	}
 }
 
+bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen)
+{
+	//forse da cambiare
+	UCameraComponent* Camera = FindComponentByClass<UCameraComponent>();
+		if (Camera)
+		{
+			FVector CameraLocation = Camera->GetComponentLocation();
+			FRotator CameraRotation = Camera->GetComponentRotation();
+			Controller->GetActorEyesViewPoint(CameraLocation, CameraRotation);
+			return Controller->LineOfSightTo(ActorToBeSeen, CameraLocation, false);
+		}
+		
+			return false;
+	/*
+	UWorld* World = GetWorld();
+	
+	if (World && ActorToBeSeen)
+	{
+		// Start and end locations
+		FVector StartLocation = ActorToBeSeen->GetActorLocation();
+		FVector EndLocation = ActorToBeSeen->GetActorLocation() + FVector(0.f,0.f,40.f);
+		FVector EndLocation2 = ActorToBeSeen->GetActorLocation() + FVector(0.f, 0.f, -20.f);
+
+		// Convert the actor's world location to screen location
+		FVector2D ScreenLocation;
+		UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), StartLocation, ScreenLocation);
+
+		// Convert the screen location back to a world location
+		FVector WorldLocation;
+		FVector WorldDirection;
+		GetWorld()->GetFirstPlayerController()->DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection);
+
+		// Create a hit result
+		FHitResult HitResult;
+		FHitResult HitResult2;
+		// Collision parameters
+		FCollisionQueryParams CollisionParams;
+
+		// Perform the line trace
+		bool bHit = World->LineTraceSingleByChannel(HitResult, WorldLocation, EndLocation, ECC_Visibility, CollisionParams);
+		if (bHit)
+		{
+			DrawDebugLine(World, WorldLocation, EndLocation, FColor::Red, true, 1.f, 5.f);
+			AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(HitResult.GetActor());
+			if (Most)
+			{
+			
+				if (Most == ActorToBeSeen) { return true; }
+			}
+		}
+		bool bHit2 = World->LineTraceSingleByChannel(HitResult2, WorldLocation, EndLocation2, ECC_Visibility, CollisionParams);
+		if (bHit2)
+		{
+			DrawDebugLine(World, WorldLocation, EndLocation2, FColor::Red, true, 1.f, 5.f);
+			AMostriciattolo5Character* Most2 = Cast<AMostriciattolo5Character>(HitResult2.GetActor());
+			if (Most2)
+			{
+				
+				if (Most2 == ActorToBeSeen) { return true; }
+			}
+		}
+	 UE_LOG(LogTemp, Warning, TEXT("porcoddio 2")) 	return false;
+	}
+	else
+	{
+		 UE_LOG(LogTemp, Warning, TEXT("porcoddio 3")) return false;
+	}
+	*/
+}
