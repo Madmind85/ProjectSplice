@@ -167,6 +167,7 @@ public:
 
 	class AMostriciattolo5GameMode* MGameMode;
 	
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void AfterDepossessed(AMostriciattolo5Player* Possessor);
 	UFUNCTION(BlueprintImplementableEvent)
@@ -175,6 +176,7 @@ public:
 	void BP_SetTarget();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ResetTarget();
+	
 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBeingPossessed = false;

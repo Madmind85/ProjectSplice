@@ -52,9 +52,11 @@ void UValueOverTimeComponent::BeginPlay()
 
 			float TargetOffset = CameraRightToLeft ? CameraOffset_Left : CameraOffset_Right;
 
-			if (!FMath::IsNearlyEqual(CurrentCameraOffset, TargetOffset, 1.f)) 
+			float Alpha = FMath::Clamp(CameraOffset_Speed * DeltaTime, 0.f, 1.f);
+
+			if (Alpha < 0.9f) 
 			{
-				float Alpha = FMath::Clamp(CameraOffset_Speed * DeltaTime, 0.f, 1.f);
+				
 				CurrentCameraOffset = FMath::Lerp(CurrentCameraOffset, TargetOffset, Alpha);
 				BP_ChangeSpringArmOffset(CurrentCameraOffset, CameraSpringArm);
 			}
