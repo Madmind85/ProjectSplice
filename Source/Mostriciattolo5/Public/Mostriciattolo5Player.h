@@ -33,10 +33,6 @@ public:
 	float PossessLineHeight2 = 20.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float MBlendCameraTime = 1.5f;
-	UPROPERTY(EditDefaultsOnly, Category = "Possession")
-	float PossessionDelay = 0.8f;
-	UPROPERTY(EditDefaultsOnly, Category = "Possession")
-	float DepossessionDelay = 0.8f;
 	UPROPERTY(BlueprintReadWrite)
 	bool NoCollisionTarget = false;
 

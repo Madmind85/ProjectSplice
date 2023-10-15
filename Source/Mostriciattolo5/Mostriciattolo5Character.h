@@ -123,7 +123,12 @@ public:
 	FVector TargetBoxShape;
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	TArray<float> LineTraceTargetEnd;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+	float CameraOffset_Left = -10.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+	float CameraOffset_Right = 10.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+	float CameraOffset_Speed = 4.f;
 
 	UPROPERTY(BlueprintReadWrite)
 	UArrowComponent* SelectTargetArrow;
@@ -146,7 +151,6 @@ public:
 	float RotationSpeed = 50.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Possession")
 	float FindCharacterToTargetReach = 2000.f;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UArrowComponent* PossessArrowTarget;
 	/**quanto ci mette in secondi a spostarsi dalla poszione che ha  ora ad appiccicato al possession point quando  possiede*/

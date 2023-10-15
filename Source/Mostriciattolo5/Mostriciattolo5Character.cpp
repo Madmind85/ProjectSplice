@@ -433,7 +433,6 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 	
 	if (Controller != nullptr)
 	{
-		
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);

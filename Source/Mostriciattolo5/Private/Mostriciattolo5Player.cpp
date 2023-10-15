@@ -36,7 +36,7 @@ void AMostriciattolo5Player::AttachToPossessPoint()
     */
     BP_AttachAnimation();
     FTimerHandle TimerHandle;
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, PossessionDelay, false);
+    GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
    
 }
 
@@ -45,7 +45,8 @@ void AMostriciattolo5Player::ControllNPCDelayed()
     
     if (MGameMode && GetCurrentPossessed())
     {
-        
+        StartPossessedAnim = false;
+        GetCurrentPossessed()->StartPossessedAnim = false;
         MGameMode->ControllNPC(GetCurrentPossessed());
         GetCurrentPossessed()->AfterPossession(this);
         
@@ -82,35 +83,15 @@ void AMostriciattolo5Player::SetCurrentPossessed(AMostriciattolo5Character* Char
 void AMostriciattolo5Player::JumpOut()
 {
     if (GetCurrentPossessed() && GetCurrentPossessed()->GetPossessSocket())
-    {/*
-       
-        GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-        
-        FVector CurrentRelativLoc = GetMesh()->GetRelativeLocation();
-        CurrentRelativLoc.Z = -23.f;
-        GetMesh()->SetRelativeLocation(CurrentRelativLoc);
-        */
-        GetMesh()->ResetRelativeTransform();
-      
-        
-        AfterDepossessed(this);
-        FTimerHandle TimerHandle;
-        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, DepossessionDelay, false);
-       // GetMesh()->SetWorldLocation(GetCapsuleComponent()->GetComponentLocation());
-        //SetActorLocation(GetCurrentPossessed()->GetActorLocation());
-        //SetActorTransform(GetCurrentPossessed()->GetActorTransform());
-        /*
-       // FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
-       FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
+    {
+        FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
+        FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
         FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -100.f;
-        SetActorLocation(End);
-        //  SetActorLocation(GetCurrentPossessed()->GetActorLocation());
-        //SetActorRotation(GetCurrentPossessed()->GetActorRotation());
-        //  SetActorHiddenInGame(false);
-        GetMesh()->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-        //DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-       
-        GetCurrentPossessed()->AfterDepossessed(this);
+        SetActorLocation(GetCurrentPossessed()->GetActorLocation());
+        SetActorRotation(GetCurrentPossessed()->GetActorRotation());
+        SetActorHiddenInGame(false);
+        DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        AfterDepossessed(this);
         //UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
   
         //quando si è allontanato lo puo' di nuovo allertare toccandolo
@@ -119,12 +100,13 @@ void AMostriciattolo5Player::JumpOut()
 
 
         // Posticipa la possessione/depossessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
-       
+        FTimerHandle TimerHandle;
+        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, 0.5f, false);
 
        
         
         GetCurrentPossessed()->IsTarget = false;
-     */
+     
         
     }
 }
@@ -192,10 +174,10 @@ void AMostriciattolo5Player::InterceptPossessPoint()
     FVector End2 = End + FVector(0.f, 0.f, PossessLineHeight2);
     FVector Start2 = Start + FVector(0.f, 0.f, PossessLineHeight2);
     bool bHit2 = GetWorld()->LineTraceSingleByChannel(Hit, Start2, End2, ECC_Visibility);
-/*
+
     DrawDebugLine(GetWorld(), Start, End, FColor::Cyan);
     DrawDebugLine(GetWorld(), Start2, End2, FColor::Cyan);
-*/
+
     if (bHit || bHit2)
     {
        
@@ -212,7 +194,6 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                     GetCurrentPossessed()->CanBeTarget = true;
                     IsTarget = false;
                    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), 0.2f, EViewTargetBlendFunction::VTBlend_Linear);
-                   //alla fine del teleport triggera degli eventi
                     StartTeleportingWithSpeed(GetActorLocation(), GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket"))), 1000.f);
                     
                 }
