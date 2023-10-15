@@ -196,7 +196,7 @@ public:
 	
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	void TurnCameraToTarget();
+	void BP_TurnCameraToTarget();
 private:
 	void MoveActorSmoothly(float DeltaS);
 	FVector MStartLocation;
@@ -219,5 +219,7 @@ private:
 	void InitPawnsInViewArray();
 	void MClearFocus();
 	bool GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen);
+
+	void TurnCameraToTargetr();
 };
 

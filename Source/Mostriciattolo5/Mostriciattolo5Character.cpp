@@ -84,6 +84,11 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 		MoveActorSmoothly(DeltaSeconds);
 	}
 
+	if (GetCurrentFocus())
+	{
+		BP_TurnCameraToTarget();
+	}
+
 }
 
 void AMostriciattolo5Character::StartTeleporting(FVector Start, FVector End, float Time)
@@ -135,7 +140,7 @@ void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 								CurrentFocus->BP_ResetTarget();
 								CurrentFocus = NextF;
 								CurrentFocus->BP_SetTarget();
-								TurnCameraToTarget();
+								
 							}
 					}
 			}
@@ -151,7 +156,7 @@ void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 					CurrentFocus->BP_ResetTarget();
 					CurrentFocus = NextF;
 					CurrentFocus->BP_SetTarget();
-					TurnCameraToTarget();
+					
 				}
 			}
 		}
@@ -353,7 +358,6 @@ bool AMostriciattolo5Character::StartSelectFocusMode()
 		if (CurrentFocus) 
 		{
 			
-			TurnCameraToTarget();
 			CurrentFocus->BP_SetTarget();
 			//debug perchè la funzione qua sotto mette a fuoco e queta no
 			
@@ -443,7 +447,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 			RotatePlayerTowardsTarget();
 			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 			AddMovementInput(RightDirection, MovementVector.X);
-			TurnCameraToTarget();
+			
 		}
 		else
 		{
@@ -456,7 +460,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 
 void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 {
-	if ( CurrentFocus != nullptr) { return; }
+	if ( GetCurrentFocus()) { return; }
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -553,6 +557,27 @@ float AMostriciattolo5Character::GetViewPOsition_X()
 	UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), WorldLocation, ScreenPosition);
 	
 	return ScreenPosition.X;
+}
+
+void AMostriciattolo5Character::TurnCameraToTargetr()
+{
+
+	UCameraComponent* Camera = GetComponentByClass<UCameraComponent>();
+
+	if (Camera && GetCurrentFocus())
+	{
+		AActor* TargetActor = GetCurrentFocus();
+		// Get the location of the actor
+		FVector TargetLocation = TargetActor->GetActorLocation();
+		// Calculate the direction vector from the camera to the actor
+		FVector Direction = TargetLocation - Camera->GetComponentLocation();
+
+		// Create a rotation based on this direction
+		FRotator NewRotation = Direction.Rotation();
+
+		// Set the camera's rotation to this new rotation
+		Camera->SetWorldRotation(NewRotation);
+	}
 }
 
 void AMostriciattolo5Character::SortFocusActors()

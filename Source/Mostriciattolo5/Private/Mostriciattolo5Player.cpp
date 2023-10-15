@@ -87,11 +87,12 @@ void AMostriciattolo5Player::JumpOut()
         FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
         FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
         FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -100.f;
-        SetActorLocation(End);
+        SetActorLocation(GetCurrentPossessed()->GetActorLocation());
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);
-
-        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
+        DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        AfterDepossessed(this);
+        //UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
   
         //quando si è allontanato lo puo' di nuovo allertare toccandolo
         NoCollisionTarget = false;
@@ -100,12 +101,13 @@ void AMostriciattolo5Player::JumpOut()
 
         // Posticipa la possessione/depossessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
         FTimerHandle TimerHandle;
-        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, MBlendCameraTime, false);
+        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, 0.5f, false);
 
        
-        DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        
         GetCurrentPossessed()->IsTarget = false;
-  
+     
+        
     }
 }
 
