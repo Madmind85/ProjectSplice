@@ -32,7 +32,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float PossessLineHeight2 = 20.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
-	float MBlendCameraTime = 1.5f;
+	float MBlendCameraTime = 0.4f;
+	UPROPERTY(BlueprintReadWrite, Category = "Possession")
+	float PossessAnimDelay = 1.f;
 	UPROPERTY(BlueprintReadWrite)
 	bool NoCollisionTarget = false;
 
@@ -60,4 +62,5 @@ private:
 	void ControllNPCDelayed();
 	void ControllMainDelayed();
 	AMostriciattolo5Character* CurrentPossessed = nullptr;
+	void SetViewToTheMonster();
 };

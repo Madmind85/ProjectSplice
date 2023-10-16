@@ -53,7 +53,10 @@ class AMostriciattolo5Character : public ACharacter
 
 public:
 	AMostriciattolo5Character();
-	
+	/** Called for movement input */
+	UFUNCTION(BlueprintCallable)
+	void Move(const FInputActionValue& Value);
+
 	virtual void Tick(float DeltaSeconds) override;
 
 	/**Va da start a end nel tempo time*/
@@ -72,8 +75,7 @@ public:
 
 protected:
 
-	/** Called for movement input */
-	void Move(const FInputActionValue& Value);
+	
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
@@ -221,5 +223,6 @@ private:
 	bool GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen);
 
 	void TurnCameraToTargetr();
+	
 };
 

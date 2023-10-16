@@ -36,7 +36,7 @@ void AMostriciattolo5Player::AttachToPossessPoint()
     */
     BP_AttachAnimation();
     FTimerHandle TimerHandle;
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
+     GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
    
 }
 
@@ -60,12 +60,18 @@ void AMostriciattolo5Player::ControllMainDelayed()
     }
     if (GetCurrentPossessed())
     {
+       
         GetCurrentPossessed()->AfterDepossessed(this);
     }
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
     NoCollisionTarget = false;
     IsTarget = true;
     SetCurrentPossessed(nullptr);
+}
+
+void AMostriciattolo5Player::SetViewToTheMonster()
+{
+    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
 }
 
 AMostriciattolo5Character* AMostriciattolo5Player::GetCurrentPossessed()
@@ -92,19 +98,19 @@ void AMostriciattolo5Player::JumpOut()
         SetActorHiddenInGame(false);
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         AfterDepossessed(this);
-        //UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
+        //La visuale va al mostriciattolo dopo che è finita l'animazione
+        FTimerHandle TH;
+        GetWorldTimerManager().SetTimer(TH, this, &AMostriciattolo5Player::SetViewToTheMonster, PossessAnimDelay * 0.8 , false);
+       
   
         //quando si è allontanato lo puo' di nuovo allertare toccandolo
         NoCollisionTarget = false;
         IsTarget = true;
 
 
-        // Posticipa la possessione/depossessione del tempo che ci mette a spostarsi la visuale con SetViewTargetWithBlend
+        // Posticipa la possessione ttrramite player controller  a dopo la fine dell'animazione
         FTimerHandle TimerHandle;
-        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, 0.5f, false);
-
-       
-        
+        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, PossessAnimDelay, false);
         GetCurrentPossessed()->IsTarget = false;
      
         
@@ -126,7 +132,11 @@ void AMostriciattolo5Player::BeginPlay()
 void AMostriciattolo5Player::OnTeleportFinished()
 {
     
-    AttachToPossessPoint();
+    
+    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
+    //PaereConL'animazione una volta finito con la camera
+    FTimerHandle TH;
+    GetWorldTimerManager().SetTimer(TH, this, &AMostriciattolo5Player::AttachToPossessPoint, MBlendCameraTime * 0.5f, false);
    //se lo avevi lockato come focus e lo possiedi resetta
     SetCurrentFocus(nullptr);
     if (GetCurrentPossessed())
@@ -193,7 +203,7 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                 {
                     GetCurrentPossessed()->CanBeTarget = true;
                     IsTarget = false;
-                   UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), 0.2f, EViewTargetBlendFunction::VTBlend_Linear);
+                    
                     StartTeleportingWithSpeed(GetActorLocation(), GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket"))), 1000.f);
                     
                 }
