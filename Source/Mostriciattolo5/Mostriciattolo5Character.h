@@ -52,10 +52,16 @@ class AMostriciattolo5Character : public ACharacter
 	class UInputAction* LookAction;
 
 public:
+
 	AMostriciattolo5Character();
+
+	//INPUT
 	/** Called for movement input */
 	UFUNCTION(BlueprintCallable)
 	void Move(const FInputActionValue& Value);
+	/** Called for looking input */
+	UFUNCTION(BlueprintCallable)
+	void Look(const FInputActionValue& Value);
 
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -77,8 +83,7 @@ protected:
 
 	
 
-	/** Called for looking input */
-	void Look(const FInputActionValue& Value);
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCapsuleComponent* PossessSocket;
@@ -99,6 +104,8 @@ public:
 	/** Returns FollowCamera subobject 
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	*/
+	//Se true non puoi' usare depossess, viene resettata quando questo char viene posseduto
+	bool IsSpammingDepossess = false;
 
 	UFUNCTION(BlueprintCallable)
 	bool HasLostTarget();

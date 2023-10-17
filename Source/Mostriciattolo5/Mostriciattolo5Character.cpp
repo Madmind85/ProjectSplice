@@ -480,12 +480,16 @@ void AMostriciattolo5Character::Look(const FInputActionValue& Value)
 
 void  AMostriciattolo5Character::Depossess()
 {
-	if (MGameMode)
-	{ 
-		//trova il mostriciattolo salvato nel game mode
-		AMostriciattolo5Player* player = MGameMode->Mostriciattolo_OS;
-		if (!player) { return; }
-		player->JumpOut();
+	if (!IsSpammingDepossess)
+	{
+		if (MGameMode)
+		{
+			//trova il mostriciattolo salvato nel game mode
+			AMostriciattolo5Player* player = MGameMode->Mostriciattolo_OS;
+			if (!player) { return; }
+			player->JumpOut();
+			IsSpammingDepossess = true;
+		}
 	}
 }
 

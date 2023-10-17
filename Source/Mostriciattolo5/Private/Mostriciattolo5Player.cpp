@@ -36,7 +36,7 @@ void AMostriciattolo5Player::AttachToPossessPoint()
     */
     BP_AttachAnimation();
     FTimerHandle TimerHandle;
-     GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, MBlendCameraTime, false);
+     GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllNPCDelayed, PossessAnimDelay * 1.2, false);
    
 }
 
@@ -60,7 +60,6 @@ void AMostriciattolo5Player::ControllMainDelayed()
     }
     if (GetCurrentPossessed())
     {
-       
         GetCurrentPossessed()->AfterDepossessed(this);
     }
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
@@ -171,6 +170,7 @@ void AMostriciattolo5Player::OnTeleportFinished()
 
 void AMostriciattolo5Player::InterceptPossessPoint()
 {
+    if (GetCurrentPossessed()) { return; }
     FHitResult Hit;
     FVector Start = GetActorLocation();
     FVector End = GetActorLocation() + GetActorForwardVector() * 45;
@@ -201,6 +201,7 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                 SetCurrentPossessed(Char);
                 if (GetCurrentPossessed())
                 {
+                    GetCurrentPossessed()->IsSpammingDepossess = false;
                     GetCurrentPossessed()->CanBeTarget = true;
                     IsTarget = false;
                     
