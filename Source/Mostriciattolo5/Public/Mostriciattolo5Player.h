@@ -31,7 +31,11 @@ public:
 	//altezza dal centro della seconda line trace per intercettare il possess socket per la possessione
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float PossessLineHeight2 = 20.f;
-	UPROPERTY(EditDefaultsOnly, Category = "Possession")
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	float SpringArmLengthForCameraBlend = 800.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	float NormalSpringArmValue = 350.f;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Camera")
 	float MBlendCameraTime = 0.4f;
 	UPROPERTY(BlueprintReadWrite, Category = "Possession")
 	float PossessAnimDelay = 1.f;
@@ -51,6 +55,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void InterceptPossessPoint();
+	UFUNCTION(BlueprintCallable)
+	void ControllNPCDelayed();
 
 protected:
 	// To add mapping context
@@ -59,7 +65,7 @@ protected:
 
 
 private:
-	void ControllNPCDelayed();
+	
 	void ControllMainDelayed();
 	AMostriciattolo5Character* CurrentPossessed = nullptr;
 	void SetViewToTheMonster();
