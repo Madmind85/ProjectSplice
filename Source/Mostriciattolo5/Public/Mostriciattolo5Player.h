@@ -51,17 +51,12 @@ public:
 	void BP_LockToPossessSocket(AMostriciattolo5Character* Target);
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_AttachAnimation();
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_SetViewToTheMonster();
-
 	void JumpOut();
 
 	UFUNCTION(BlueprintCallable)
 	void InterceptPossessPoint();
 	UFUNCTION(BlueprintCallable)
 	void ControllNPCDelayed();
-	UFUNCTION(BlueprintCallable)
-	void ControllMainDelayed();
 
 protected:
 	// To add mapping context
@@ -71,7 +66,7 @@ protected:
 
 private:
 	
-	
+	void ControllMainDelayed();
 	AMostriciattolo5Character* CurrentPossessed = nullptr;
-	
+	void SetViewToTheMonster();
 };
