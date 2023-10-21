@@ -57,7 +57,8 @@ public:
 	void InterceptPossessPoint();
 	UFUNCTION(BlueprintCallable)
 	void ControllNPCDelayed();
-
+	UFUNCTION(BlueprintCallable)
+	void ControllMainDelayed();
 protected:
 	// To add mapping context
 	virtual void BeginPlay()override;
@@ -66,7 +67,7 @@ protected:
 
 private:
 	
-	void ControllMainDelayed();
+	
 	AMostriciattolo5Character* CurrentPossessed = nullptr;
 	void SetViewToTheMonster();
 };

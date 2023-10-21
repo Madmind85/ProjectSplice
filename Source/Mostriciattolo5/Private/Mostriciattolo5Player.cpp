@@ -79,6 +79,9 @@ void AMostriciattolo5Player::JumpOut()
         SetActorHiddenInGame(false);
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         AfterDepossessed(this);
+
+        SetViewToTheMonster();
+        /*
         //La visuale va al mostriciattolo dopo che è finita l'animazione
         FTimerHandle TH;
         GetWorldTimerManager().SetTimer(TH, this, &AMostriciattolo5Player::SetViewToTheMonster, PossessAnimDelay  , false);
@@ -87,17 +90,13 @@ void AMostriciattolo5Player::JumpOut()
         {
             SArm->TargetArmLength = SpringArmLengthForCameraBlend;
         }
-  
+        */
         //quando si è allontanato lo puo' di nuovo allertare toccandolo
         NoCollisionTarget = false;
         IsTarget = true;
 
-
-        // Posticipa la possessione ttrramite player controller  a dopo la fine dell'animazione
-        FTimerHandle TimerHandle;
-        GetWorldTimerManager().SetTimer(TimerHandle, this, &AMostriciattolo5Player::ControllMainDelayed, PossessAnimDelay + MBlendCameraTime, false);
         GetCurrentPossessed()->IsTarget = false;
-     
+    
     }
 }
 
