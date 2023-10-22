@@ -37,6 +37,8 @@ public:
 	float NormalSpringArmValue = 350.f;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "Camera")
 	float MBlendCameraTime = 0.4f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Anim")
+	TArray<UAnimMontage*> AnimList;
 	UPROPERTY(BlueprintReadWrite, Category = "Possession")
 	float PossessAnimDelay = 1.f;
 	UPROPERTY(BlueprintReadWrite)
