@@ -30,18 +30,19 @@ void AMostriciattolo5Player::ControllNPCDelayed()
     {
         SetActorHiddenInGame(true);
         MGameMode->ControllNPC(GetCurrentPossessed());
+        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this,0.f, EViewTargetBlendFunction::VTBlend_Linear);
+        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear, true);
         GetCurrentPossessed()->AfterPossession(this);
         
     }
 }
 void AMostriciattolo5Player::ControllMainDelayed()
 {
-    if (MGameMode)
+    if (MGameMode && GetCurrentPossessed())
     { 
         MGameMode->ReturnControlToAI();
-    }
-    if (GetCurrentPossessed())
-    {
+        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), 0.f, EViewTargetBlendFunction::VTBlend_Linear);
+   
         GetCurrentPossessed()->AfterDepossessed(this);
     }
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
@@ -81,18 +82,6 @@ void AMostriciattolo5Player::JumpOut()
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         AfterDepossessed(this);
 
-      
-        /*
-        //La visuale va al mostriciattolo dopo che è finita l'animazione
-        FTimerHandle TH;
-        GetWorldTimerManager().SetTimer(TH, this, &AMostriciattolo5Player::SetViewToTheMonster, PossessAnimDelay  , false);
-        USpringArmComponent* SArm = GetCurrentPossessed()->FindComponentByClass<USpringArmComponent>();
-        if (SArm)
-        {
-            SArm->TargetArmLength = SpringArmLengthForCameraBlend;
-        }
-        */
-        //quando si è allontanato lo puo' di nuovo allertare toccandolo
         NoCollisionTarget = false;
         IsTarget = true;
 
@@ -115,20 +104,14 @@ void AMostriciattolo5Player::BeginPlay()
 
 void AMostriciattolo5Player::OnTeleportFinished()
 {
-    //resetta il valore dello spring arm a prima della depossessione
-    USpringArmComponent* SArm = GetCurrentPossessed()->FindComponentByClass<USpringArmComponent>();
-    if (SArm)
-    {
-        SArm->TargetArmLength = NormalSpringArmValue;
-    }
-    UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear, true);
-    AttachToPossessPoint();
+  
     SetCurrentFocus(nullptr);
     if (GetCurrentPossessed())
     {
         GetCurrentPossessed()->BP_ResetTarget();
     }
     BP_AttachAnimation();
+   
 }
 
 void AMostriciattolo5Player::InterceptPossessPoint()
