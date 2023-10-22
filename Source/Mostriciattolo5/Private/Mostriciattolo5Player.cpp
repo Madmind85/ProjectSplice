@@ -77,10 +77,11 @@ void AMostriciattolo5Player::JumpOut()
         SetActorLocation(GetCurrentPossessed()->GetActorLocation());
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);
+        SetViewToTheMonster();
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         AfterDepossessed(this);
 
-        SetViewToTheMonster();
+      
         /*
         //La visuale va al mostriciattolo dopo che è finita l'animazione
         FTimerHandle TH;
