@@ -42,7 +42,6 @@ void AMostriciattolo5Player::ControllMainDelayed()
     { 
         MGameMode->ReturnControlToAI();
         UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), 0.f, EViewTargetBlendFunction::VTBlend_Linear);
-   
         GetCurrentPossessed()->AfterDepossessed(this);
     }
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
