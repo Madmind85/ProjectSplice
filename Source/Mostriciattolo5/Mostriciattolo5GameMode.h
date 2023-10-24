@@ -6,6 +6,10 @@
 #include "GameFramework/GameModeBase.h"
 #include "Mostriciattolo5GameMode.generated.h"
 
+
+
+
+
 UCLASS(minimalapi)
 class AMostriciattolo5GameMode : public AGameModeBase
 {
@@ -13,8 +17,10 @@ class AMostriciattolo5GameMode : public AGameModeBase
 
 public:
 	AMostriciattolo5GameMode();
+
 	UPROPERTY(BlueprintReadWrite)
 	class AMostriciattolo5Player* Mostriciattolo_OS = nullptr;
+
 
     // Function to give control to the player
     UFUNCTION(BlueprintCallable, Category = "Game")

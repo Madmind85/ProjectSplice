@@ -185,6 +185,8 @@ public:
 	void BP_SetTarget();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ResetTarget();
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_StopMovement();
 	
 
 	UPROPERTY(BlueprintReadWrite)

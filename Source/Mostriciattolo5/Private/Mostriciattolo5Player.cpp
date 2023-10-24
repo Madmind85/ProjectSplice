@@ -8,6 +8,7 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "Mostriciattolo5\Public\MostriciattoloPlayerController.h"
 #include "GameFramework/GameModeBase.h"
 
@@ -150,8 +151,9 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                     GetCurrentPossessed()->IsSpammingDepossess = false;
                     GetCurrentPossessed()->CanBeTarget = true;
                     IsTarget = false;
-                    
+                    GetCurrentPossessed()->BP_StopMovement();
                     StartTeleportingWithSpeed(GetActorLocation(), GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket"))), 1000.f);
+                   
                     
                 }
             }
