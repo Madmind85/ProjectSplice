@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Mostriciattolo5/Components/ValueOverTimeComponent.h"
 #include "Mostriciattolo5\Public\MostriciattoloPlayerController.h"
 #include "GameFramework/GameModeBase.h"
 
@@ -119,16 +120,16 @@ void AMostriciattolo5Player::InterceptPossessPoint()
     if (GetCurrentPossessed()) { return; }
     FHitResult Hit;
     FVector Start = GetActorLocation();
-    FVector End = GetActorLocation() + GetActorForwardVector() * 45;
-
-   
+    FVector End = GetActorLocation() + GetActorForwardVector() * PossessReach;
 
     End += FVector(0.f, 0.f, PossessLineHeight1);
     Start += FVector(0.f, 0.f, PossessLineHeight1);
+
     bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
     //seconda line trace
     FVector End2 = End + FVector(0.f, 0.f, PossessLineHeight2);
     FVector Start2 = Start + FVector(0.f, 0.f, PossessLineHeight2);
+
     bool bHit2 = GetWorld()->LineTraceSingleByChannel(Hit, Start2, End2, ECC_Visibility);
 
     DrawDebugLine(GetWorld(), Start, End, FColor::Cyan);
@@ -136,7 +137,6 @@ void AMostriciattolo5Player::InterceptPossessPoint()
 
     if (bHit || bHit2)
     {
-       
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         
         if (HitComponent && HitComponent->ComponentTags.Contains(TEXT("Possess")))
@@ -152,9 +152,12 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                     GetCurrentPossessed()->CanBeTarget = true;
                     IsTarget = false;
                     GetCurrentPossessed()->BP_StopMovement();
-                    StartTeleportingWithSpeed(GetActorLocation(), GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket"))), 1000.f);
-                   
                     
+                    if (ValueOverTimeComponent)
+                    {
+                        FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
+                        ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(),TeleportEnd, 1000.f);
+                    }
                 }
             }
         }

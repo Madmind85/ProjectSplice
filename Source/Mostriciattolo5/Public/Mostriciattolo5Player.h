@@ -61,10 +61,15 @@ public:
 	void ControllNPCDelayed();
 	UFUNCTION(BlueprintCallable)
 	void ControllMainDelayed();
+
+
+	virtual void OnTeleportFinished()override;
+
+
 protected:
 	// To add mapping context
 	virtual void BeginPlay()override;
-	virtual void OnTeleportFinished()override;
+	
 
 
 private:

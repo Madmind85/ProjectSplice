@@ -4,8 +4,6 @@
 #include "Mostriciattolo5Character.h"
 #include "Public/Mostriciattolo5Player.h"
 #include "Kismet/GameplayStatics.h"
-#include "Mostriciattolo5/Effects/MostriciattoloCameraShakeBase.h"
-#include "Camera/CameraShake.h"
 #include "UObject/ConstructorHelpers.h"
 
 AMostriciattolo5GameMode::AMostriciattolo5GameMode()

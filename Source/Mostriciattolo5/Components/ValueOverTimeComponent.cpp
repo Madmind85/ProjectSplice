@@ -3,6 +3,7 @@
 
 #include "ValueOverTimeComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Mostriciattolo5/Mostriciattolo5Character.h"
 
 // Sets default values for this component's properties
 UValueOverTimeComponent::UValueOverTimeComponent()
@@ -35,33 +36,36 @@ void UValueOverTimeComponent::BeginPlay()
 		
 		if (CanCameraMovetOverTime == true)
 		{
-	
 			CameraMoveOverTime(DeltaTime);
-			
+		}
+
+		if (CanTeleport)
+		{
+			MoveActorSmoothly(DeltaTime);
 		}
 	
 	}
 
-		void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
-		{
+	void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
+	{
 
-			if (!CameraSpringArm) {
+		if (!CameraSpringArm)
+		{
 				UE_LOG(LogTemp, Warning, TEXT("BADA camera not set in ValueOverTimeComponent"))
 					return;
-			}
-
-			float TargetOffset = CameraRightToLeft ? CameraOffset_Left : CameraOffset_Right;
-
-			float Alpha = FMath::Clamp(CameraOffset_Speed * DeltaTime, 0.f, 1.f);
-
-			if (Alpha < 0.9f) 
-			{
-				
-				CurrentCameraOffset = FMath::Lerp(CurrentCameraOffset, TargetOffset, Alpha);
-				BP_ChangeSpringArmOffset(CurrentCameraOffset, CameraSpringArm);
-			}
-	
 		}
+
+		float TargetOffset = CameraRightToLeft ? CameraOffset_Left : CameraOffset_Right;
+
+		float Alpha = FMath::Clamp(CameraOffset_Speed * DeltaTime, 0.f, 1.f);
+
+		if (Alpha < 0.9f) 
+		{
+			CurrentCameraOffset = FMath::Lerp(CurrentCameraOffset, TargetOffset, Alpha);
+			BP_ChangeSpringArmOffset(CurrentCameraOffset, CameraSpringArm);
+		}
+	
+	}
 
 	void UValueOverTimeComponent::StartCameraMoveOverTime(bool RightToLeft)
 	{
@@ -69,3 +73,50 @@ void UValueOverTimeComponent::BeginPlay()
 		CameraRightToLeft = RightToLeft;
 	}
 
+	void UValueOverTimeComponent::MoveActorSmoothly(float DeltaS)
+	{
+		if (!GetOwner()) { return; }
+
+		// Calculate the interpolation factor based on the elapsed time
+		CurrentTeleportTime += DeltaS;
+		float LerpAlpha = FMath::Clamp(CurrentTeleportTime / MInterpolationTime, 0.0f, 1.0f);
+
+		// Perform the interpolation
+		FVector NewLocation = FMath::Lerp(MStartLocation, MTargetLocation, LerpAlpha);
+
+		// Set the actor's new location
+		GetOwner()->SetActorLocation(NewLocation);
+
+		// Check if the interpolation is complete
+		if (LerpAlpha >= 1.f)
+		{
+			CurrentTeleportTime = 0.f;
+			MStartTime = 0.f;
+			CanTeleport = false;
+			AMostriciattolo5Character* OwnerMos = Cast<AMostriciattolo5Character>(GetOwner());
+			if (OwnerMos)
+			{
+				OwnerMos->OnTeleportFinished();
+			}
+		}
+	}
+
+	void UValueOverTimeComponent::StartTeleporting(FVector Start, FVector End, float Time)
+	{
+		MStartLocation = Start;
+		MTargetLocation = End;
+		MStartTime = GetWorld()->GetTimeSeconds();
+		MInterpolationTime = Time;
+		CanTeleport = true;
+
+	}
+
+	void UValueOverTimeComponent::StartTeleportingWithSpeed(FVector Start, FVector End, float Speed)
+	{
+		MStartLocation = Start;
+		MTargetLocation = End;
+		MStartTime = GetWorld()->GetTimeSeconds();
+		MInterpolationTime = FVector::Distance(Start, End) / Speed;
+		CanTeleport = true;
+		 
+	}

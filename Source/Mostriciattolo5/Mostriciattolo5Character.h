@@ -65,12 +65,6 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	/**Va da start a end nel tempo time*/
-	UFUNCTION(BlueprintCallable)
-	void StartTeleporting(FVector Start, FVector End, float Time);
-	/**va da start a end con velocità Speed, quindi il tempo varia a seconda della distanza*/
-	UFUNCTION(BlueprintCallable)
-	void StartTeleportingWithSpeed(FVector Start, FVector End, float Speed);
 
 	UFUNCTION(BlueprintCallable)
 	void FindCharacterToTarget(float TMouseX);
@@ -81,14 +75,10 @@ public:
 
 protected:
 
-	
-
-	
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCapsuleComponent* PossessSocket;
 
-	virtual void OnTeleportFinished();
+	
 
 protected:
 	// APawn interface
@@ -96,6 +86,8 @@ protected:
 	
 	// To add mapping context
 	virtual void BeginPlay();
+
+	class UValueOverTimeComponent* ValueOverTimeComponent;
 
 public:
 	static bool SortActorDistance(AActor* Actor_A, AActor* Actor_B);
@@ -208,8 +200,13 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_TurnCameraToTarget();
+
+
+	virtual void OnTeleportFinished();
+
+
 private:
-	void MoveActorSmoothly(float DeltaS);
+
 	FVector MStartLocation;
 	FVector MTargetLocation;
 	float MStartTime;

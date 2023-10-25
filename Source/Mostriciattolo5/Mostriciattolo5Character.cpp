@@ -64,7 +64,9 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 	*/
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)ù
+
+
 }
 
 void AMostriciattolo5Character::Tick(float DeltaSeconds)
@@ -79,205 +81,12 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 		}
 	}
 
-	if (CanTeleport) 
-	{
-		MoveActorSmoothly(DeltaSeconds);
-	}
 
 	if (GetCurrentFocus())
 	{
 		BP_TurnCameraToTarget();
 	}
 
-}
-
-void AMostriciattolo5Character::StartTeleporting(FVector Start, FVector End, float Time)
-{
-	MStartLocation = Start;
-	MTargetLocation = End;
-	MStartTime = GetWorld()->GetTimeSeconds();
-	// Adjust MInterpolationTime based on the desired Time and frame time
-	//float FrameTime = 1.0f / GetWorld()->GetDeltaSeconds();
-	//MInterpolationTime = Time * FrameTime;
-	MInterpolationTime = Time;
-	CanTeleport = true;
-	
-}
-UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
-{
-	return PossessSocket;
-}
-void AMostriciattolo5Character::StartTeleportingWithSpeed(FVector Start, FVector End, float Speed)
-{
-	MStartLocation = Start;
-	MTargetLocation = End;
-	MStartTime = GetWorld()->GetTimeSeconds();
-	MInterpolationTime = FVector::Distance(Start, End) / Speed;
-	CanTeleport = true;
-}
-
-void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
-{
-	if (!GetCurrentFocus()) { return; }
-
-	InitPawnsInViewArray();
-
-	if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
-	{
-		int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
-		// If the index is not valid (i.e., it does not find it in the array), it should be there because it is set as the most central when we activate the select mode
-		if (CurrentIndex == -1) {  UE_LOG(LogTemp, Warning, TEXT("Gesucristo")) return; };
-
-		// Wants to select on the left
-		if (TMouseX <= 0)
-			{
-				// If there is a valid pawn on the left, set it as target
-				if (CurrentIndex > 0) // Check if there is a valid index on the left
-					{
-						AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
-						if (NextF)
-							{
-								CurrentFocus->BP_ResetTarget();
-								CurrentFocus = NextF;
-								CurrentFocus->BP_SetTarget();
-								
-							}
-					}
-			}
-		// Wants to select on the right
-		if (TMouseX > 0)
-		{
-			// If there is a valid pawn on the right, set it as target
-			if (PawnsInView.Num() > CurrentIndex+1) // Check if there is a valid index on the right
-			{
-				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
-				if (NextF)
-				{
-					CurrentFocus->BP_ResetTarget();
-					CurrentFocus = NextF;
-					CurrentFocus->BP_SetTarget();
-					
-				}
-			}
-		}
-}
-
-
-
-		
-
-
-
-
-
-
-
-
-
-
-		/*
-		PawnsInView;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
-	
-		TArray<AMostriciattolo5Character*> EnemyPawns;
-	
-		for (AActor* Pawn : PawnsInView)
-		{
-		
-			AMostriciattolo5Character* Enemy = Cast<AMostriciattolo5Character>(Pawn);
-			float MiddleOfScreen;
-			
-		
-			if (Enemy && CurrentFocus)
-			{ 
-				float DistFromCent = GetDistanceFromScreenCenter(Enemy, MiddleOfScreen);
-				float FDistFromCent = GetDistanceFromScreenCenter(CurrentFocus, MiddleOfScreen);
-
-				//se il mouse xe negativo sta andando a sinistra
-				if (TMouseX <= 0.f)
-				{	
-				}
-				//Cerca il nemico più vicino allo schhermo
-				//spostare su selectmode on
-				/*
-				if (SelectedPawnDistanceToCenter > fabs(DistFromCent))
-				{
-					SelectedPawn = Enemy;
-				}
-				SelectedPawnDistanceToCenter = DistFromCent;
-				
-
-				//minore è DistfromCent più a sinistra stanno
-			
-			}
-			
-		}
-		return nullptr;
-	
-	
-		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End , ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
-
-		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End+FVector(0.f,0.f,400.f), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
-
-		bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End + FVector(0.f, 0.f, -400.f), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
-		
-		//bHit = UKismetSystemLibrary::BoxTraceSingle(this, Start, End, FVector(50.f,50.f,200.f), SelectTargetArrow->GetComponentRotation(), ETraceTypeQuery::TraceTypeQuery_MAX, false, ActorsToIgnore,
-			//EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Blue, FLinearColor::Yellow, 0.4f);
-
-		//bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), Params);
-		//bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rotation, FCollisionObjectQueryParams(ECollisionChannel::ECC_Pawn), CollisionShape, Params);
-		//DrawDebugLine(GetWorld(), Start, End, FColor::Yellow, false, 0.5f);
-
-	/*
-	
-	if (!SelectTargetArrow) {  UE_LOG(LogTemp, Warning, TEXT("BADA non è settata la SelectTargetArrow in mostriciattolo5character->fidcharactertotarget ")) return nullptr; }
-
-		FHitResult Hit;
-		
-		FVector Start = SelectTargetArrow->GetComponentLocation();
-		FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector()* FindCharacterToTargetReach;
-		//casino per trasformare la rotazione della camera in FQuat
-		FVector CameraRotation = SelectTargetArrow->GetComponentRotation().Vector();
-		FQuat Rotation = FQuat::MakeFromEuler(CameraRotation);
-
-		FCollisionObjectQueryParams ObjectQueryParams;
-		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
-		FCollisionShape CollisionShape;
-		FCollisionQueryParams Params;
-		// Imposta la forma del volume di collisione	
-		CollisionShape.MakeCapsule(TargetBoxShape);
-		TArray<AActor*> ActorsToIgnore;
-		bool bHit;
-
-		for (float EndM : LineTraceTargetEnd)
-		{
-			bHit = UKismetSystemLibrary::LineTraceSingle(GetWorld(), Start, End + FVector(0.f, 0.f, EndM), ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, Hit, true, FLinearColor::Red, FLinearColor::Green, 0.2f);
-			if (bHit)
-			{
-				AActor* HitActor = Hit.GetActor();
-
-				if (HitActor && HitActor != this)
-				{
-					AMostriciattolo5Character* HitChar = Cast<AMostriciattolo5Character>(HitActor);
-					if (HitChar)
-					{
-						SetCurrenTarget(HitChar);
-
-						BP_SetTarget();
-						return HitChar;
-					}
-					
-				}
-			}
-		}
-		
-		 return nullptr; 
-		 */
-}
-
-void AMostriciattolo5Character::SetCurrentFocus(AMostriciattolo5Character* FocusToSet)
-{
-	CurrentFocus = FocusToSet;
 }
 
 void AMostriciattolo5Character::BeginPlay()
@@ -299,7 +108,70 @@ void AMostriciattolo5Character::BeginPlay()
 	{
 		MGameMode = Cast<AMostriciattolo5GameMode>(GM);
 	}
+
+	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
 }
+
+UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
+{
+	return PossessSocket;
+}
+
+
+void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
+{
+	if (!GetCurrentFocus()) { return; }
+
+	InitPawnsInViewArray();
+
+	if (CurrentFocus && PawnsInView.Num() > 0) // Check if the array is not empty
+	{
+		int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
+		// If the index is not valid (i.e., it does not find it in the array), it should be there because it is set as the most central when we activate the select mode
+		if (CurrentIndex == -1) { UE_LOG(LogTemp, Warning, TEXT("Gesucristo")) return; };
+
+		// Wants to select on the left
+		if (TMouseX <= 0)
+		{
+			// If there is a valid pawn on the left, set it as target
+			if (CurrentIndex > 0) // Check if there is a valid index on the left
+			{
+				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex - 1];
+				if (NextF)
+				{
+					CurrentFocus->BP_ResetTarget();
+					CurrentFocus = NextF;
+					CurrentFocus->BP_SetTarget();
+
+				}
+			}
+		}
+		// Wants to select on the right
+		if (TMouseX > 0)
+		{
+			// If there is a valid pawn on the right, set it as target
+			if (PawnsInView.Num() > CurrentIndex + 1) // Check if there is a valid index on the right
+			{
+				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
+				if (NextF)
+				{
+					CurrentFocus->BP_ResetTarget();
+					CurrentFocus = NextF;
+					CurrentFocus->BP_SetTarget();
+
+				}
+			}
+		}
+	}
+
+}
+
+void AMostriciattolo5Character::SetCurrentFocus(AMostriciattolo5Character* FocusToSet)
+{
+	CurrentFocus = FocusToSet;
+}
+
+
 
 bool AMostriciattolo5Character::HasLostTarget()
 {
@@ -376,27 +248,7 @@ void  AMostriciattolo5Character::EndSelectFocusMode()
 	SelectedPawnDistanceToCenter = 100000.f;
 }
 
-void AMostriciattolo5Character::MoveActorSmoothly(float DeltaS)
-{
-	// Calculate the interpolation factor based on the elapsed time
-	CurrentTeleportTime += DeltaS;
-	float LerpAlpha = FMath::Clamp(CurrentTeleportTime / MInterpolationTime, 0.0f, 1.0f);
 
-	// Perform the interpolation
-	FVector NewLocation = FMath::Lerp(MStartLocation, MTargetLocation, LerpAlpha);
-
-	// Set the actor's new location
-	SetActorLocation(NewLocation);
-	
-	// Check if the interpolation is complete
-	if (LerpAlpha >= 1.f)
-	{
-		CurrentTeleportTime = 0.f;
-		MStartTime = 0.f;
-		CanTeleport = false;	
-		OnTeleportFinished();
-	}
-}
 
 //////////////////////////////////////////////////////////////////////////
 // Input
@@ -512,13 +364,7 @@ void AMostriciattolo5Character::RotatePlayerTowardsTarget()
 	FRotator CurrentRotation = GetActorRotation();
 	FRotator InterpolatedRotation = FMath::RInterpTo(CurrentRotation, NewRotation, GetWorld()->GetDeltaSeconds(), RotationSpeed);
 	SetActorRotation(InterpolatedRotation, ETeleportType::None);
-	/*
-	if (MCamera)
-	{
-		FHitResult Hit;
-		MCamera->SetWorldRotation(InterpolatedRotation, false, Hit, ETeleportType::None);
-	}
-	*/
+
 }
 
 AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()
@@ -605,53 +451,7 @@ void AMostriciattolo5Character::SortFocusActors()
 			}
 		}
 	}
-	/*
-	// Separate actors into negative and positive arrays
-	for (AMostriciattolo5Character* actor : PawnsInView)
-		{
-			
-			if (actor->GetDistanceFromScreenCenter() < 0) 
-			{
-				OUTNegativeActors.Add(actor);
-			}
-			else 
-			{
-				OUTPositiveActors.Add(actor);
-			}
-		}
-
-		// Sort negative actors from closest to 0 to lower value
-		int32 NumNegativeActors = OUTNegativeActors.Num();
-		for (int32 i = 0; i < NumNegativeActors - 1; i++) 
-		{
-			for (int32 j = 0; j < NumNegativeActors - i - 1; j++) 
-			{
-				if (OUTNegativeActors[j]->GetDistanceFromScreenCenter() < OUTNegativeActors[j + 1]->GetDistanceFromScreenCenter())
-				{
-					AMostriciattolo5Character* Temp = OUTNegativeActors[j];
-					OUTNegativeActors[j] = OUTNegativeActors[j + 1];
-					OUTNegativeActors[j + 1] = Temp;
-				}
-			}
-		}
-
-		// Sort positive actors from smallest to bigger
-		int32 NumPositiveActors = OUTPositiveActors.Num();
-		for (int32 i = 0; i < NumPositiveActors - 1; i++) 
-		{
-			for (int32 j = 0; j < NumPositiveActors - i - 1; j++) 
-			{
-				if (OUTPositiveActors[j]->GetDistanceFromScreenCenter() > OUTPositiveActors[j + 1]->GetDistanceFromScreenCenter())
-				{
-					AMostriciattolo5Character* Temp = OUTPositiveActors[j];
-					OUTPositiveActors[j] = OUTPositiveActors[j + 1];
-					OUTPositiveActors[j + 1] = Temp;
-				}
-			}
-		}
-	*/
-
-		
+	
 }
 
 void AMostriciattolo5Character::InitPawnsInViewArray()
@@ -730,60 +530,5 @@ bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* 
 			return Controller->LineOfSightTo(ActorToBeSeen, CameraLocation, false);
 		}
 		
-			return false;
-	/*
-	UWorld* World = GetWorld();
-	
-	if (World && ActorToBeSeen)
-	{
-		// Start and end locations
-		FVector StartLocation = ActorToBeSeen->GetActorLocation();
-		FVector EndLocation = ActorToBeSeen->GetActorLocation() + FVector(0.f,0.f,40.f);
-		FVector EndLocation2 = ActorToBeSeen->GetActorLocation() + FVector(0.f, 0.f, -20.f);
-
-		// Convert the actor's world location to screen location
-		FVector2D ScreenLocation;
-		UGameplayStatics::ProjectWorldToScreen(GetWorld()->GetFirstPlayerController(), StartLocation, ScreenLocation);
-
-		// Convert the screen location back to a world location
-		FVector WorldLocation;
-		FVector WorldDirection;
-		GetWorld()->GetFirstPlayerController()->DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, WorldDirection);
-
-		// Create a hit result
-		FHitResult HitResult;
-		FHitResult HitResult2;
-		// Collision parameters
-		FCollisionQueryParams CollisionParams;
-
-		// Perform the line trace
-		bool bHit = World->LineTraceSingleByChannel(HitResult, WorldLocation, EndLocation, ECC_Visibility, CollisionParams);
-		if (bHit)
-		{
-			DrawDebugLine(World, WorldLocation, EndLocation, FColor::Red, true, 1.f, 5.f);
-			AMostriciattolo5Character* Most = Cast<AMostriciattolo5Character>(HitResult.GetActor());
-			if (Most)
-			{
-			
-				if (Most == ActorToBeSeen) { return true; }
-			}
-		}
-		bool bHit2 = World->LineTraceSingleByChannel(HitResult2, WorldLocation, EndLocation2, ECC_Visibility, CollisionParams);
-		if (bHit2)
-		{
-			DrawDebugLine(World, WorldLocation, EndLocation2, FColor::Red, true, 1.f, 5.f);
-			AMostriciattolo5Character* Most2 = Cast<AMostriciattolo5Character>(HitResult2.GetActor());
-			if (Most2)
-			{
-				
-				if (Most2 == ActorToBeSeen) { return true; }
-			}
-		}
-	 UE_LOG(LogTemp, Warning, TEXT("porcoddio 2")) 	return false;
-	}
-	else
-	{
-		 UE_LOG(LogTemp, Warning, TEXT("porcoddio 3")) return false;
-	}
-	*/
+		return false;
 }
