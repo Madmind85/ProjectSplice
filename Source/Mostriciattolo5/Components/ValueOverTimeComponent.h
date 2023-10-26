@@ -25,7 +25,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	///ActorTeleport///
+
+	//****ACTOR TELEPORT****//
 	/**Va da start a end nel tempo time, quindi la velocità varia a seconda della distanza*/
 	UFUNCTION(BlueprintCallable)
 	void StartTeleporting(FVector Start, FVector End, float Time);
@@ -33,7 +34,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartTeleportingWithSpeed(FVector Start, FVector End, float Speed);
 
-	///Camera Lateral movement///
+
+	//****CAMERA LATERAL MOVEMENT****//
 	UPROPERTY(EditDefaultsOnly)
 	class USpringArmComponent* CameraSpringArm = nullptr;
 	UFUNCTION(BlueprintCallable)
@@ -48,8 +50,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ChangeSpringArmOffset(float SAOffset, USpringArmComponent* SpringArm);
 
+
+	//**** ACTOR ROTATE ****//
+	UFUNCTION(BlueprintCallable)
+	void RotateActorTowardWithInterp(AActor* ActorToFace, float RotationSpeed, float InterpSpeed);
+
+
 private:
-	///ActorTeleport///
+	//****ACTOR TELEPORT****//
 	void MoveActorSmoothly(float DeltaS);
 	FVector MStartLocation;
 	FVector MTargetLocation;
@@ -58,7 +66,7 @@ private:
 	float MInterpolationTime = 2.0f;
 	bool CanTeleport = false;
 
-	///Camera Lateral movement///
+	//****CAMERA LATERAL MOVEMENT****//
 	void CameraMoveOverTime(float Speed);
 	bool CanCameraMovetOverTime = false;
 	bool CameraRightToLeft = false;

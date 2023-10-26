@@ -85,6 +85,7 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 	if (GetCurrentFocus())
 	{
 		BP_TurnCameraToTarget();
+		RotatePlayerTowardsTarget(GetCurrentFocus());
 	}
 
 }
@@ -298,7 +299,7 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 		if (GetCurrentFocus())
 		{
 			 
-			RotatePlayerTowardsTarget();
+			//RotatePlayerTowardsTarget(GetCurrentFocus()); //gia al tick
 			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 			AddMovementInput(RightDirection, MovementVector.X);
 			
@@ -355,16 +356,12 @@ void AMostriciattolo5Character::SetCurrenTarget(AMostriciattolo5Character* NewTa
 	CurrentTarget = NewTarget;
 }
 
-void AMostriciattolo5Character::RotatePlayerTowardsTarget()
+void AMostriciattolo5Character::RotatePlayerTowardsTarget(AActor* TargetActor)
 {
-	FVector TargetLocation = GetCurrentFocus()->GetActorLocation();
-	FVector PlayerLocation = GetActorLocation();
-	FVector Direction = TargetLocation - PlayerLocation;
-	FRotator NewRotation = Direction.Rotation();
-	FRotator CurrentRotation = GetActorRotation();
-	FRotator InterpolatedRotation = FMath::RInterpTo(CurrentRotation, NewRotation, GetWorld()->GetDeltaSeconds(), RotationSpeed);
-	SetActorRotation(InterpolatedRotation, ETeleportType::None);
-
+	if (ValueOverTimeComponent && TargetActor)
+	{
+		ValueOverTimeComponent->RotateActorTowardWithInterp(TargetActor, RotationSpeed, 0.1f);
+	}
 }
 
 AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()
@@ -412,7 +409,7 @@ float AMostriciattolo5Character::GetViewPOsition_X()
 	return ScreenPosition.X;
 }
 
-void AMostriciattolo5Character::TurnCameraToTargetr()
+/*void AMostriciattolo5Character::TurnCameraToTargetr()
 {
 
 	UCameraComponent* Camera = GetComponentByClass<UCameraComponent>();
@@ -431,7 +428,8 @@ void AMostriciattolo5Character::TurnCameraToTargetr()
 		// Set the camera's rotation to this new rotation
 		Camera->SetWorldRotation(NewRotation);
 	}
-}
+
+}*/
 
 
 void AMostriciattolo5Character::SortFocusActors()

@@ -120,3 +120,25 @@ void UValueOverTimeComponent::BeginPlay()
 		CanTeleport = true;
 		 
 	}
+
+
+	void UValueOverTimeComponent::RotateActorTowardWithInterp(AActor* ActorToFace, float RotationSpeed, float InterpSpeed)
+	{
+		
+		if (GetOwner() && ActorToFace)
+		{
+			// Calculate the direction difference between the two actors
+			FVector DirectionToFace = ActorToFace->GetActorLocation() - GetOwner()->GetActorLocation();
+
+			// Calculate the angle between the current actor's direction and the target direction
+			float CurrentAngle = GetOwner()->GetActorRotation().Yaw;
+			float TargetAngle = DirectionToFace.Rotation().Yaw;
+
+			// Calculate the amount of rotation to apply
+			float RotationDelta = TargetAngle - CurrentAngle;
+
+			// Apply rotation
+			GetOwner()->AddActorWorldRotation(FQuat(FRotator(0.0f, RotationDelta * InterpSpeed, 0.0f)) * RotationSpeed);
+		}
+			
+	}

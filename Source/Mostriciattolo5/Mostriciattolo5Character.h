@@ -100,6 +100,9 @@ public:
 	bool IsSpammingDepossess = false;
 
 	UFUNCTION(BlueprintCallable)
+	void RotatePlayerTowardsTarget(AActor* TargetActor);
+
+	UFUNCTION(BlueprintCallable)
 	bool HasLostTarget();
 	UFUNCTION(BlueprintCallable)
 	bool IsNotTarget();
@@ -149,7 +152,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Behaviour")
 	float InnerConeLength = 75.f;
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
-	float RotationSpeed = 50.f;
+	float RotationSpeed = 5.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Possession")
 	float FindCharacterToTargetReach = 2000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -214,7 +217,7 @@ private:
 	float MInterpolationTime = 2.0f;
 	bool CanTeleport = false;
 	AMostriciattolo5Character* CurrentTarget = nullptr;
-	void RotatePlayerTowardsTarget();
+	
 	AMostriciattolo5Character* SelectedPawn = nullptr;
 	float SelectedPawnDistanceToCenter = 100000.f;
 	
@@ -228,7 +231,7 @@ private:
 	void MClearFocus();
 	bool GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen);
 
-	void TurnCameraToTargetr();
+	//void TurnCameraToTargetr();
 	
 };
 
