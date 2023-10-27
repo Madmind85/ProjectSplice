@@ -129,7 +129,7 @@ void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 	{
 		int32 CurrentIndex = PawnsInView.Find(CurrentFocus);
 		// If the index is not valid (i.e., it does not find it in the array), it should be there because it is set as the most central when we activate the select mode
-		if (CurrentIndex == -1) { UE_LOG(LogTemp, Warning, TEXT("Gesucristo")) return; };
+		if (CurrentIndex == -1) {  return; };
 
 		// Wants to select on the left
 		if (TMouseX <= 0)
@@ -454,6 +454,10 @@ void AMostriciattolo5Character::SortFocusActors()
 
 void AMostriciattolo5Character::InitPawnsInViewArray()
 {
+	if (!SelectTargetArrow)
+	{
+		 UE_LOG(LogTemp, Warning, TEXT("BADA no select target arrow set in InitPawnsInView in Mostriciattolo5Character")) 
+	}
 	//pulisce l'array
 	PawnsInView.Reset();
 	//sweep trace per trovarer i nemici di fronte

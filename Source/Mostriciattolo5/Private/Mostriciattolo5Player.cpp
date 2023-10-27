@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Mostriciattolo5/Components/ValueOverTimeComponent.h"
 #include "Mostriciattolo5\Public\MostriciattoloPlayerController.h"
 #include "GameFramework/GameModeBase.h"
@@ -155,8 +156,10 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                     
                     if (ValueOverTimeComponent)
                     {
+                        
                         FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
                         ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(),TeleportEnd, 1000.f);
+                        GetCharacterMovement()->StopMovementImmediately();
                     }
                 }
             }

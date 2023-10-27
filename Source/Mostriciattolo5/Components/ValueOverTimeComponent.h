@@ -53,7 +53,13 @@ public:
 
 	//**** ACTOR ROTATE ****//
 	UFUNCTION(BlueprintCallable)
+	/**chiamare al  tick*/
 	void RotateActorTowardWithInterp(AActor* ActorToFace, float RotationSpeed, float InterpSpeed);
+	UFUNCTION(BlueprintCallable)
+	/**fa una rotazione e si ferma*/
+	void StartRotatingActor(AActor* ActorToFace, float RotationSpeed, float InterpSpeed);
+	UFUNCTION(BlueprintCallable)
+	void StopRotatingActor();
 
 
 private:
@@ -71,4 +77,9 @@ private:
 	bool CanCameraMovetOverTime = false;
 	bool CameraRightToLeft = false;
 	
+	//**** ACTOR ROTATE ****//
+	bool CanRotate = false;
+	AActor* M_ActorToFace;
+	float M_RotationSpeed;
+	float M_InterpSpeed;
 };
