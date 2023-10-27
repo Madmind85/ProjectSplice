@@ -98,7 +98,8 @@ public:
 	*/
 	//Se true non puoi' usare depossess, viene resettata quando questo char viene posseduto
 	bool IsSpammingDepossess = false;
-
+	UPROPERTY(BlueprintReadWrite)
+	bool IsSpammingPossess = false;
 	UFUNCTION(BlueprintCallable)
 	void RotatePlayerTowardsTarget(AActor* TargetActor);
 

@@ -118,7 +118,9 @@ void AMostriciattolo5Player::OnTeleportFinished()
 
 void AMostriciattolo5Player::InterceptPossessPoint()
 {
+    if (IsSpammingPossess) { return; }
     if (GetCurrentPossessed()) { return; }
+
     FHitResult Hit;
     FVector Start = GetActorLocation();
     FVector End = GetActorLocation() + GetActorForwardVector() * PossessReach;
@@ -156,7 +158,7 @@ void AMostriciattolo5Player::InterceptPossessPoint()
                     
                     if (ValueOverTimeComponent)
                     {
-                        
+                        IsSpammingPossess = true;
                         FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
                         ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(),TeleportEnd, 1000.f);
                         GetCharacterMovement()->StopMovementImmediately();

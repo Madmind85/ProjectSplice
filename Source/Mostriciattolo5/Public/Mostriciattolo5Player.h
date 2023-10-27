@@ -22,6 +22,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsPossessing = false;
+
 	/**portata della possessione, da quanto lontano dal possess socket puo' possedere*/
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float PossessReach = 45.f;
