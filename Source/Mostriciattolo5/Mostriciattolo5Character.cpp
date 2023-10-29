@@ -14,9 +14,11 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Weapons/Gun.h"
 #include "DrawDebugHelpers.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 
+class AGun;
 
 //////////////////////////////////////////////////////////////////////////
 // AMostriciattolo5Character
@@ -95,6 +97,8 @@ void AMostriciattolo5Character::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -109,7 +113,7 @@ void AMostriciattolo5Character::BeginPlay()
 	{
 		MGameMode = Cast<AMostriciattolo5GameMode>(GM);
 	}
-
+	//trova la value over time component
 	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
 }
 

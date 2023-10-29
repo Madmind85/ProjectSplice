@@ -18,6 +18,8 @@ enum class NPCStatus : uint8
 };
 
 
+class AGun;
+
 UCLASS(config=Game)
 class AMostriciattolo5Character : public ACharacter
 {
@@ -234,5 +236,9 @@ private:
 
 	//void TurnCameraToTargetr();
 	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AGun> GunClass;
+	UPROPERTY()
+	AGun* Gun;
 };
 
