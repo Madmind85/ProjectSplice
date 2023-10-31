@@ -71,6 +71,15 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 
 }
 
+void AMostriciattolo5Character::Attack()
+{
+	if (Gun)
+	{
+		Gun->PullTrigger();
+	}
+	
+}
+
 void AMostriciattolo5Character::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -100,7 +109,7 @@ void AMostriciattolo5Character::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	if (Gun)
 	{
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("GunSocket"));
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weapon_rSocket"));
 		Gun->SetOwner(this);
 	}
 

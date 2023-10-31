@@ -64,7 +64,9 @@ public:
 	/** Called for looking input */
 	UFUNCTION(BlueprintCallable)
 	void Look(const FInputActionValue& Value);
-
+	/** attacca con arma equipaggiata,a mani nude se senza arma o spara seranged, chiamato da input attack*/
+	UFUNCTION(BlueprintCallable)
+	void Attack();
 	virtual void Tick(float DeltaSeconds) override;
 
 
