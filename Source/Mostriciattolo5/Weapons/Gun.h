@@ -24,6 +24,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void PullTrigger();
+
+	UPROPERTY(EditAnywhere)
+	float MaxWeaponRange = 5000.f;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
