@@ -38,5 +38,17 @@ void AGun::PullTrigger()
 
 	UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleSocket"));
 	MuzzleFlashComponent->SetRelativeScale3D(FVector(0.07f, 0.07f, 0.07f));
+	
+
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (!OwnerPawn) { return; }
+	AController* OwnerController = OwnerPawn->GetController();
+	if (!OwnerController) { return; }
+
+	FVector Location;
+	FRotator Rotation;
+	OwnerController->GetPlayerViewPoint(Location, Rotation);
+	DrawDebugCamera(GetWorld(), Location, Rotation, 90.f, 1.5f, FColor::Magenta, true);
+	
 }
 
