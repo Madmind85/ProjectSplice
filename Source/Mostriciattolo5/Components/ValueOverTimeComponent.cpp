@@ -48,6 +48,8 @@ void UValueOverTimeComponent::BeginPlay()
 		{
 			RotateActorTowardWithInterp(M_ActorToFace, M_RotationSpeed, M_InterpSpeed);
 		}
+
+
 	}
 
 	void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
@@ -128,11 +130,8 @@ void UValueOverTimeComponent::BeginPlay()
 
 	void UValueOverTimeComponent::RotateActorTowardWithInterp(AActor* ActorToFace, float RotationSpeed, float InterpSpeed)
 	{
-		
-
 			if (GetOwner() && ActorToFace)
 			{
-
 				// Get the current yaw rotation of the actor
 				float CurrentAngle = GetOwner()->GetActorRotation().Yaw;
 				// Calculate the direction difference between the two actors
@@ -152,8 +151,6 @@ void UValueOverTimeComponent::BeginPlay()
 					CanRotate = false;
 				}
 			}
-		
-		
 	}
 
 	void UValueOverTimeComponent::StartRotatingActor(AActor* ActorToFace, float RotationSpeed, float InterpSpeed)
@@ -172,3 +169,5 @@ void UValueOverTimeComponent::BeginPlay()
 		M_RotationSpeed = 0.f;
 		M_InterpSpeed = 0.f;
 	}
+
+	

@@ -61,7 +61,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StopRotatingActor();
 
-
+	
 private:
 	//****ACTOR TELEPORT****//
 	void MoveActorSmoothly(float DeltaS);
@@ -82,4 +82,6 @@ private:
 	AActor* M_ActorToFace;
 	float M_RotationSpeed;
 	float M_InterpSpeed;
+
+
 };

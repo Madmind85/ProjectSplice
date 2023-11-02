@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MaxWeaponRange = 5000.f;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ShootEffect();
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
@@ -36,5 +39,9 @@ private:
 	USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* MuzzleFlash;
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ProjectileEffect;
+	UPROPERTY(EditAnywhere)
+	float RecoilAmount = -0.6f;
 
 };

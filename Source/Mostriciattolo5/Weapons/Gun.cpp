@@ -48,15 +48,18 @@ void AGun::PullTrigger()
 	FVector Location;
 	FRotator Rotation;
 	OwnerController->GetPlayerViewPoint(Location, Rotation);
+
+	BP_ShootEffect()	;
 	
 	FHitResult Hit;
 	FVector End = Location + Rotation.Vector() * MaxWeaponRange;
-	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
-	if (bHit)
-	{
-		DrawDebugLine(GetWorld(), Location, End, FColor::Emerald, false, 0.2f);
-	}
 
+	FVector ShotRotation = -Rotation.Vector();
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
+	if (Hit.GetActor() == this) { return; }
+	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotRotation.Rotation());
+	ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
 	
 }
 
