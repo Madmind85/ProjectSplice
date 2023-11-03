@@ -106,6 +106,8 @@ void AMostriciattolo5Character::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	Health = MaxHealth;
+
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	if (Gun)
 	{
@@ -387,6 +389,14 @@ AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()
 	return CurrentFocus;
 }
 
+float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	Health -= DamageApplied;
+	BP_HitEvent();
+	return 0.0f;
+}
+
 bool AMostriciattolo5Character::SortActorDistance(AActor* Actor_A, AActor* Actor_B)
 {
 	
@@ -480,14 +490,14 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 	PawnsInView.Reset();
 	//sweep trace per trovarer i nemici di fronte
 	TArray<FHitResult> HitR;
-	FVector Start = SelectTargetArrow->GetComponentLocation();
+	FVector Start = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * 1500.f;
 	FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	TArray<AActor*>ActorsToIgnore;
 
 	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMostriciattolo5Character::StaticClass(), PawnsInView);
-	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 2000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::None, HitR, true, FLinearColor::Red, FLinearColor::Green, 0.3f);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(this, Start, End, 1500.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::None, HitR, true, FLinearColor::Red, FLinearColor::Green, 2.6f);
 
 	//popola l'array Pawnsinview con gli attori mostriciattolo 
 	for (const FHitResult& Hit : HitR)

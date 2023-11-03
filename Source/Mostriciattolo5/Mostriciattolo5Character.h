@@ -162,6 +162,10 @@ public:
 	float FindCharacterToTargetReach = 2000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	class UArrowComponent* PossessArrowTarget;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	float Health;
+
 	/**quanto ci mette in secondi a spostarsi dalla poszione che ha  ora ad appiccicato al possession point quando  possiede*/
 	UPROPERTY(EditDefaultsOnly, Category = "Possession")
 	float PossessTeleportTime = 3.0f;
@@ -187,6 +191,8 @@ public:
 	void BP_ResetTarget();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_StopMovement();
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_HitEvent();
 	
 
 	UPROPERTY(BlueprintReadWrite)
@@ -202,6 +208,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AMostriciattolo5Character* GetCurrentFocus();
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
 	
@@ -215,6 +223,9 @@ public:
 
 private:
 
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	float MaxHealth = 30.f;
+	
 	FVector MStartLocation;
 	FVector MTargetLocation;
 	float MStartTime;

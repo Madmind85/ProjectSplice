@@ -4,6 +4,7 @@
 #include "Mostriciattolo5/Weapons/Gun.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Engine/DamageEvents.h"
 #include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
@@ -54,12 +55,20 @@ void AGun::PullTrigger()
 	FHitResult Hit;
 	FVector End = Location + Rotation.Vector() * MaxWeaponRange;
 
-	FVector ShotRotation = -Rotation.Vector();
+	FVector ShotDirection = -Rotation.Vector();
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
-	if (Hit.GetActor() == this) { return; }
-	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotRotation.Rotation());
+	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 	ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
+
+	AActor* HitActor = Hit.GetActor();
+	if (HitActor)
+	{
+		if (HitActor == this) { return; }
+		FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
+		HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+	}
+	
 	
 }
 

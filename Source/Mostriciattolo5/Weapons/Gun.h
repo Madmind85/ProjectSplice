@@ -43,5 +43,7 @@ private:
 	UParticleSystem* ProjectileEffect;
 	UPROPERTY(EditAnywhere)
 	float RecoilAmount = -0.6f;
+	UPROPERTY(EditAnywhere)
+	float WeaponDamage = 15.f;
 
 };
