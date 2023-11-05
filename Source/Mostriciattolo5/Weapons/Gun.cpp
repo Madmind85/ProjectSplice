@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Engine/DamageEvents.h"
+#include "Mostriciattolo5/Mostriciattolo5Character.h"
 #include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
@@ -55,18 +56,25 @@ void AGun::PullTrigger()
 	FHitResult Hit;
 	FVector End = Location + Rotation.Vector() * MaxWeaponRange;
 
-	ShotDirection = -Rotation.Vector();
+	//ShotDirection = -Rotation.Vector();
+	ShotDirection = Location + Rotation.Vector();
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
 	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 	ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
-
+	
 	AActor* HitActor = Hit.GetActor();
 	if (HitActor)
 	{
 		if (HitActor == this) { return; }
 		FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
 		HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
+
+		if (HitCharacter)
+		{
+			HitCharacter->BP_HitEvent(ShotDirection, Hit.BoneName);
+		}
 	}
 	
 	

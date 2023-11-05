@@ -199,7 +199,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_StopMovement();
 	UFUNCTION(BlueprintImplementableEvent)
-	void BP_HitEvent(FVector ShotDirection);
+	void BP_HitEvent(FVector ShotDirection, FName HitBone);
 	
 
 	UPROPERTY(BlueprintReadWrite)

@@ -405,18 +405,13 @@ AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()
 float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
 
-	AGun* MostGun = Cast<AGun>(DamageCauser);
-	FVector Location;
-	FRotator Rotation;
-	GetController()->GetPlayerViewPoint(Location, Rotation);
-	FVector ShotDirection = Location + Rotation.Vector();
-	//if (MostGun) { ShotDirection = Gun->ShotDirection; }
+	//AGun* MostGun = Cast<AGun>(DamageCauser);
 	
-	BP_HitEvent(ShotDirection);
-
+	
 	return DamageApplied;
 }
 

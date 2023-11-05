@@ -33,7 +33,7 @@ public:
 
 	
 	FVector ShotDirection;
-
+	FName HitBoneBName;
 private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
