@@ -55,7 +55,7 @@ void AGun::PullTrigger()
 	FHitResult Hit;
 	FVector End = Location + Rotation.Vector() * MaxWeaponRange;
 
-	FVector ShotDirection = -Rotation.Vector();
+	ShotDirection = -Rotation.Vector();
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
 	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());

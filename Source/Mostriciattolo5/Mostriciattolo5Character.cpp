@@ -407,7 +407,16 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
-	BP_HitEvent();
+
+	AGun* MostGun = Cast<AGun>(DamageCauser);
+	FVector Location;
+	FRotator Rotation;
+	GetController()->GetPlayerViewPoint(Location, Rotation);
+	FVector ShotDirection = Location + Rotation.Vector();
+	//if (MostGun) { ShotDirection = Gun->ShotDirection; }
+	
+	BP_HitEvent(ShotDirection);
+
 	return DamageApplied;
 }
 
@@ -504,8 +513,12 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 	PawnsInView.Reset();
 	//sweep trace per trovarer i nemici di fronte
 	TArray<FHitResult> HitR;
-	FVector Start = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * 1500.f;
-	FVector End = SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
+	FVector Location;
+	FRotator Rotation;
+	GetController()->GetPlayerViewPoint(Location, Rotation);
+	FVector Start = Location + Rotation.Vector() * 1500.f;
+	FVector End = Location + Rotation.Vector()  * FindCharacterToTargetReach;
+		//SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	TArray<AActor*>ActorsToIgnore;

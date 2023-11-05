@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ShootEffect();
 
+	
+	FVector ShotDirection;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
