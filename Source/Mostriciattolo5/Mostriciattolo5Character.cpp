@@ -376,6 +376,19 @@ void AMostriciattolo5Character::SetCurrenTarget(AMostriciattolo5Character* NewTa
 	CurrentTarget = NewTarget;
 }
 
+bool AMostriciattolo5Character::IsDead() const
+{
+	if (Health <= 0.f)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	
+}
+
 void AMostriciattolo5Character::RotatePlayerTowardsTarget(AActor* TargetActor)
 {
 	if (ValueOverTimeComponent && TargetActor)
@@ -393,8 +406,9 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	Health -= DamageApplied;
+	if (Health < 0.f) { Health = 0.f; }
 	BP_HitEvent();
-	return 0.0f;
+	return DamageApplied;
 }
 
 bool AMostriciattolo5Character::SortActorDistance(AActor* Actor_A, AActor* Actor_B)

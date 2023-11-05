@@ -77,6 +77,8 @@ public:
 
 	UCapsuleComponent* GetPossessSocket();
 
+
+	
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -100,6 +102,11 @@ public:
 	/** Returns FollowCamera subobject 
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	*/
+
+
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+
 	//Se true non puoi' usare depossess, viene resettata quando questo char viene posseduto
 	bool IsSpammingDepossess = false;
 	UPROPERTY(BlueprintReadWrite)
