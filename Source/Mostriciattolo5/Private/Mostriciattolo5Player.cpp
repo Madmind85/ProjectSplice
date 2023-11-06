@@ -142,28 +142,35 @@ void AMostriciattolo5Player::InterceptPossessPoint()
     {
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         
-        if (HitComponent && HitComponent->ComponentTags.Contains(TEXT("Possess")))
+        if (HitComponent)
         {
-            AMostriciattolo5Character* Char = Cast<AMostriciattolo5Character>(Hit.GetActor());
-            if (Char)
-            {//il target diventa il posseduto
-                SetCurrentPossessed(Char);
-                if (GetCurrentPossessed())
-                {
-                    //per non spammare depossess 
-                    GetCurrentPossessed()->IsSpammingDepossess = false;
-                    GetCurrentPossessed()->CanBeTarget = true;
-                    IsTarget = false;
-                    GetCurrentPossessed()->BP_StopMovement();
-                    
-                    if (ValueOverTimeComponent)
+            if (HitComponent->ComponentTags.Contains(TEXT("PossessBack")))
+            {
+                AMostriciattolo5Character* Char = Cast<AMostriciattolo5Character>(Hit.GetActor());
+                if (Char)
+                {//il target diventa il posseduto
+                    SetCurrentPossessed(Char);
+                    if (GetCurrentPossessed())
                     {
-                        IsSpammingPossess = true;
-                        FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
-                        ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(),TeleportEnd, 1000.f);
-                        GetCharacterMovement()->StopMovementImmediately();
+                        //per non spammare depossess 
+                        GetCurrentPossessed()->IsSpammingDepossess = false;
+                        GetCurrentPossessed()->CanBeTarget = true;
+                        IsTarget = false;
+                        GetCurrentPossessed()->BP_StopMovement();
+
+                        if (ValueOverTimeComponent)
+                        {
+                           IsSpammingPossess = true;
+                            FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
+                            ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(), TeleportEnd, 1000.f);
+                            GetCharacterMovement()->StopMovementImmediately();
+                        }
                     }
                 }
+            }
+            else if (HitComponent->ComponentTags.Contains(TEXT("PossessFront")))
+            {
+                BP_PossessFront();
             }
         }
         

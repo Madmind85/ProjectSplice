@@ -54,6 +54,9 @@ public:
 	void BP_LockToPossessSocket(AMostriciattolo5Character* Target);
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_AttachAnimation();
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_PossessFront();
+
 	void JumpOut();
 
 	UFUNCTION(BlueprintCallable)
