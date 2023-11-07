@@ -66,14 +66,14 @@ void AGun::PullTrigger()
 	AActor* HitActor = Hit.GetActor();
 	if (HitActor)
 	{
-		if (HitActor == this) { return; }
+		if (HitActor == this) { return; }	
 		FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
 		HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
 		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
 
 		if (HitCharacter)
 		{
-			HitCharacter->BP_HitEvent(ShotDirection, Hit.BoneName);
+			HitCharacter->BP_HitEvent(Hit);
 		}
 	}
 	
