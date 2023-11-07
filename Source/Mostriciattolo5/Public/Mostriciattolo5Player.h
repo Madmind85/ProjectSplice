@@ -78,7 +78,8 @@ protected:
 
 private:
 	
-	
+	bool bFrontPossession = false;
 	AMostriciattolo5Character* CurrentPossessed = nullptr;
 	void SetViewToTheMonster();
+	void PossessLineTrace(FHitResult Hit);
 };

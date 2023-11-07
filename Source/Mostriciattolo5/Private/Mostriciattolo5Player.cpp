@@ -58,6 +58,32 @@ void AMostriciattolo5Player::SetViewToTheMonster()
     UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this, MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear);
 }
 
+void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
+{
+    AMostriciattolo5Character* Char = Cast<AMostriciattolo5Character>(Hit.GetActor());
+    if (Char)
+    {//il target diventa il posseduto
+        SetCurrentPossessed(Char);
+        if (GetCurrentPossessed())
+        {
+
+            //per non spammare depossess 
+            GetCurrentPossessed()->IsSpammingDepossess = false;
+            GetCurrentPossessed()->CanBeTarget = true;
+            IsTarget = false;
+            GetCurrentPossessed()->BP_StopMovement();
+
+            if (ValueOverTimeComponent)
+            {
+                IsSpammingPossess = true;
+                FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
+                ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(), TeleportEnd, 1000.f);
+                GetCharacterMovement()->StopMovementImmediately();
+            }
+        }
+    }
+}
+
 AMostriciattolo5Character* AMostriciattolo5Player::GetCurrentPossessed()
 {
     return CurrentPossessed;
@@ -80,7 +106,7 @@ void AMostriciattolo5Player::JumpOut()
         SetActorLocation(GetCurrentPossessed()->GetActorLocation());
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);
-        SetViewToTheMonster();
+        
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         AfterDepossessed(this);
 
@@ -88,7 +114,7 @@ void AMostriciattolo5Player::JumpOut()
         IsTarget = true;
 
         GetCurrentPossessed()->IsTarget = false;
-    
+        SetViewToTheMonster();
     }
 }
 
@@ -112,8 +138,15 @@ void AMostriciattolo5Player::OnTeleportFinished()
     {
         GetCurrentPossessed()->BP_ResetTarget();
     }
-    BP_AttachAnimation();
-   
+
+    if (bFrontPossession)
+    {
+        BP_PossessFront();
+    }
+    else
+    {
+        BP_AttachAnimation();
+    }
 }
 
 void AMostriciattolo5Player::InterceptPossessPoint()
@@ -144,34 +177,18 @@ void AMostriciattolo5Player::InterceptPossessPoint()
         
         if (HitComponent)
         {
-            if (HitComponent->ComponentTags.Contains(TEXT("PossessBack")))
-            {
-                AMostriciattolo5Character* Char = Cast<AMostriciattolo5Character>(Hit.GetActor());
-                if (Char)
-                {//il target diventa il posseduto
-                    SetCurrentPossessed(Char);
-                    if (GetCurrentPossessed())
-                    {
-                        //per non spammare depossess 
-                        GetCurrentPossessed()->IsSpammingDepossess = false;
-                        GetCurrentPossessed()->CanBeTarget = true;
-                        IsTarget = false;
-                        GetCurrentPossessed()->BP_StopMovement();
-
-                        if (ValueOverTimeComponent)
-                        {
-                           IsSpammingPossess = true;
-                            FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
-                            ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(), TeleportEnd, 1000.f);
-                            GetCharacterMovement()->StopMovementImmediately();
-                        }
-                    }
-                }
+            if (HitComponent->ComponentTags.Contains(TEXT("PossessFront"))) 
+            { 
+                bFrontPossession = true; 
+            
+                PossessLineTrace(Hit);
             }
-            else if (HitComponent->ComponentTags.Contains(TEXT("PossessFront")))
+            else if (HitComponent->ComponentTags.Contains(TEXT("PossessBack")))
             {
-                BP_PossessFront();
+                bFrontPossession = false;
+                PossessLineTrace(Hit);
             }
+            
         }
         
     }
