@@ -106,7 +106,7 @@ void AMostriciattolo5Player::JumpOut()
         SetActorLocation(GetCurrentPossessed()->GetActorLocation());
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
         SetActorHiddenInGame(false);
-        
+        SetViewToTheMonster();
         DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
         AfterDepossessed(this);
 
@@ -114,7 +114,7 @@ void AMostriciattolo5Player::JumpOut()
         IsTarget = true;
 
         GetCurrentPossessed()->IsTarget = false;
-        SetViewToTheMonster();
+        
     }
 }
 
