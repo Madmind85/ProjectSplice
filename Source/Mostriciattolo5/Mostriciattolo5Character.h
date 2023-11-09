@@ -14,7 +14,9 @@ enum class NPCStatus : uint8
 {
 	Tranquillo = 0 UMETA(DisplayName = "Tranquillo"),
 	Attento = 1  UMETA(DisplayName = "Attento"),
-	Aggressivo = 2    UMETA(DisplayName = "Aggressivo")
+	Aggressivo = 2    UMETA(DisplayName = "Aggressivo"),
+	Fermo = 3  UMETA(DisplayName = "Fermo")
+
 };
 
 
