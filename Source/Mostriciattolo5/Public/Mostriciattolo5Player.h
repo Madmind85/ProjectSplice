@@ -42,6 +42,9 @@ public:
 	TArray<UAnimMontage*> AnimList;
 	UPROPERTY(BlueprintReadWrite, Category = "Possession")
 	float PossessAnimDelay = 1.f;
+	/** se sta attualmente controllando  un npc, per esempio per l'animationBP */
+	UPROPERTY(BlueprintReadWrite)
+	bool IsControlling = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool NoCollisionTarget = false;
 

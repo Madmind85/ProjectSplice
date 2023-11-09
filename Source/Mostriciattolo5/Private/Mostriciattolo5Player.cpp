@@ -31,6 +31,7 @@ void AMostriciattolo5Player::ControllNPCDelayed()
     
     if (MGameMode && GetCurrentPossessed())
     {
+        IsControlling = true;
         SetActorHiddenInGame(true);
         MGameMode->ControllNPC(GetCurrentPossessed());
         UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this,0.f, EViewTargetBlendFunction::VTBlend_Linear);
@@ -50,6 +51,7 @@ void AMostriciattolo5Player::ControllMainDelayed()
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
     NoCollisionTarget = false;
     IsTarget = true;
+    IsControlling = false;
     SetCurrentPossessed(nullptr);
 }
 

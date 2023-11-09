@@ -59,7 +59,7 @@ void AGun::PullTrigger(bool bAIShooting)
 	{
 		End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
 	}
-	End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+	
 	//ShotDirection = -Rotation.Vector();
 	ShotDirection = Location + Rotation.Vector();
 	FCollisionQueryParams Params;
