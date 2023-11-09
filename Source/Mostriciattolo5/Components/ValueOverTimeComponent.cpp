@@ -44,12 +44,7 @@ void UValueOverTimeComponent::BeginPlay()
 		{
 			MoveActorSmoothly(DeltaTime);
 		}
-		if (CanRotate)
-		{
-			RotateActorTowardWithInterp(M_ActorToFace, M_RotationSpeed, M_InterpSpeed);
-		}
-
-
+	
 	}
 
 	void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
@@ -127,47 +122,5 @@ void UValueOverTimeComponent::BeginPlay()
 		 
 	}
 
-
-	void UValueOverTimeComponent::RotateActorTowardWithInterp(AActor* ActorToFace, float RotationSpeed, float InterpSpeed)
-	{
-			if (GetOwner() && ActorToFace)
-			{
-				// Get the current yaw rotation of the actor
-				float CurrentAngle = GetOwner()->GetActorRotation().Yaw;
-				// Calculate the direction difference between the two actors
-				FVector DirectionToFace = ActorToFace->GetActorLocation() - GetOwner()->GetActorLocation();
-				FRotator Rot = FRotationMatrix::MakeFromX(DirectionToFace).Rotator();
-				float RotationD = Rot.Yaw;
-
-				// Calculate the shortest rotation to the target angle in radians
-				float RotationDelta = FMath::FindDeltaAngleRadians(CurrentAngle, RotationD);
-
-				// Rotate the actor towards the target angle
-				GetOwner()->AddActorWorldRotation(FQuat(FRotator(0.0f, RotationDelta * InterpSpeed, 0.0f)) * RotationSpeed);
-
-				// Stop rotating if the desired rotation has been reached
-				if (FMath::Abs(RotationDelta) < 0.1f)
-				{
-					CanRotate = false;
-				}
-			}
-	}
-
-	void UValueOverTimeComponent::StartRotatingActor(AActor* ActorToFace, float RotationSpeed, float InterpSpeed)
-	{
-		CanRotate = true;
-		M_ActorToFace = ActorToFace;
-		M_RotationSpeed = RotationSpeed;
-		M_InterpSpeed = InterpSpeed;
-	}
-
-	void UValueOverTimeComponent::StopRotatingActor()
-	{
-
-		CanRotate = false;
-		M_ActorToFace = nullptr;
-		M_RotationSpeed = 0.f;
-		M_InterpSpeed = 0.f;
-	}
 
 	

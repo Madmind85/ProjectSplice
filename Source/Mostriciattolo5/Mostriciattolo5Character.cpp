@@ -195,7 +195,7 @@ void AMostriciattolo5Character::SetCurrentFocus(AMostriciattolo5Character* Focus
 
 
 bool AMostriciattolo5Character::HasLostTarget()
-{
+		{
 	float NoSeeTime = TargetLastSeen + LooseTargetTime;
 	if (GetWorld()->GetTimeSeconds() >= NoSeeTime)
 	{
