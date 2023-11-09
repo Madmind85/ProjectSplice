@@ -51,9 +51,11 @@ public:
 	void BP_ChangeSpringArmOffset(float SAOffset, USpringArmComponent* SpringArm);
 
 
-	
-	
+
 private:
+
+	class AMostriciattolo5Character* OwnerChar = nullptr;
+
 	//****ACTOR TELEPORT****//
 	void MoveActorSmoothly(float DeltaS);
 	FVector MStartLocation;
@@ -68,7 +70,7 @@ private:
 	bool CanCameraMovetOverTime = false;
 	bool CameraRightToLeft = false;
 	
+	//****ROTATE OWNER TO FOCUS****//
+	void RotateTowardsFocus();
 	
-
-
 };

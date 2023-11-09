@@ -96,7 +96,7 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 	if (GetCurrentFocus())
 	{
 		BP_TurnCameraToTarget();
-		RotatePlayerTowardsTarget(GetCurrentFocus());
+		
 	}
 
 }

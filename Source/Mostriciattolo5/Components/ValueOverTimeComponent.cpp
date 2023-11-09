@@ -4,6 +4,7 @@
 #include "ValueOverTimeComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Mostriciattolo5/Mostriciattolo5Character.h"
 
 // Sets default values for this component's properties
@@ -24,7 +25,7 @@ void UValueOverTimeComponent::BeginPlay()
 
 	// ...
 	CameraSpringArm = GetOwner()->FindComponentByClass<USpringArmComponent>();
-	
+	OwnerChar = Cast<AMostriciattolo5Character>(GetOwner());
 }
 
 
@@ -44,7 +45,11 @@ void UValueOverTimeComponent::BeginPlay()
 		{
 			MoveActorSmoothly(DeltaTime);
 		}
-	
+
+		if (OwnerChar->GetCurrentFocus())
+		{
+			RotateTowardsFocus();
+		}
 	}
 
 	void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
@@ -68,11 +73,25 @@ void UValueOverTimeComponent::BeginPlay()
 	
 	}
 
+	void UValueOverTimeComponent::RotateTowardsFocus()
+	{
+			AMostriciattolo5Character* CurrentFocus = OwnerChar->GetCurrentFocus();
+			if (CurrentFocus)
+			{
+				FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), CurrentFocus->GetActorLocation());
+				
+				FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.2f, 0.5f);
+				NewRot.Pitch = 0.f;
+				OwnerChar->SetActorRotation(NewRot);
+			}
+	}
+
 	void UValueOverTimeComponent::StartCameraMoveOverTime(bool RightToLeft)
 	{
 		CanCameraMovetOverTime = true;
 		CameraRightToLeft = RightToLeft;
 	}
+
 
 	void UValueOverTimeComponent::MoveActorSmoothly(float DeltaS)
 	{
@@ -123,4 +142,3 @@ void UValueOverTimeComponent::BeginPlay()
 	}
 
 
-	

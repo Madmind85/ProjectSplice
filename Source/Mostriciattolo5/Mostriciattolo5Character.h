@@ -212,7 +212,7 @@ public:
 	AMostriciattolo5Character* GetCurrentTarget();
 	UFUNCTION(BlueprintCallable)
 	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintPure)
 	AMostriciattolo5Character* GetCurrentFocus();
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
