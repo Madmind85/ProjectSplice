@@ -71,11 +71,11 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 
 }
 
-void AMostriciattolo5Character::Attack()
+void AMostriciattolo5Character::Attack(bool bAIShooting)
 {
 	if (Gun)
 	{
-		Gun->PullTrigger();
+		Gun->PullTrigger(bAIShooting);
 	}
 	
 }
@@ -391,10 +391,7 @@ bool AMostriciattolo5Character::IsDead() const
 
 void AMostriciattolo5Character::RotatePlayerTowardsTarget(AActor* TargetActor)
 {
-	if (ValueOverTimeComponent && TargetActor)
-	{
-		ValueOverTimeComponent->RotateActorTowardWithInterp(TargetActor, RotationSpeed, 0.1f);
-	}
+
 }
 
 AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()

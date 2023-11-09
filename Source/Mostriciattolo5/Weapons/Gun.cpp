@@ -35,7 +35,7 @@ void AGun::Tick(float DeltaTime)
 
 }
 
-void AGun::PullTrigger()
+void AGun::PullTrigger(bool bAIShooting)
 {
 
 	UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleSocket"));
@@ -55,7 +55,11 @@ void AGun::PullTrigger()
 	
 	FHitResult Hit;
 	FVector End = Location + Rotation.Vector() * MaxWeaponRange;
-
+	if (bAIShooting)
+	{
+		End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+	}
+	End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
 	//ShotDirection = -Rotation.Vector();
 	ShotDirection = Location + Rotation.Vector();
 	FCollisionQueryParams Params;

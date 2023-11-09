@@ -23,7 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void PullTrigger();
+	void PullTrigger(bool bAIShooting);
 
 	UPROPERTY(EditAnywhere)
 	float MaxWeaponRange = 5000.f;
