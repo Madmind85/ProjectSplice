@@ -78,7 +78,7 @@ void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
             if (ValueOverTimeComponent)
             {
                 IsSpammingPossess = true;
-                FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("PossessSocket")));
+                FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("rootSocket")));
                 ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(), TeleportEnd, 1000.f);
                 GetCharacterMovement()->StopMovementImmediately();
             }
@@ -102,6 +102,7 @@ void AMostriciattolo5Player::JumpOut()
 {
     if (GetCurrentPossessed() && GetCurrentPossessed()->GetPossessSocket())
     {
+        GetCurrentPossessed()->MClearFocus();
         FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
         FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
         FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -100.f;

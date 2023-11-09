@@ -227,6 +227,8 @@ public:
 
 	virtual void OnTeleportFinished();
 
+	void MClearFocus();
+
 
 private:
 
@@ -251,7 +253,7 @@ private:
 	void SortFocusActors( );
 	//popola e ordina l'array pawns in view
 	void InitPawnsInViewArray();
-	void MClearFocus();
+	
 	bool GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen);
 
 	//void TurnCameraToTargetr();
