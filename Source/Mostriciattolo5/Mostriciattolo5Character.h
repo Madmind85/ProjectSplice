@@ -201,7 +201,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_StopMovement();
 	UFUNCTION(BlueprintImplementableEvent)
-	void BP_HitEvent(FHitResult HitRes);
+	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn);
 	
 
 	UPROPERTY(BlueprintReadWrite)
