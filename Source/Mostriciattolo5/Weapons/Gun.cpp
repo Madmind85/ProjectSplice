@@ -74,14 +74,14 @@ void AGun::PullTrigger(bool bAIShooting)
 	{
 		if (HitActor == this) { return; }	
 		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
+		
+		FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
+		HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+		
 		if (HitCharacter)
 		{
 			HitCharacter->BP_HitEvent(Hit);
 		}
-		FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
-		HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
-		
-
 		
 	}
 	

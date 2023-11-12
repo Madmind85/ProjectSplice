@@ -30,7 +30,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ShootEffect();
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float RecoilAmount = -0.6f;
 	
 	FVector ShotDirection;
 	FName HitBoneBName;
@@ -44,8 +45,7 @@ private:
 	UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ProjectileEffect;
-	UPROPERTY(EditAnywhere)
-	float RecoilAmount = -0.6f;
+	
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;
 
