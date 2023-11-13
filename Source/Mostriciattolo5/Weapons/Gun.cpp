@@ -80,7 +80,7 @@ void AGun::PullTrigger(bool bAIShooting)
 		
 		if (HitCharacter)
 		{
-			HitCharacter->BP_HitEvent(Hit,OwnerController->GetPawn());
+			HitCharacter->BP_HitEvent(Hit,OwnerPawn);
 		}
 		
 	}
