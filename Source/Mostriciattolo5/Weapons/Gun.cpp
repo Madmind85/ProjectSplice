@@ -47,7 +47,7 @@ void AGun::LaserAiming()
 	}
 }
 	
-
+// rifattorizzare
 void AGun::PullTrigger(bool bAIShooting)
 {
 	if (bCanShoot)
@@ -71,11 +71,14 @@ void AGun::PullTrigger(bool bAIShooting)
 		FHitResult Hit;
 		//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
 		FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+		
 		if (bAIShooting)
 		{
-			End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+			ACharacter* Char = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+			FVector CharLoc = Char->GetActorLocation();
+			End = CharLoc;
 		}
-
+		
 		//ShotDirection = -Rotation.Vector();
 		ShotDirection = Location + Rotation.Vector();
 		FCollisionQueryParams Params;

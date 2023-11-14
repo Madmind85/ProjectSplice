@@ -37,7 +37,7 @@ void UValueOverTimeComponent::BeginPlay()
 		// ...
 		if (bCanRotateNPCToFocus)
 		{
-			IsFacingFocusCheck();
+			RotateNPCTowardsFocus();
 		}
 		
 		if (CanCameraMovetOverTime)
@@ -132,8 +132,8 @@ void UValueOverTimeComponent::BeginPlay()
 	{
 		if (OwnerChar && FocusToSet)
 		{
-			OwnerChar->SetCurrentFocus(FocusToSet);
-			bCanRotateNPCToFocus = true;
+			NPCFocus = FocusToSet;
+			bCanRotateNPCToFocus = true;	
 		}
 	}
 
@@ -186,3 +186,16 @@ void UValueOverTimeComponent::BeginPlay()
 	}
 
 
+	void UValueOverTimeComponent::RotateNPCTowardsFocus()
+	{
+		IsFacingFocusCheck();
+		
+		if (NPCFocus)
+		{
+			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocus->GetActorLocation());
+
+			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.2f, 0.5f);
+			NewRot.Pitch = 0.f;
+			OwnerChar->SetActorRotation(NewRot);
+		}
+	}

@@ -77,4 +77,6 @@ private:
 	bool IsFacingFocus();
 	bool bCanRotateNPCToFocus = false;
 	void IsFacingFocusCheck();
+	void RotateNPCTowardsFocus();
+	AMostriciattolo5Character* NPCFocus;
 };
