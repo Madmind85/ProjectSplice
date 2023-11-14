@@ -76,7 +76,7 @@ void AMostriciattolo5Character::Attack(bool bAIShooting)
 	if (Gun)
 	{
 		Gun->PullTrigger(bAIShooting);
-	}
+	}	
 	
 }
 

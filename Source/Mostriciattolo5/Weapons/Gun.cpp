@@ -50,59 +50,68 @@ void AGun::LaserAiming()
 
 void AGun::PullTrigger(bool bAIShooting)
 {
-
-	UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleSocket"));
-	MuzzleFlashComponent->SetRelativeScale3D(FVector(0.07f, 0.07f, 0.07f));
-	
-
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if (!OwnerPawn) { return; }
-	AController* OwnerController = OwnerPawn->GetController();
-	if (!OwnerController) { return; }
-
-	FVector Location;
-	FRotator Rotation;
-	OwnerController->GetPlayerViewPoint(Location, Rotation);
-
-	BP_ShootEffect()	;
-	
-	FHitResult Hit;
-	//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
-	FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
-	if (bAIShooting)
+	if (bCanShoot)
 	{
-		End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
-	}
-	
-	//ShotDirection = -Rotation.Vector();
-	ShotDirection = Location + Rotation.Vector();
-	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(this);
-	Params.AddIgnoredActor(GetOwner());
 
-	//aggiunto
-	Location = MuzzleLoc->GetComponentLocation();
+		UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleSocket"));
+		MuzzleFlashComponent->SetRelativeScale3D(FVector(0.07f, 0.07f, 0.07f));
 
-	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
-	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
-	ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
-	
-	AActor* HitActor = Hit.GetActor();
-	if (HitActor)
-	{
-		if (HitActor == this) { return; }	
-		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
-		
-		FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
-		HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
-		
-		if (HitCharacter)
+
+		APawn* OwnerPawn = Cast<APawn>(GetOwner());
+		if (!OwnerPawn) { return; }
+		AController* OwnerController = OwnerPawn->GetController();
+		if (!OwnerController) { return; }
+
+		FVector Location;
+		FRotator Rotation;
+		OwnerController->GetPlayerViewPoint(Location, Rotation);
+
+		BP_ShootEffect();
+
+		FHitResult Hit;
+		//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
+		FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+		if (bAIShooting)
 		{
-			HitCharacter->BP_HitEvent(Hit,OwnerPawn);
+			End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
 		}
-		
-	}
-	
-	
-}
 
+		//ShotDirection = -Rotation.Vector();
+		ShotDirection = Location + Rotation.Vector();
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+		Params.AddIgnoredActor(GetOwner());
+
+		//aggiunto
+		Location = MuzzleLoc->GetComponentLocation();
+
+		bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+		UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
+		ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
+
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor)
+		{
+			if (HitActor == this) { return; }
+			AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
+
+			FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
+			HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+
+			if (HitCharacter)
+			{
+				HitCharacter->BP_HitEvent(Hit, OwnerPawn);
+			}
+
+		}
+
+		bCanShoot = false;
+		FTimerHandle TimerH;
+		GetWorld()->GetTimerManager().SetTimer(TimerH, this, &AGun::ResetCanShoot, ShootDelay, false);
+	}
+}
+void AGun::ResetCanShoot()
+{
+	bCanShoot = true;
+
+}
