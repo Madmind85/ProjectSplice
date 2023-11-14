@@ -27,6 +27,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float MaxWeaponRange = 5000.f;
+	UPROPERTY(EditAnywhere)
+	class UArrowComponent* MuzzleLoc;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ShootEffect();
@@ -48,5 +50,7 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;
+
+	void LaserAiming();
 
 };

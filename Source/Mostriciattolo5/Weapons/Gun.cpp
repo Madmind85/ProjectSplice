@@ -6,6 +6,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Mostriciattolo5/Mostriciattolo5Character.h"
+#include "Components/ArrowComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
@@ -19,6 +20,9 @@ AGun::AGun()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
+
+	MuzzleLoc = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzleLoc"));
+	MuzzleLoc->SetupAttachment(Mesh);
 }
 
 // Called when the game starts or when spawned
@@ -32,8 +36,17 @@ void AGun::BeginPlay()
 void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	LaserAiming();
 }
+void AGun::LaserAiming()
+{
+	if (MuzzleLoc)
+	{
+		FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+		DrawDebugLine(GetWorld(), MuzzleLoc->GetComponentLocation(), End, FColor::Emerald, false, 0.03f);
+	}
+}
+	
 
 void AGun::PullTrigger(bool bAIShooting)
 {
@@ -54,7 +67,8 @@ void AGun::PullTrigger(bool bAIShooting)
 	BP_ShootEffect()	;
 	
 	FHitResult Hit;
-	FVector End = Location + Rotation.Vector() * MaxWeaponRange;
+	//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
+	FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
 	if (bAIShooting)
 	{
 		End = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
@@ -65,6 +79,10 @@ void AGun::PullTrigger(bool bAIShooting)
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
+
+	//aggiunto
+	Location = MuzzleLoc->GetComponentLocation();
+
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 	UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 	ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
