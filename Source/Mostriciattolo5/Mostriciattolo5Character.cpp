@@ -53,6 +53,9 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 	*/
 
+	AimArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("AimArrow"));
+	AimArrow->SetupAttachment(GetMesh());
+
 	PossessSocket = CreateDefaultSubobject<UCapsuleComponent>(TEXT("PossessSocket"));
 	PossessSocket->SetupAttachment(RootComponent);
 	PossessSocket->ComponentTags.Add(FName("Possess"));
@@ -267,6 +270,16 @@ void  AMostriciattolo5Character::EndSelectFocusMode()
 
 	PawnsInView.Reset();
 	SelectedPawnDistanceToCenter = 100000.f;
+}
+
+bool AMostriciattolo5Character::GetCurrentWeapom(AGun*& OUTWeapon)
+{
+	if (Gun)
+	{
+		OUTWeapon = Gun;
+			return true;
+	}
+	else return false;
 }
 
 
@@ -497,10 +510,7 @@ void AMostriciattolo5Character::SortFocusActors()
 
 void AMostriciattolo5Character::InitPawnsInViewArray()
 {
-	if (!SelectTargetArrow)
-	{
-		 UE_LOG(LogTemp, Warning, TEXT("BADA no select target arrow set in InitPawnsInView in Mostriciattolo5Character")) 
-	}
+
 	//pulisce l'array
 	PawnsInView.Reset();
 	//sweep trace per trovarer i nemici di fronte
@@ -510,7 +520,7 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 	GetController()->GetPlayerViewPoint(Location, Rotation);
 	FVector Start = Location + Rotation.Vector() * 1500.f;
 	FVector End = Location + Rotation.Vector()  * FindCharacterToTargetReach;
-		//SelectTargetArrow->GetComponentLocation() + SelectTargetArrow->GetForwardVector() * FindCharacterToTargetReach;
+		
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	TArray<AActor*>ActorsToIgnore;

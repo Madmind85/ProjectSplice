@@ -130,6 +130,8 @@ public:
 	bool StartSelectFocusMode();
 	UFUNCTION(BlueprintCallable)
 	void EndSelectFocusMode();
+	UFUNCTION(BlueprintCallable)
+	bool GetCurrentWeapom(AGun* &OUTWeapon);
 	
 
 	UPROPERTY(BlueprintReadWrite)
@@ -148,8 +150,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	float CameraOffset_Speed = 4.f;
 
-	UPROPERTY(BlueprintReadWrite)
-	UArrowComponent* SelectTargetArrow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UArrowComponent* AimArrow;
 	/**velocità di corsa quando ti insegue come suo target*/
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float ChaseSpeed = 500.f;

@@ -36,6 +36,10 @@ public:
 	void BP_ShootEffect();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float RecoilAmount = -0.6f;
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsAiming(bool IsAiming);
+	
 	
 	FVector ShotDirection;
 	FName HitBoneBName;
@@ -58,5 +62,7 @@ private:
 	void LaserAiming();
 
 	void ResetCanShoot();
+
+	bool bIsAiming = false;
 
 };
