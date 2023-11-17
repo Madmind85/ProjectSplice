@@ -72,6 +72,7 @@ void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
             //per non spammare depossess 
             GetCurrentPossessed()->IsSpammingDepossess = false;
             GetCurrentPossessed()->CanBeTarget = true;
+            GetCurrentPossessed()->IsBeingPossessed = true;
             IsTarget = false;
             GetCurrentPossessed()->BP_StopMovement();
 
@@ -118,7 +119,8 @@ void AMostriciattolo5Player::JumpOut()
         IsTarget = true;
 
         GetCurrentPossessed()->IsTarget = false;
-        
+        //delay a IsBeingPossessed = falsePerPermettere di allontanarsi prima di attivare la collisione
+        GetCurrentPossessed()->SetNotPossessedTimer();
     }
 }
 

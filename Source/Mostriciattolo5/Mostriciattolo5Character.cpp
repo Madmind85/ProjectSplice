@@ -464,7 +464,16 @@ float AMostriciattolo5Character::GetViewPOsition_X()
 	
 	return ScreenPosition.X;
 }
+void AMostriciattolo5Character::SetNotPossessedTimer()
+{
+	FTimerHandle TimerH;
+	GetWorld()->GetTimerManager().SetTimer(TimerH,this, &AMostriciattolo5Character::SetNotPossessedDelayed, 4.f, false, 4.f);
 
+}
+void AMostriciattolo5Character::SetNotPossessedDelayed()
+{
+	IsBeingPossessed = false;
+}
 /*void AMostriciattolo5Character::TurnCameraToTargetr()
 {
 

@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-KaiLocomotion-0091.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"E:\UnrealProjectsSC\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\Engine\SharedPCH.Engine.ShadowErrors.InclOrderUnreal5_1.h.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotion\Module.KaiLocomotion.1_of_4.cpp.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotion\Module.KaiLocomotion.2_of_4.cpp.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotion\Module.KaiLocomotion.3_of_4.cpp.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotion\Module.KaiLocomotion.4_of_4.cpp.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotion\Default.rc2.res"
+/OUT:"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotion\UnrealEditor-KaiLocomotion-0091.lib"

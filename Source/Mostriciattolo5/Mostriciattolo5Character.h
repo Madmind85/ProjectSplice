@@ -98,42 +98,31 @@ protected:
 	class UValueOverTimeComponent* ValueOverTimeComponent;
 
 public:
+
 	static bool SortActorDistance(AActor* Actor_A, AActor* Actor_B);
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void OnTeleportFinished();
+	void MClearFocus();
+	void SetNotPossessedTimer();
+
 	/** Returns CameraBoom subobject 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject 
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	*/
 
-
-	UFUNCTION(BlueprintPure)
-	bool IsDead() const;
-
 	//Se true non puoi' usare depossess, viene resettata quando questo char viene posseduto
 	bool IsSpammingDepossess = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool IsSpammingPossess = false;
-	UFUNCTION(BlueprintCallable)
-	void RotatePlayerTowardsTarget(AActor* TargetActor);
 
-	UFUNCTION(BlueprintCallable)
-	bool HasLostTarget();
-	UFUNCTION(BlueprintCallable)
-	bool IsNotTarget();
+	
 	UPROPERTY(BlueprintReadWrite)
 	bool CanBeTarget = false;
 	UPROPERTY(BlueprintReadWrite)
 	float TargetLastSeen = 0.f;
 	UPROPERTY(BlueprintReadWrite)
 	bool IsTarget = false;
-	UFUNCTION(BlueprintCallable)
-	bool StartSelectFocusMode();
-	UFUNCTION(BlueprintCallable)
-	void EndSelectFocusMode();
-	UFUNCTION(BlueprintCallable)
-	bool GetCurrentWeapom(AGun* &OUTWeapon);
-	
-
 	UPROPERTY(BlueprintReadWrite)
 	bool TSelectModeOn = false;
 	//forse mettere private con getter
@@ -171,15 +160,16 @@ public:
 	float RotationSpeed = 5.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Possession")
 	float FindCharacterToTargetReach = 2000.f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	/**quanto ci mette in secondi a spostarsi dalla poszione che ha  ora ad appiccicato al possession point quando  possiede*/
+	UPROPERTY(EditDefaultsOnly, Category = "Possession")
+	float PossessTeleportTime = 3.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Possession")
 	class UArrowComponent* PossessArrowTarget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float Health;
 
-	/**quanto ci mette in secondi a spostarsi dalla poszione che ha  ora ad appiccicato al possession point quando  possiede*/
-	UPROPERTY(EditDefaultsOnly, Category = "Possession")
-	float PossessTeleportTime = 3.0f;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class UCameraComponent* MCamera = nullptr;
 	UPROPERTY(BlueprintReadWrite)
@@ -188,8 +178,11 @@ public:
 	bool StartPossessionAnim = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool StartPossessedAnim = false;
-
-	class AMostriciattolo5GameMode* MGameMode;
+	UPROPERTY(BlueprintReadWrite)
+	TArray<AMostriciattolo5Character*> PawnsInView;
+	UPROPERTY(BlueprintReadOnly)
+	bool IsBeingPossessed = false;
+	
 	
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -204,35 +197,39 @@ public:
 	void BP_StopMovement();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn);
-	
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_TurnCameraToTarget();
 
-	UPROPERTY(BlueprintReadWrite)
-	bool IsBeingPossessed = false;
-	UPROPERTY(BlueprintReadWrite)
-	TArray<AMostriciattolo5Character*> PawnsInView;
+
+	UFUNCTION(BlueprintCallable)
+	void RotatePlayerTowardsTarget(AActor* TargetActor);
+	UFUNCTION(BlueprintCallable)
+	bool IsNotTarget();
+	UFUNCTION(BlueprintCallable)
+	bool StartSelectFocusMode();
+	UFUNCTION(BlueprintCallable)
+	void EndSelectFocusMode();
+	UFUNCTION(BlueprintCallable)
+	bool GetCurrentWeapom(AGun*& OUTWeapon);
 	UFUNCTION(BlueprintCallable)
 	void Depossess();
 	UFUNCTION(BlueprintCallable)
 	AMostriciattolo5Character* GetCurrentTarget();
 	UFUNCTION(BlueprintCallable)
 	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
-	UFUNCTION(BlueprintPure)
-	AMostriciattolo5Character* GetCurrentFocus();
-
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
+
+
+	UFUNCTION(BlueprintPure)
+	AMostriciattolo5Character* GetCurrentFocus();
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+	UFUNCTION(BlueprintPure)
+	bool HasLostTarget();
+
+	class AMostriciattolo5GameMode* MGameMode;
 	
-	
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_TurnCameraToTarget();
-
-
-	virtual void OnTeleportFinished();
-
-	void MClearFocus();
-
 
 private:
 
@@ -266,5 +263,8 @@ private:
 	TSubclassOf<AGun> GunClass;
 	UPROPERTY()
 	AGun* Gun;
+
+	
+	void SetNotPossessedDelayed();
 };
 
