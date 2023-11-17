@@ -42,6 +42,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetIsAiming(bool IsAiming);
 	
+	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
+	float Walk = 15.f;
+	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
+	float Run = 15.f;
+	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
+	float MediumRange = 15.f;
+	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
+	float LongRange = 20.f;
+
 	
 	FVector ShotDirection;
 	FName HitBoneBName;
@@ -72,9 +81,12 @@ private:
 	void ResetCanShoot();
 
 	bool bIsAiming = false;
+
 	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes);
 
-	
+	bool AIHitCheck();
 
 	void SetOwnerCharacter();
+
+	float RandShootError = 0.f;
 };

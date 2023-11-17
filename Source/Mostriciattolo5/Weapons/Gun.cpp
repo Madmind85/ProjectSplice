@@ -88,6 +88,7 @@ void AGun::PullTrigger(bool bAIShooting)
 
 		if (bCanShoot)
 		{
+			RandShootError = FMath::RandRange(-40.f, 40.f);
 
 			UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleSocket"));
 			MuzzleFlashComponent->SetRelativeScale3D(FVector(0.07f, 0.07f, 0.07f));
@@ -101,6 +102,7 @@ void AGun::PullTrigger(bool bAIShooting)
 			FVector Location;
 			FHitResult Hit;
 			bool bHit = GunLineTrace(bAIShooting, Hit);
+			
 
 			UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 			ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
@@ -120,7 +122,6 @@ void AGun::PullTrigger(bool bAIShooting)
 				{
 					HitCharacter->BP_HitEvent(Hit, OwnerPawn);
 				}
-
 			}
 
 			bCanShoot = false;
@@ -134,17 +135,85 @@ void AGun::ResetCanShoot()
 	bCanShoot = true;
 
 }
+bool AGun::AIHitCheck()
+{
+	//prima line trace per vedere se scorre o è lontano non colpisce direttamente ma calcola se si puo' colpire
+	FHitResult Hit;
+	FVector Location;
+	FVector End;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	if (GetOwner())
+	{
+		Params.AddIgnoredActor(GetOwner());
+	}
+	Location = MuzzleLoc->GetComponentLocation();
+	End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+
+	AActor* HitActor = nullptr;
+	
+	if (Hit.GetActor())
+	{
+		HitActor = Hit.GetActor();
+	}
+	
+
+	float MissingChance = 10.f;
+
+	if (HitActor)
+	{
+		float ActorDistance = FVector::Dist(GetActorLocation(), HitActor->GetActorLocation());
+		float Speed = HitActor->GetVelocity().Length();
+		
+		if (Speed > 10.f)
+		{
+			MissingChance += Walk ;
+		}
+		if (Speed > 200.f)
+		{
+			MissingChance += Run;
+		}
+		if (ActorDistance > 400.f)
+		{
+			MissingChance += MediumRange;
+		}
+		if (ActorDistance > 700.f)
+		{
+			MissingChance += LongRange;
+		}
+	}
+	 UE_LOG(LogTemp, Warning, TEXT("missing chance =  %f"), MissingChance) 
+	float DiceRoll = FMath::RandRange(1.f, 100.f);
+
+	if (DiceRoll >= MissingChance)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 void AGun::SetOwnerCharacter()
 {
 	OwnerCharacter = Cast<AMostriciattolo5Character>(GetOwner());
 }
+
+
 bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
 {
 	FVector Location;
 	FVector End;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
-	Params.AddIgnoredActor(GetOwner());
+	if (GetOwner())
+	{
+		Params.AddIgnoredActor(GetOwner());
+	}
 
 	//aggiunto
 	Location = MuzzleLoc->GetComponentLocation();
@@ -154,8 +223,21 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
 	if (AIShooting)
 	{
 		ACharacter* Char = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-		FVector CharLoc = Char->GetActorLocation();
-		End = CharLoc;
+		if (Char)
+		{
+			FVector CharLoc = Char->GetActorLocation();
+			if (AIHitCheck() == true)
+			{
+				End = CharLoc;
+			}
+			else
+			{
+				FVector ShootLoc = CharLoc;
+				ShootLoc.Z = -20.f;
+				ShootLoc.X += RandShootError; 
+				End = ShootLoc;
+			}
+		}
 	}
 	else
 	{
