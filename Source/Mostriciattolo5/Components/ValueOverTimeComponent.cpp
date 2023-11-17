@@ -132,6 +132,7 @@ void UValueOverTimeComponent::BeginPlay()
 	{
 		if (OwnerChar && FocusToSet)
 		{
+		
 			NPCFocus = FocusToSet;
 			bCanRotateNPCToFocus = true;	
 		}
@@ -188,6 +189,10 @@ void UValueOverTimeComponent::BeginPlay()
 
 	void UValueOverTimeComponent::RotateNPCTowardsFocus()
 	{
+		if (OwnerChar->IsBeingPossessed)
+		{
+			return;
+		}
 		IsFacingFocusCheck();
 		
 		if (NPCFocus)
