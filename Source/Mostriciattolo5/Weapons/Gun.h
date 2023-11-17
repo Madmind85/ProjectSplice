@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Gun.generated.h"
 
+class UDecalComponent;
+
 UCLASS()
 class MOSTRICIATTOLO5_API AGun : public AActor
 {
@@ -43,6 +45,12 @@ public:
 	
 	FVector ShotDirection;
 	FName HitBoneBName;
+
+	UPROPERTY(EditAnywhere)
+	UDecalComponent* LaserDot;
+
+	class AMostriciattolo5Character* OwnerCharacter = nullptr;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
@@ -53,7 +61,7 @@ private:
 	UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ProjectileEffect;
-	
+
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;
 
@@ -64,5 +72,9 @@ private:
 	void ResetCanShoot();
 
 	bool bIsAiming = false;
+	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes);
 
+	
+
+	void SetOwnerCharacter();
 };

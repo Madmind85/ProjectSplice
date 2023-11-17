@@ -7,6 +7,7 @@
 #include "Engine/DamageEvents.h"
 #include "Mostriciattolo5/Mostriciattolo5Character.h"
 #include "Components/ArrowComponent.h"
+#include "Components/DecalComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
@@ -23,14 +24,21 @@ AGun::AGun()
 
 	MuzzleLoc = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzleLoc"));
 	MuzzleLoc->SetupAttachment(Mesh);
+
+	LaserDot = CreateDefaultSubobject<UDecalComponent>(TEXT("LaserDot"));
+	LaserDot->SetupAttachment(Root);
 }
 
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
-}
+	SetOwnerCharacter();
+	if (LaserDot)
+	{
+		LaserDot->SetVisibility(false);
+	}
+} 
 
 // Called every frame
 void AGun::Tick(float DeltaTime)
@@ -40,19 +48,35 @@ void AGun::Tick(float DeltaTime)
 	{
 		LaserAiming();
 	}
-	
+
 }
 void AGun::SetIsAiming(bool IsAiming)
 {
 	bIsAiming = IsAiming;
+	if (LaserDot)
+	{	
+		LaserDot->SetVisibility(IsAiming);
+	}
 }
 void AGun::LaserAiming()
 {
 	
 	if (MuzzleLoc)
 	{
+		if (!OwnerCharacter) { SetOwnerCharacter(); }
+
 		FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
-		DrawDebugLine(GetWorld(), MuzzleLoc->GetComponentLocation(), End, FColor::Emerald, false, 0.03f);
+		//DrawDebugLine(GetWorld(), MuzzleLoc->GetComponentLocation(), End, FColor::Emerald, false, 0.03f);
+		FHitResult Hit;
+		bool bHit;
+	
+		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit) : bHit = GunLineTrace(true, Hit);
+		
+		if (bHit)
+		{
+			LaserDot->SetWorldLocation(Hit.Location);
+		}
+		
 	}
 }
 	
@@ -75,32 +99,9 @@ void AGun::PullTrigger(bool bAIShooting)
 			if (!OwnerController) { return; }
 
 			FVector Location;
-			FRotator Rotation;
-			OwnerController->GetPlayerViewPoint(Location, Rotation);
-
-			BP_ShootEffect();
-
 			FHitResult Hit;
-			//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
-			FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+			bool bHit = GunLineTrace(bAIShooting, Hit);
 
-			if (bAIShooting)
-			{
-				ACharacter* Char = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-				FVector CharLoc = Char->GetActorLocation();
-				End = CharLoc;
-			}
-
-			//ShotDirection = -Rotation.Vector();
-			ShotDirection = Location + Rotation.Vector();
-			FCollisionQueryParams Params;
-			Params.AddIgnoredActor(this);
-			Params.AddIgnoredActor(GetOwner());
-
-			//aggiunto
-			Location = MuzzleLoc->GetComponentLocation();
-
-			bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 			UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 			ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
 
@@ -108,11 +109,13 @@ void AGun::PullTrigger(bool bAIShooting)
 			if (HitActor)
 			{
 				if (HitActor == this) { return; }
+
 				AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
 
 				FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
-				HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
 
+				HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+				BP_ShootEffect();
 				if (HitCharacter)
 				{
 					HitCharacter->BP_HitEvent(Hit, OwnerPawn);
@@ -130,4 +133,37 @@ void AGun::ResetCanShoot()
 {
 	bCanShoot = true;
 
+}
+void AGun::SetOwnerCharacter()
+{
+	OwnerCharacter = Cast<AMostriciattolo5Character>(GetOwner());
+}
+bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
+{
+	FVector Location;
+	FVector End;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+
+	//aggiunto
+	Location = MuzzleLoc->GetComponentLocation();
+
+	FHitResult Hit;
+
+	if (AIShooting)
+	{
+		ACharacter* Char = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+		FVector CharLoc = Char->GetActorLocation();
+		End = CharLoc;
+	}
+	else
+	{
+		//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
+		End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+	}
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	OUTHitRes = Hit;
+	return bHit;
 }
