@@ -27,11 +27,19 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float MaxWeaponRange = 5000.f;
+	UPROPERTY(EditAnywhere)
+	class UArrowComponent* MuzzleLoc;
+	UPROPERTY(EditDefaultsOnly)
+	float ShootDelay = 0.5f;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ShootEffect();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float RecoilAmount = -0.6f;
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsAiming(bool IsAiming);
+	
 	
 	FVector ShotDirection;
 	FName HitBoneBName;
@@ -48,5 +56,13 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;
+
+	bool bCanShoot = true;
+
+	void LaserAiming();
+
+	void ResetCanShoot();
+
+	bool bIsAiming = false;
 
 };

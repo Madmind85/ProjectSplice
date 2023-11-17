@@ -50,7 +50,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ChangeSpringArmOffset(float SAOffset, USpringArmComponent* SpringArm);
 
-
+	//****ROTATE OWNER TO FOCUS****//
+	UFUNCTION(BlueprintCallable)
+	void NPCRotateToFocus(AMostriciattolo5Character* FocusToSet);
 
 private:
 
@@ -72,5 +74,9 @@ private:
 	
 	//****ROTATE OWNER TO FOCUS****//
 	void RotateTowardsFocus();
-	
+	bool IsFacingFocus();
+	bool bCanRotateNPCToFocus = false;
+	void IsFacingFocusCheck();
+	void RotateNPCTowardsFocus();
+	AMostriciattolo5Character* NPCFocus;
 };

@@ -35,6 +35,10 @@ void UValueOverTimeComponent::BeginPlay()
 		Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
 		// ...
+		if (bCanRotateNPCToFocus)
+		{
+			RotateNPCTowardsFocus();
+		}
 		
 		if (CanCameraMovetOverTime)
 		{
@@ -86,12 +90,52 @@ void UValueOverTimeComponent::BeginPlay()
 			}
 	}
 
+	bool UValueOverTimeComponent::IsFacingFocus()
+	{
+		AMostriciattolo5Character* CurrentFocus = OwnerChar->GetCurrentFocus();
+		if (CurrentFocus) 
+		{
+			FRotator ActualRot = GetOwner()->GetActorRotation();
+			FRotator DesiredRot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), CurrentFocus->GetActorLocation());
+			if (ActualRot.Equals(DesiredRot, 10.f))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	void UValueOverTimeComponent::IsFacingFocusCheck()
+	{
+		if (IsFacingFocus())
+		{
+			OwnerChar->SetCurrentFocus(nullptr);
+			bCanRotateNPCToFocus = false;
+		}
+	}
+
 	void UValueOverTimeComponent::StartCameraMoveOverTime(bool RightToLeft)
 	{
 		CanCameraMovetOverTime = true;
 		CameraRightToLeft = RightToLeft;
 	}
 
+
+	void UValueOverTimeComponent::NPCRotateToFocus(AMostriciattolo5Character* FocusToSet)
+	{
+		if (OwnerChar && FocusToSet)
+		{
+			NPCFocus = FocusToSet;
+			bCanRotateNPCToFocus = true;	
+		}
+	}
 
 	void UValueOverTimeComponent::MoveActorSmoothly(float DeltaS)
 	{
@@ -142,3 +186,16 @@ void UValueOverTimeComponent::BeginPlay()
 	}
 
 
+	void UValueOverTimeComponent::RotateNPCTowardsFocus()
+	{
+		IsFacingFocusCheck();
+		
+		if (NPCFocus)
+		{
+			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocus->GetActorLocation());
+
+			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.2f, 0.5f);
+			NewRot.Pitch = 0.f;
+			OwnerChar->SetActorRotation(NewRot);
+		}
+	}
