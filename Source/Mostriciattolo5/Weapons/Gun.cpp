@@ -50,14 +50,7 @@ void AGun::Tick(float DeltaTime)
 	}
 
 }
-void AGun::SetIsAiming(bool IsAiming)
-{
-	bIsAiming = IsAiming;
-	if (LaserDot)
-	{	
-		LaserDot->SetVisibility(IsAiming);
-	}
-}
+
 void AGun::LaserAiming()
 {
 	
@@ -79,6 +72,20 @@ void AGun::LaserAiming()
 		
 	}
 }
+
+void AGun::SetIsAiming(bool IsAiming)
+{
+	bIsAiming = IsAiming;
+	if (LaserDot)
+	{
+		LaserDot->SetVisibility(IsAiming);
+	}
+}
+
+void AGun::WeaponAttack(bool AIAttack)
+{
+	PullTrigger(AIAttack);
+}
 	
 // rifattorizzare
 void AGun::PullTrigger(bool bAIShooting)
@@ -86,7 +93,7 @@ void AGun::PullTrigger(bool bAIShooting)
 	if (bIsAiming)
 	{
 
-		if (bCanShoot)
+		if (bCanAttack)
 		{
 			RandShootError = FMath::RandRange(-40.f, 40.f);
 
@@ -124,17 +131,13 @@ void AGun::PullTrigger(bool bAIShooting)
 				}
 			}
 
-			bCanShoot = false;
+			bCanAttack = false;
 			FTimerHandle TimerH;
-			GetWorld()->GetTimerManager().SetTimer(TimerH, this, &AGun::ResetCanShoot, ShootDelay, false);
+			GetWorld()->GetTimerManager().SetTimer(TimerH, this, &AGun::ResetCanAttack, AttackDelay, false);
 		}
 	}
 }
-void AGun::ResetCanShoot()
-{
-	bCanShoot = true;
 
-}
 bool AGun::AIHitCheck()
 {
 	//prima line trace per vedere se scorre o è lontano non colpisce direttamente ma calcola se si puo' colpire

@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "MWeapon.h"
 #include "Gun.generated.h"
 
 class UDecalComponent;
 
 UCLASS()
-class MOSTRICIATTOLO5_API AGun : public AActor
+class MOSTRICIATTOLO5_API AGun : public AMWeapon
 {
 	GENERATED_BODY()
 	
@@ -25,22 +26,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void PullTrigger(bool bAIShooting);
+	
 
-	UPROPERTY(EditAnywhere)
-	float MaxWeaponRange = 5000.f;
+	
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* MuzzleLoc;
-	UPROPERTY(EditDefaultsOnly)
-	float ShootDelay = 0.5f;
+	
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ShootEffect();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float RecoilAmount = -0.6f;
 
-	UFUNCTION(BlueprintCallable)
-	void SetIsAiming(bool IsAiming);
+	
 	
 	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
 	float Walk = 15.f;
@@ -50,8 +48,9 @@ public:
 	float MediumRange = 15.f;
 	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
 	float LongRange = 20.f;
-
-	
+	//originale Blueprintcallable
+	virtual void SetIsAiming(bool IsAiming) override;
+	virtual void WeaponAttack(bool AIAttack) override;
 	FVector ShotDirection;
 	FName HitBoneBName;
 
@@ -61,11 +60,6 @@ public:
 	class AMostriciattolo5Character* OwnerCharacter = nullptr;
 
 private:
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* Root;
-
-	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditAnywhere)
@@ -74,13 +68,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;
 
-	bool bCanShoot = true;
+	void PullTrigger(bool bAIShooting);
 
 	void LaserAiming();
 
-	void ResetCanShoot();
-
-	bool bIsAiming = false;
+	
+	
 
 	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes);
 

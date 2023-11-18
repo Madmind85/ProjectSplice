@@ -14,11 +14,12 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Weapons/Gun.h"
+#include "Weapons/MWeapon.h"
+#include "Weapons/MWeapon.h"
 #include "DrawDebugHelpers.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 
-class AGun;
+class AMWeapon;
 
 //////////////////////////////////////////////////////////////////////////
 // AMostriciattolo5Character
@@ -76,9 +77,9 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 
 void AMostriciattolo5Character::Attack(bool bAIShooting)
 {
-	if (Gun)
+	if (MWeapon)
 	{
-		Gun->PullTrigger(bAIShooting);
+		MWeapon->WeaponAttack(bAIShooting);
 	}	
 	
 }
@@ -111,11 +112,11 @@ void AMostriciattolo5Character::BeginPlay()
 
 	Health = MaxHealth;
 
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-	if (Gun)
+	MWeapon = GetWorld()->SpawnActor<AMWeapon>(MWeaponClass);
+	if (MWeapon)
 	{
-		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weapon_rSocket"));
-		Gun->SetOwner(this);
+		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weapon_rSocket"));
+		MWeapon->SetOwner(this);
 	}
 
 	//Add Input Mapping Context
@@ -272,11 +273,11 @@ void  AMostriciattolo5Character::EndSelectFocusMode()
 	SelectedPawnDistanceToCenter = 100000.f;
 }
 
-bool AMostriciattolo5Character::GetCurrentWeapom(AGun*& OUTWeapon)
+bool AMostriciattolo5Character::GetCurrentWeapom(AMWeapon*& OUTWeapon)
 {
-	if (Gun)
+	if (MWeapon)
 	{
-		OUTWeapon = Gun;
+		OUTWeapon = MWeapon;
 			return true;
 	}
 	else return false;
@@ -419,7 +420,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
 
-	//AGun* MostGun = Cast<AGun>(DamageCauser);
+	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
 	
 	
 	return DamageApplied;

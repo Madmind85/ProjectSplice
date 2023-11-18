@@ -21,6 +21,7 @@ enum class NPCStatus : uint8
 
 
 class AGun;
+class AMWeapon;
 
 UCLASS(config=Game)
 class AMostriciattolo5Character : public ACharacter
@@ -210,7 +211,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndSelectFocusMode();
 	UFUNCTION(BlueprintCallable)
-	bool GetCurrentWeapom(AGun*& OUTWeapon);
+	bool GetCurrentWeapom(AMWeapon*& OUTWeapon);
 	UFUNCTION(BlueprintCallable)
 	void Depossess();
 	UFUNCTION(BlueprintCallable)
@@ -260,9 +261,9 @@ private:
 	//void TurnCameraToTargetr();
 	
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AGun> GunClass;
+	TSubclassOf<AMWeapon> MWeaponClass;
 	UPROPERTY()
-	AGun* Gun;
+	AMWeapon* MWeapon;
 
 	
 	void SetNotPossessedDelayed();
