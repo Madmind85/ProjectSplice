@@ -77,11 +77,17 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 
 void AMostriciattolo5Character::Attack(bool bAIShooting)
 {
+	
 	if (MWeapon)
 	{
 		MWeapon->WeaponAttack(bAIShooting);
 	}	
-	
+	else
+	{
+		//se non ha un arma attacca compunque con il pugno
+		if (!MFist) { SetFist(); }
+		MFist->WeaponAttack(bAIShooting);
+	}
 }
 
 void AMostriciattolo5Character::Tick(float DeltaSeconds)
@@ -96,13 +102,10 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 		}
 	}
 
-
 	if (GetCurrentFocus())
 	{
 		BP_TurnCameraToTarget();
-		
 	}
-
 }
 
 void AMostriciattolo5Character::BeginPlay()
@@ -112,12 +115,9 @@ void AMostriciattolo5Character::BeginPlay()
 
 	Health = MaxHealth;
 
-	MWeapon = GetWorld()->SpawnActor<AMWeapon>(MWeaponClass);
-	if (MWeapon)
-	{
-		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("weapon_rSocket"));
-		MWeapon->SetOwner(this);
-	}
+	//Setta i pugni
+	if (!MFist) { SetFist(); }
+	
 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -401,6 +401,37 @@ bool AMostriciattolo5Character::IsDead() const
 		return false;
 	}
 	
+}
+
+void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
+{
+	if (WeaponToSet )
+	{
+		if (MWeapon)
+		{
+			DropWeapon();
+		}
+		MWeapon = WeaponToSet;
+		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
+		MWeapon->SetOwner(this);
+	}
+}
+void AMostriciattolo5Character::SetFist()
+{
+		MFist = GetWorld()->SpawnActor<AMWeapon>(FistClass);
+		if (MFist)
+		{
+			MFist->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
+			MFist->SetOwner(this);	
+		}	
+}
+void AMostriciattolo5Character::DropWeapon()
+{
+	if (MWeapon)
+	{
+		MWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		MWeapon = nullptr;
+	}
 }
 
 void AMostriciattolo5Character::RotatePlayerTowardsTarget(AActor* TargetActor)

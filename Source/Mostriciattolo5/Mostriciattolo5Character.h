@@ -203,6 +203,10 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
+	void SetWeapon(AMWeapon* WeaponToSet);
+	UFUNCTION(BlueprintCallable)
+	void DropWeapon();
+	UFUNCTION(BlueprintCallable)
 	void RotatePlayerTowardsTarget(AActor* TargetActor);
 	UFUNCTION(BlueprintCallable)
 	bool IsNotTarget();
@@ -262,10 +266,14 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMWeapon> MWeaponClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMWeapon> FistClass;
 	UPROPERTY()
 	AMWeapon* MWeapon;
+	UPROPERTY()
+	AMWeapon* MFist;
 
-	
+	void SetFist();
 	void SetNotPossessedDelayed();
 };
 

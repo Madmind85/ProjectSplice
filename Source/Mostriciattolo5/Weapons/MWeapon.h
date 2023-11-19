@@ -27,6 +27,15 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh;
 	
+	UPROPERTY(EditAnywhere)
+	float WeaponDamage = 15.f;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_WeaponEffect();
+
+	class AMostriciattolo5Character* OwnerCharacter = nullptr;
+
+	void SetOwnerCharacter();
 
 
 public:	
@@ -44,6 +53,11 @@ public:
 	float AttackDelay = 0.5f;
 
 
-private:
 	
+
+
+private:
+
+	
+
 };

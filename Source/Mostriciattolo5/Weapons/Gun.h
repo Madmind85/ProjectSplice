@@ -57,7 +57,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UDecalComponent* LaserDot;
 
-	class AMostriciattolo5Character* OwnerCharacter = nullptr;
+	
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -65,8 +65,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ProjectileEffect;
 
-	UPROPERTY(EditAnywhere)
-	float WeaponDamage = 15.f;
 
 	void PullTrigger(bool bAIShooting);
 
@@ -79,7 +77,7 @@ private:
 
 	bool AIHitCheck();
 
-	void SetOwnerCharacter();
+	
 
 	float RandShootError = 0.f;
 };

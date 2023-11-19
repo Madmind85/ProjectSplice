@@ -16,8 +16,7 @@ AGun::AGun()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	SetRootComponent(Root);
+	
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
@@ -53,7 +52,8 @@ void AGun::Tick(float DeltaTime)
 
 void AGun::LaserAiming()
 {
-	
+	if (!GetOwner()) { return; }
+
 	if (MuzzleLoc)
 	{
 		if (!OwnerCharacter) { SetOwnerCharacter(); }
@@ -201,10 +201,6 @@ bool AGun::AIHitCheck()
 }
 
 
-void AGun::SetOwnerCharacter()
-{
-	OwnerCharacter = Cast<AMostriciattolo5Character>(GetOwner());
-}
 
 
 bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
