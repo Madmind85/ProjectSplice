@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Mostriciattolo5/MObjects/InteractableBase.h"
 #include "MWeapon.generated.h"
 
 UCLASS()
-class MOSTRICIATTOLO5_API AMWeapon : public AActor
+class MOSTRICIATTOLO5_API AMWeapon : public AInteractableBase
 {
 	GENERATED_BODY()
 	
