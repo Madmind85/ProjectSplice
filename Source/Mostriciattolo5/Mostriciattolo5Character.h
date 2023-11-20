@@ -223,7 +223,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
 	UFUNCTION(BlueprintCallable)
-	bool CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius);
+	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
 
 
 	UFUNCTION(BlueprintPure)

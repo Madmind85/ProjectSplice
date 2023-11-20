@@ -128,12 +128,11 @@ void UValueOverTimeComponent::BeginPlay()
 	}
 
 
-	void UValueOverTimeComponent::NPCRotateToFocus(AMostriciattolo5Character* FocusToSet)
+	void UValueOverTimeComponent::NPCRotateToFocus(AActor* FocusToSet)
 	{
 		if (OwnerChar && FocusToSet)
 		{
-		
-			NPCFocus = FocusToSet;
+			NPCFocus =FocusToSet;
 			bCanRotateNPCToFocus = true;	
 		}
 	}

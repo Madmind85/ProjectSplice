@@ -588,7 +588,7 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 }
 
 
-bool AMostriciattolo5Character::CheckInnerSightAngle(AMostriciattolo5Character* CharacterInSight, float PS_SightRadius)
+bool AMostriciattolo5Character::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight) 
 	{
