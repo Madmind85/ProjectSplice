@@ -15,6 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	AInteractableBase();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UCapsuleComponent* Root;
+
+	UPROPERTY(EditAnywhere)
+	class USphereComponent* CollisionSphere;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -28,8 +34,7 @@ public:
 
 
 private:
-	UPROPERTY(EditAnywhere)
-	class USphereComponent* CollisionSphere;
+
 	
 
 };

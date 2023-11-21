@@ -23,8 +23,7 @@ protected:
 	bool bIsAiming = false;
 	bool bCanAttack = true;
 	void ResetCanAttack();
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* Root;
+	
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh;
 	
