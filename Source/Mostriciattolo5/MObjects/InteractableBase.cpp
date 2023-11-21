@@ -2,7 +2,7 @@
 
 
 #include "Mostriciattolo5/MObjects/InteractableBase.h"
-#include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
@@ -11,14 +11,10 @@ AInteractableBase::AInteractableBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	/*
-	CollisionSphere = CreateDefaultSubobject<USphereComponent>(FName("CollisionSphere"));
-	CollisionSphere->SetSphereRadius(90.f, true);
-	CollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AInteractableBase::OnOverlapBegin);
-	*/
-	Root = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Root"));
+	Root = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
 	SetRootComponent(Root);
-	Root->SetCapsuleHalfHeight(10.f, true);
-
+	Root->SetBoxExtent(FVector(30.f, 10.f, 10.f), true);
+	*/
 }
 
 // Called when the game starts or when spawned

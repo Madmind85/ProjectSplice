@@ -98,6 +98,10 @@ protected:
 
 	class UValueOverTimeComponent* ValueOverTimeComponent;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<AMWeapon> MWeaponClass;
+
 public:
 
 	static bool SortActorDistance(AActor* Actor_A, AActor* Actor_B);
@@ -126,6 +130,12 @@ public:
 	bool IsTarget = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool TSelectModeOn = false;
+
+
+
+	UPROPERTY(BlueprintReadWrite)
+	AActor* CurrentInteractableActor;
+	
 	//forse mettere private con getter
 	UPROPERTY(BlueprintReadWrite)
 	AMostriciattolo5Character* PreviousActor = nullptr;
@@ -238,6 +248,8 @@ public:
 
 private:
 
+	void InitWeapon();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	float MaxHealth = 30.f;
 	
@@ -264,8 +276,6 @@ private:
 
 	//void TurnCameraToTargetr();
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMWeapon> MWeaponClass;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMWeapon> FistClass;
 	UPROPERTY()

@@ -117,7 +117,7 @@ void AMostriciattolo5Character::BeginPlay()
 
 	//Setta i pugni
 	if (!MFist) { SetFist(); }
-	
+	InitWeapon();
 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -209,6 +209,15 @@ bool AMostriciattolo5Character::HasLostTarget()
 	{ 
 		return false; 
 	}	
+}
+
+void AMostriciattolo5Character::InitWeapon()
+{
+	if (MWeaponClass)
+	{
+		//aggiungere arma
+	
+	}
 }
 
 bool AMostriciattolo5Character::IsNotTarget()
@@ -414,6 +423,7 @@ void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
 		MWeapon = WeaponToSet;
 		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
 		MWeapon->SetOwner(this);
+		MWeapon->BeingHeld = true;
 	}
 }
 void AMostriciattolo5Character::SetFist()
@@ -430,6 +440,7 @@ void AMostriciattolo5Character::DropWeapon()
 	if (MWeapon)
 	{
 		MWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		MWeapon->BeingHeld = false;
 		MWeapon = nullptr;
 	}
 }

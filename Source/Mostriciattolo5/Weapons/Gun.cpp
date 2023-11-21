@@ -8,7 +8,7 @@
 #include "Mostriciattolo5/Mostriciattolo5Character.h"
 #include "Components/ArrowComponent.h"
 #include "Components/DecalComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 
 // Sets default values

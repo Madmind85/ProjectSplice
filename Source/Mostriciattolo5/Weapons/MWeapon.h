@@ -16,6 +16,9 @@ public:
 	// Sets default values for this actor's properties
 	AMWeapon();
 
+	UPROPERTY(BlueprintReadWrite)
+	bool BeingHeld = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -24,7 +27,7 @@ protected:
 	bool bCanAttack = true;
 	void ResetCanAttack();
 	
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* Mesh;
 	
 	UPROPERTY(EditAnywhere)

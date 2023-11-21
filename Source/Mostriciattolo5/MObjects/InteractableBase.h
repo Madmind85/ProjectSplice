@@ -16,10 +16,11 @@ public:
 	AInteractableBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UCapsuleComponent* Root;
+	class UBoxComponent* Root;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName InteractableActorName;
 
-	UPROPERTY(EditAnywhere)
-	class USphereComponent* CollisionSphere;
+	
 
 protected:
 	// Called when the game starts or when spawned
