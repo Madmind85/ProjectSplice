@@ -24,7 +24,7 @@ void AMWeapon::BeginPlay()
 void AMWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 void AMWeapon::SetIsAiming(bool IsAiming)
@@ -37,7 +37,7 @@ void AMWeapon::WeaponAttack(bool AIAttack)
 	if (bCanAttack)
 	{
 		bCanAttack = false;
-		BP_WeaponEffect();
+		BP_WeaponAnim();
 		FTimerHandle Timer;
 		GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack,AttackDelay,false);
 	}

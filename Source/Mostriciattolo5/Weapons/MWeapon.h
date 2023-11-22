@@ -35,6 +35,8 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_WeaponEffect();
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_WeaponAnim();
 
 	class AMostriciattolo5Character* OwnerCharacter = nullptr;
 
@@ -52,10 +54,14 @@ public:
 	virtual void SetIsAiming(bool IsAiming);
 	UFUNCTION(BlueprintCallable)
 	virtual void WeaponAttack(bool AIAttack);
+
+	UPROPERTY(BlueprintReadWrite)
+	bool CanHitMelee = false;
+
 	UPROPERTY(EditDefaultsOnly)
 	float AttackDelay = 0.5f;
 
-
+	
 	
 
 

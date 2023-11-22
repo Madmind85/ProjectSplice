@@ -292,6 +292,12 @@ bool AMostriciattolo5Character::GetCurrentWeapom(AMWeapon*& OUTWeapon)
 	else return false;
 }
 
+AMWeapon* AMostriciattolo5Character::GetFist()
+{
+	if (!MFist) { SetFist(); }
+	return MFist;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////

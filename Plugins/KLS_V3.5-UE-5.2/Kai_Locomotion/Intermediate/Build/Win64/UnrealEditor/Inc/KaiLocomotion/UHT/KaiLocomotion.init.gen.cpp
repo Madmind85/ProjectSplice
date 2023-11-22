@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeKaiLocomotion_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xCFE2F507,
+				0x99F07AEA,
 				0xA8ACD0A9,
 				METADATA_PARAMS(nullptr, 0)
 			};
@@ -25,5 +25,5 @@ void EmptyLinkFunctionForGeneratedCodeKaiLocomotion_init() {}
 		}
 		return Z_Registration_Info_UPackage__Script_KaiLocomotion.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_KaiLocomotion(Z_Construct_UPackage__Script_KaiLocomotion, TEXT("/Script/KaiLocomotion"), Z_Registration_Info_UPackage__Script_KaiLocomotion, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xCFE2F507, 0xA8ACD0A9));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_KaiLocomotion(Z_Construct_UPackage__Script_KaiLocomotion, TEXT("/Script/KaiLocomotion"), Z_Registration_Info_UPackage__Script_KaiLocomotion, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x99F07AEA, 0xA8ACD0A9));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

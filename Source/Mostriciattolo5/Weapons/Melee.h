@@ -22,9 +22,14 @@ public:
 	void SetHitCollisionActive(bool NewCollisionActive);
 
 protected:
-
+	UPROPERTY(EditAnywhere)
+	float CollisionSphereRadius = 10.f;
+	UPROPERTY(EditAnywhere)
+	float CollisionSphereLength = 2.f;
 private:
 	void HitCollisionCheck();
 	bool bHitCollisionActive = false;
-	
+	void InterceptTarget();
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* HitEffect;
 };

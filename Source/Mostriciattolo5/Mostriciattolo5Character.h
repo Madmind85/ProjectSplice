@@ -23,6 +23,7 @@ enum class NPCStatus : uint8
 class AGun;
 class AMWeapon;
 
+
 UCLASS(config=Game)
 class AMostriciattolo5Character : public ACharacter
 {
@@ -122,6 +123,7 @@ public:
 	bool IsSpammingPossess = false;
 
 	
+
 	UPROPERTY(BlueprintReadWrite)
 	bool CanBeTarget = false;
 	UPROPERTY(BlueprintReadWrite)
@@ -242,6 +244,8 @@ public:
 	bool IsDead() const;
 	UFUNCTION(BlueprintPure)
 	bool HasLostTarget();
+	UFUNCTION(BlueprintPure)
+	AMWeapon* GetFist();
 
 	class AMostriciattolo5GameMode* MGameMode;
 	
