@@ -64,7 +64,7 @@ void AGun::LaserAiming()
 		FHitResult Hit;
 		bool bHit;
 	
-		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit, nullptr) : bHit = GunLineTrace(true, Hit, nullptr);
+		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit, nullptr) : bHit = GunLineTrace(true, Hit, OwnerCharacter->CurrentAI_Target);
 		
 		if (bHit)
 		{
@@ -223,7 +223,7 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes, AActor* AI_Targe
 	if (AIShooting)
 	{
 		if (AI_Target)
-		{ UE_LOG(LogTemp, Warning, TEXT("porcoddio")) 
+		{ 
 			FVector CharLoc = AI_Target->GetActorLocation();
 			if (AIHitCheck() == true)
 			{

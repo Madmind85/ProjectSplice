@@ -80,6 +80,7 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 	
 	if (MWeapon)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("porcoddio"));
 		MWeapon->WeaponAttack(bAIShooting, AI_Target);
 	}	
 	else

@@ -125,6 +125,8 @@ public:
 	
 
 	UPROPERTY(BlueprintReadWrite)
+	AActor* CurrentAI_Target;
+	UPROPERTY(BlueprintReadWrite)
 	bool CanBeTarget = false;
 	UPROPERTY(BlueprintReadWrite)
 	float TargetLastSeen = 0.f;
