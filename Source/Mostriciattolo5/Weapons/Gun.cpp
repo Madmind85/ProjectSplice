@@ -222,6 +222,7 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
 
 	if (AIShooting)
 	{
+		//ERRORRE cosi spara semppre al player e non si sparano fra loro provare a passare la reference del mytARGET
 		ACharacter* Char = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 		if (Char)
 		{
