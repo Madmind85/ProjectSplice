@@ -64,7 +64,7 @@ void AGun::LaserAiming()
 		FHitResult Hit;
 		bool bHit;
 	
-		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit) : bHit = GunLineTrace(true, Hit);
+		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit, nullptr) : bHit = GunLineTrace(true, Hit, nullptr);
 		
 		if (bHit)
 		{
@@ -83,13 +83,13 @@ void AGun::SetIsAiming(bool IsAiming)
 	}
 }
 
-void AGun::WeaponAttack(bool AIAttack)
+void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
-	PullTrigger(AIAttack);
+	PullTrigger(AIAttack, AI_Target);
 }
 	
 // rifattorizzare
-void AGun::PullTrigger(bool bAIShooting)
+void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 {
 	if (bIsAiming)
 	{
@@ -109,7 +109,7 @@ void AGun::PullTrigger(bool bAIShooting)
 
 			FVector Location;
 			FHitResult Hit;
-			bool bHit = GunLineTrace(bAIShooting, Hit);
+			bool bHit = GunLineTrace(bAIShooting, Hit, AI_Target);
 			
 
 			UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
@@ -204,7 +204,7 @@ bool AGun::AIHitCheck()
 
 
 
-bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
+bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes, AActor* AI_Target)
 {
 	FVector Location;
 	FVector End;
@@ -222,16 +222,14 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes)
 
 	if (AIShooting)
 	{
-		//ERRORRE cosi spara semppre al player e non si sparano fra loro provare a passare la reference del mytARGET
-		ACharacter* Char = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-		if (Char)
-		{
-			FVector CharLoc = Char->GetActorLocation();
+		if (AI_Target)
+		{ UE_LOG(LogTemp, Warning, TEXT("porcoddio")) 
+			FVector CharLoc = AI_Target->GetActorLocation();
 			if (AIHitCheck() == true)
 			{
 				End = CharLoc;
 			}
-			else
+			else// spara vicino
 			{
 				FVector ShootLoc = CharLoc;
 				ShootLoc.Z = -20.f;

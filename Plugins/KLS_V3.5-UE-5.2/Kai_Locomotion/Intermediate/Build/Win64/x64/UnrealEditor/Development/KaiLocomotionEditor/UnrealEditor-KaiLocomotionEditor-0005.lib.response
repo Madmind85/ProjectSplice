@@ -6,7 +6,7 @@
 /NAME:"UnrealEditor-KaiLocomotionEditor-0005.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h.obj"
-"C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp.obj"
-"C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Default.rc2.res"
-/OUT:"C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\UnrealEditor-KaiLocomotionEditor-0005.lib"
+"E:\UnrealProjectsSC\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp.obj"
+"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Default.rc2.res"
+/OUT:"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\UnrealEditor-KaiLocomotionEditor-0005.lib"

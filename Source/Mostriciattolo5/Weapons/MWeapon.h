@@ -53,7 +53,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void SetIsAiming(bool IsAiming);
 	UFUNCTION(BlueprintCallable)
-	virtual void WeaponAttack(bool AIAttack);
+	virtual void WeaponAttack(bool AIAttack, AActor* AI_Target);
 
 	UPROPERTY(BlueprintReadWrite)
 	bool CanHitMelee = false;

@@ -32,7 +32,7 @@ void AMWeapon::SetIsAiming(bool IsAiming)
 
 }
 
-void AMWeapon::WeaponAttack(bool AIAttack)
+void AMWeapon::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
 	if (bCanAttack)
 	{

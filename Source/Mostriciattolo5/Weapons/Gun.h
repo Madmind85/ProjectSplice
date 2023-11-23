@@ -50,7 +50,7 @@ public:
 	float LongRange = 20.f;
 	//originale Blueprintcallable
 	virtual void SetIsAiming(bool IsAiming) override;
-	virtual void WeaponAttack(bool AIAttack) override;
+	virtual void WeaponAttack(bool AIAttack, AActor* AI_Target) override;
 	FVector ShotDirection;
 	FName HitBoneBName;
 
@@ -66,14 +66,14 @@ private:
 	UParticleSystem* ProjectileEffect;
 
 
-	void PullTrigger(bool bAIShooting);
+	void PullTrigger(bool bAIShooting,AActor* AI_Target);
 
 	void LaserAiming();
 
 	
 	
 
-	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes);
+	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes, AActor* AI_Target);
 
 	bool AIHitCheck();
 

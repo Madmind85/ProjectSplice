@@ -19,6 +19,12 @@ void AMelee::SetHitCollisionActive(bool NewCollisionActive)
 	bHitCollisionActive = NewCollisionActive;
 }
 
+void AMelee::WeaponAttack(bool AIAttack, AActor* AI_Target)
+{
+	Super::WeaponAttack(AIAttack, AI_Target);
+
+}
+
 void AMelee::HitCollisionCheck()
 {
 	if (bHitCollisionActive)

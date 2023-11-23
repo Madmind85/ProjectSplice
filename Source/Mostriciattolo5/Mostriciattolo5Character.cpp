@@ -75,18 +75,18 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 
 }
 
-void AMostriciattolo5Character::Attack(bool bAIShooting)
+void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 {
 	
 	if (MWeapon)
 	{
-		MWeapon->WeaponAttack(bAIShooting);
+		MWeapon->WeaponAttack(bAIShooting, AI_Target);
 	}	
 	else
 	{
 		//se non ha un arma attacca compunque con il pugno
 		if (!MFist) { SetFist(); }
-		MFist->WeaponAttack(bAIShooting);
+		MFist->WeaponAttack(bAIShooting, nullptr);
 	}
 }
 
