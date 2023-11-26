@@ -19,14 +19,17 @@ AInteractableBase::AInteractableBase()
 
 void AInteractableBase::ActivateInteractablePhysic()
 {
+	//Root->SetCollisionEnabled(ECollisionEnabled::QueryAndProbe);
 	Root->SetSimulatePhysics(true);
 	Root->SetEnableGravity(true);
+	
 }
 
 void AInteractableBase::DeactivateInteractablePhysic()
 {
 	Root->SetSimulatePhysics(false);
 	Root->SetEnableGravity(false);
+	//Root->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned

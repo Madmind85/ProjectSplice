@@ -447,12 +447,10 @@ void AMostriciattolo5Character::DropWeapon()
 {
 	if (MWeapon)
 	{
+		MWeapon->ActivateInteractablePhysic();
 		MWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		MWeapon->BeingHeld = false;
-		MWeapon->ActivateInteractablePhysic();
 		MWeapon = nullptr;
-		
-		
 	}
 }
 
