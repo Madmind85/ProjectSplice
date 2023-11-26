@@ -6,12 +6,12 @@ C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Loco
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSStrideWarping.h
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_SlotCustom.h
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSAnimBPData.h
-C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSBaseLinkedAnimInstance.h
-C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSMaskAnimInstance.h
-C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Character\KLSCharacterMovementComponent.h
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSBaseAnimInstance.h
+C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSBaseLinkedAnimInstance.h
+C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Character\KLSCharacterMovementComponent.h
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSCustomJumps.h
-C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSDataAssets.h
-C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSAnimationData.h
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSCharacterData.h
 C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Library\KLSLocomotionBlueprintLibrary.h
+C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSDataAssets.h
+C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSMaskAnimInstance.h
+C:\Users\Chiyako\Documents\GitHub\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSAnimationData.h

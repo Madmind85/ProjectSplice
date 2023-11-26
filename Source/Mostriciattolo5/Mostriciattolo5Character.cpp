@@ -428,6 +428,7 @@ void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
 			DropWeapon();
 		}
 		MWeapon = WeaponToSet;
+		MWeapon->DeactivateInteractablePhysic();
 		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
 		MWeapon->SetOwner(this);
 		MWeapon->BeingHeld = true;
@@ -448,7 +449,10 @@ void AMostriciattolo5Character::DropWeapon()
 	{
 		MWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		MWeapon->BeingHeld = false;
+		MWeapon->ActivateInteractablePhysic();
 		MWeapon = nullptr;
+		
+		
 	}
 }
 

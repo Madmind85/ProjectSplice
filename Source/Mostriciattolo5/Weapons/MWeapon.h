@@ -27,8 +27,8 @@ protected:
 	bool bCanAttack = true;
 	void ResetCanAttack();
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USkeletalMeshComponent* Mesh;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//USkeletalMeshComponent* Mesh;
 	
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;

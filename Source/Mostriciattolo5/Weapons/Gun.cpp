@@ -19,14 +19,15 @@ AGun::AGun()
 
 	
 
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(RootComponent);
+	//Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	//Mesh->SetupAttachment(RootComponent);
 
 	MuzzleLoc = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzleLoc"));
-	MuzzleLoc->SetupAttachment(Mesh);
+	MuzzleLoc->SetupAttachment(Root);
 
 	LaserDot = CreateDefaultSubobject<UDecalComponent>(TEXT("LaserDot"));
 	LaserDot->SetupAttachment(Root);
+	
 }
 
 // Called when the game starts or when spawned
@@ -98,7 +99,7 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 		{
 			RandShootError = FMath::RandRange(-40.f, 40.f);
 
-			UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleSocket"));
+			UParticleSystemComponent* MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Root, TEXT("MuzzleSocket"));
 			MuzzleFlashComponent->SetRelativeScale3D(FVector(0.07f, 0.07f, 0.07f));
 
 

@@ -16,11 +16,12 @@ public:
 	AInteractableBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UBoxComponent* Root;
+	class USkeletalMeshComponent* Root;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName InteractableActorName;
 
-	
+	void ActivateInteractablePhysic();
+	void DeactivateInteractablePhysic();
 
 protected:
 	// Called when the game starts or when spawned

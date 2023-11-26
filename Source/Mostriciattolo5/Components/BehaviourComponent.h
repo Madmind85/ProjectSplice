@@ -7,7 +7,7 @@
 #include "BehaviourComponent.generated.h"
 
 
-
+class ATargetPoint;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MOSTRICIATTOLO5_API UBehaviourComponent : public UActorComponent
@@ -17,6 +17,10 @@ class MOSTRICIATTOLO5_API UBehaviourComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UBehaviourComponent();
+	UPROPERTY(EditAnywhere)
+	TArray<ATargetPoint*> TargetPoints;
+	UPROPERTY(EditAnywhere)
+	TArray<AActor*>Enemies;
 
 protected:
 	// Called when the game starts
