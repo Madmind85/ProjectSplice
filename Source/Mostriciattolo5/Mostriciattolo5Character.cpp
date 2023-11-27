@@ -299,6 +299,11 @@ AMWeapon* AMostriciattolo5Character::GetFist()
 	return MFist;
 }
 
+bool AMostriciattolo5Character::GetIsAiming()
+{
+	return bIsAiming;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -430,7 +435,8 @@ void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
 		MWeapon = WeaponToSet;
 		MWeapon->DeactivateInteractablePhysic();
 		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
-		MWeapon->SetOwner(this);
+		MWeapon->SetOwnerChar(this);
+		
 		MWeapon->BeingHeld = true;
 	}
 }
@@ -450,6 +456,7 @@ void AMostriciattolo5Character::DropWeapon()
 		MWeapon->ActivateInteractablePhysic();
 		MWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		MWeapon->BeingHeld = false;
+		MWeapon->SetOwnerChar(nullptr);
 		MWeapon = nullptr;
 	}
 }

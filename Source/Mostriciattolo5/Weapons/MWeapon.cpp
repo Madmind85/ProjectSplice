@@ -29,8 +29,13 @@ void AMWeapon::Tick(float DeltaTime)
 
 void AMWeapon::SetIsAiming(bool IsAiming)
 {
+	if (OwnerCharacter)
+	{
+		OwnerCharacter->bIsAiming = true;
+	}
 
 }
+
 
 void AMWeapon::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
@@ -42,6 +47,11 @@ void AMWeapon::WeaponAttack(bool AIAttack, AActor* AI_Target)
 		GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack,AttackDelay,false);
 	}
 }
+void AMWeapon::SetOwnerChar(AActor* NewOwner)
+{
+	SetOwner(NewOwner);
+	SetOwnerCharacter();
+}
 void AMWeapon::ResetCanAttack()
 {
 	bCanAttack = true;
@@ -50,5 +60,12 @@ void AMWeapon::ResetCanAttack()
 
 void  AMWeapon::SetOwnerCharacter()
 {
-	OwnerCharacter = Cast<AMostriciattolo5Character>(GetOwner());
+	if (GetOwner())
+	{
+		OwnerCharacter = Cast<AMostriciattolo5Character>(GetOwner());
+	}
+	else
+	{
+		OwnerCharacter = nullptr;
+	}
 }

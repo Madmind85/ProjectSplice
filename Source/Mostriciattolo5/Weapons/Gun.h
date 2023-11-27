@@ -57,7 +57,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UDecalComponent* LaserDot;
 
-	
+
 
 private:
 	UPROPERTY(EditAnywhere)

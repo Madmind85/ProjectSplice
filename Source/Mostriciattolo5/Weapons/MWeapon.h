@@ -61,7 +61,8 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float AttackDelay = 0.5f;
 
-	
+	UFUNCTION(BlueprintCallable)
+	virtual void SetOwnerChar(AActor* NewOwner);
 	
 
 

@@ -34,7 +34,7 @@ AGun::AGun()
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-	SetOwnerCharacter();
+	
 	if (LaserDot)
 	{
 		LaserDot->SetVisibility(false);
@@ -88,6 +88,7 @@ void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
 	PullTrigger(AIAttack, AI_Target);
 }
+
 	
 // rifattorizzare
 void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)

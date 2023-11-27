@@ -248,9 +248,11 @@ public:
 	bool HasLostTarget();
 	UFUNCTION(BlueprintPure)
 	AMWeapon* GetFist();
+	UFUNCTION(BlueprintPure)
+	bool GetIsAiming();
 
 	class AMostriciattolo5GameMode* MGameMode;
-	
+	bool bIsAiming = false;
 
 private:
 
