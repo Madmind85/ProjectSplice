@@ -238,6 +238,10 @@ public:
 	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
+	UFUNCTION(BlueprintCallable)
+	bool GetIsUnderPossessAttack();
+	UFUNCTION(BlueprintCallable)
+	void SetIsUnderPossessAttack(bool IsUnderAttack);
 
 
 	UFUNCTION(BlueprintPure)
@@ -293,5 +297,7 @@ private:
 
 	void SetFist();
 	void SetNotPossessedDelayed();
+
+	bool bIsUnderPossessAttack = false;
 };
 

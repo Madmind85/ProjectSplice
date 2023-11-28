@@ -645,6 +645,16 @@ bool AMostriciattolo5Character::CheckInnerSightAngle(APawn* CharacterInSight, fl
 	}
 }
 
+bool AMostriciattolo5Character::GetIsUnderPossessAttack()
+{
+	return bIsUnderPossessAttack;
+}
+
+void AMostriciattolo5Character::SetIsUnderPossessAttack(bool IsUnderAttack)
+{
+	bIsUnderPossessAttack = IsUnderAttack;
+}
+
 bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen)
 {
 	//forse da cambiare

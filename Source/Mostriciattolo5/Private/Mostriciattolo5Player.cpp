@@ -73,7 +73,7 @@ void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
             GetCurrentPossessed()->IsSpammingDepossess = false;
             GetCurrentPossessed()->CanBeTarget = true;
             GetCurrentPossessed()->IsBeingPossessed = true;
-            IsTarget = false;
+            GetCurrentPossessed()->SetIsUnderPossessAttack(true);
             GetCurrentPossessed()->BP_StopMovement();
 
             if (ValueOverTimeComponent)
