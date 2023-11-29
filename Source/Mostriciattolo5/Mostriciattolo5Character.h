@@ -134,15 +134,13 @@ public:
 	bool IsTarget = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool TSelectModeOn = false;
-
-
-
-	UPROPERTY(BlueprintReadWrite)
-	AActor* CurrentInteractableActor;
-	
 	//forse mettere private con getter
 	UPROPERTY(BlueprintReadWrite)
 	AMostriciattolo5Character* PreviousActor = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+	AActor* CurrentInteractableActor;
+	
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	FVector TargetBoxShape;
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
@@ -154,11 +152,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Debug")
 	float CameraOffset_Speed = 4.f;
 
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UArrowComponent* AimArrow;
-	/**velocità di corsa quando ti insegue come suo target*/
-	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
-	float ChaseSpeed = 500.f;
+	/**velocità di corsa */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Speed")
+	float JogSpeed = 600.f;
+	/**velocità di passo */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Speed")
+	float WalkSpeed = 147.f;
+
+	//SPOSTARE SU AICONTROLLER
 	/**quanto ci mette prima di tornare quello che stava facendo dopo che vede piu questo npc*/
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float LooseTargetTime = 3.f;

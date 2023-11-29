@@ -301,7 +301,15 @@ AMWeapon* AMostriciattolo5Character::GetFist()
 
 bool AMostriciattolo5Character::GetIsAiming()
 {
-	return bIsAiming;
+	AMWeapon* CurrentW;
+	if (GetCurrentWeapom(CurrentW))
+	{
+		return CurrentW->GetIsAiming();
+	}
+	else
+	{
+		return false;
+	}
 }
 
 
@@ -436,7 +444,7 @@ void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
 		MWeapon->DeactivateInteractablePhysic();
 		MWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
 		MWeapon->SetOwnerChar(this);
-		
+		MWeapon->SetIsAiming(false);
 		MWeapon->BeingHeld = true;
 	}
 }

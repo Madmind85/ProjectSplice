@@ -36,6 +36,11 @@ void AMWeapon::SetIsAiming(bool IsAiming)
 
 }
 
+bool AMWeapon::GetIsAiming()
+{
+	return bIsAiming;
+}
+
 
 void AMWeapon::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
