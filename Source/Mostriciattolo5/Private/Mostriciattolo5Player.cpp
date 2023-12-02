@@ -34,8 +34,6 @@ void AMostriciattolo5Player::ControllNPCDelayed()
         IsControlling = true;
         SetActorHiddenInGame(true);
         MGameMode->ControllNPC(GetCurrentPossessed());
-        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this,0.f, EViewTargetBlendFunction::VTBlend_Linear);
-        UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(GetCurrentPossessed(), MBlendCameraTime, EViewTargetBlendFunction::VTBlend_Linear, true);
         GetCurrentPossessed()->AfterPossession(this);
         
     }
