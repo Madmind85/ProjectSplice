@@ -9,15 +9,7 @@
 #include "InputActionValue.h"
 #include "Mostriciattolo5Character.generated.h"
 
-UENUM(BlueprintType)
-enum class NPCStatus : uint8
-{
-	Tranquillo = 0 UMETA(DisplayName = "Tranquillo"),
-	Attento = 1  UMETA(DisplayName = "Attento"),
-	Aggressivo = 2    UMETA(DisplayName = "Aggressivo"),
-	Fermo = 3  UMETA(DisplayName = "Fermo")
 
-};
 
 
 class AGun;
@@ -192,8 +184,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	class UCameraComponent* MCamera = nullptr;
 	UPROPERTY(BlueprintReadWrite)
-	NPCStatus CurrentNPCStatus = NPCStatus::Tranquillo;
-	UPROPERTY(BlueprintReadWrite)
 	bool StartPossessionAnim = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool StartPossessedAnim = false;
@@ -261,6 +251,14 @@ public:
 
 	class AMostriciattolo5GameMode* MGameMode;
 	bool bIsAiming = false;
+
+
+	//Guardie Interface
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsDead();
+	virtual bool Int_GetIsDead_Implementation();
+	
+
 
 private:
 

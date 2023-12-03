@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\unrealprojectssc\\projectsplice\\plugins\\kls_v3.5-ue-5.2\\kai_locomotion\\intermediate\\build\\win64\\unrealeditor\\inc\\kailocomotioneditor\\uht\\kailocomotioneditor.init.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\unrealprojectssc\\projectsplice\\intermediate\\build\\win64\\x64\\mostriciattolo5editor\\development\\unrealed\\sharedpch.unrealed.shadowerrors.inclorderunreal5_1.h.pch",
+        "Includes": [
+            "e:\\unrealprojectssc\\projectsplice\\plugins\\kls_v3.5-ue-5.2\\kai_locomotion\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\kailocomotioneditor\\definitions.kailocomotioneditor.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

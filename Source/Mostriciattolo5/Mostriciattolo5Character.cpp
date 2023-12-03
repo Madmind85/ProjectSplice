@@ -212,6 +212,13 @@ bool AMostriciattolo5Character::HasLostTarget()
 	}	
 }
 
+bool AMostriciattolo5Character::Int_GetIsDead_Implementation()
+{
+	return IsDead();
+}
+
+
+
 void AMostriciattolo5Character::InitWeapon()
 {
 	if (MWeaponClass)
