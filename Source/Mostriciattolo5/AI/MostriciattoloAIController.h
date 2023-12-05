@@ -8,27 +8,33 @@
 #include "Mostriciattolo5/Public/M_Enums.h"
 #include "MostriciattoloAIController.generated.h"
 
-/**
- * 
- */
+
+//class UBehaviorTree;
+
+
 UCLASS()
 class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
-	NPCStatus CurrentNPCStatus = NPCStatus::Tranquillo;
-
+	
 
 	//Guardie Interface
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	NPCStatus Int_GetNpcAIStatus();
 	virtual NPCStatus Int_GetNpcAIStatus_Implementation();
+
+
+
+	UPROPERTY(EditAnywhere)
+	UBehaviorTree* AI_Behavior = nullptr;
+
 protected:
 	
 	virtual void BeginPlay()override;
 
 private:
+
 
 };

@@ -202,8 +202,7 @@ public:
 	void BP_SetTarget();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ResetTarget();
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_StopMovement();
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn);
 	UFUNCTION(BlueprintImplementableEvent)
