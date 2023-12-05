@@ -210,7 +210,8 @@ public:
 	void DropWeapon();
 	UFUNCTION(BlueprintCallable)
 	void RotatePlayerTowardsTarget(AActor* TargetActor);
-
+	UFUNCTION(BlueprintCallable)
+	void MakeBetterNoise(float LoudNess, APawn* NoiseInstigator, FVector NoiseLocation, float MaxRange, FName Tag, bool UseInstigatorLocation);
 	UFUNCTION(BlueprintCallable)
 	bool StartSelectFocusMode();
 	UFUNCTION(BlueprintCallable)

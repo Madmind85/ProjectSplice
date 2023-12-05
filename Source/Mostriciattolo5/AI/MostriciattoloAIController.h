@@ -25,7 +25,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AActor* Int_GetCurrentNPCTarget();
 	virtual AActor* Int_GetCurrentNPCTarget_Implementation();
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetCurrentNPCTarget(AActor* NewTarget);
+	virtual void Int_SetCurrentNPCTarget_Implementation(AActor* NewTarget);
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;

@@ -41,6 +41,12 @@ AActor* AMostriciattoloAIController::Int_GetCurrentNPCTarget_Implementation()
 	return CurrentNPCTarget;
 }
 
+void AMostriciattoloAIController::Int_SetCurrentNPCTarget_Implementation(AActor* NewTarget)
+{
+	CurrentNPCTarget = NewTarget;
+	
+}
+
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight)

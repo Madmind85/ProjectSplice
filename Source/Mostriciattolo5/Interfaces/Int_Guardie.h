@@ -25,7 +25,8 @@ class MOSTRICIATTOLO5_API IInt_Guardie
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AActor* Int_GetCurrentNPCTarget();
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetCurrentNPCTarget(AActor* NewTarget);
 
 
 

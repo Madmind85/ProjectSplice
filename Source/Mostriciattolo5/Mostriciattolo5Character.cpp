@@ -80,7 +80,6 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 	
 	if (MWeapon)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("porcoddio"));
 		MWeapon->WeaponAttack(bAIShooting, AI_Target);
 	}	
 	else
@@ -457,6 +456,21 @@ void AMostriciattolo5Character::DropWeapon()
 void AMostriciattolo5Character::RotatePlayerTowardsTarget(AActor* TargetActor)
 {
 
+}
+
+void AMostriciattolo5Character::MakeBetterNoise(float LoudNess, APawn* NoiseInstigator, FVector NoiseLocation, float MaxRange, FName Tag, bool UseInstigatorLocation)
+{
+	FVector NoiseLoc;
+	if (UseInstigatorLocation)
+	{
+		NoiseLoc = NoiseInstigator->GetActorLocation();
+	}
+	else
+	{
+		NoiseLoc = NoiseLocation;
+	}
+
+	MakeNoise(LoudNess, NoiseInstigator, NoiseLoc, MaxRange, Tag);
 }
 
 AMostriciattolo5Character* AMostriciattolo5Character::GetCurrentFocus()
