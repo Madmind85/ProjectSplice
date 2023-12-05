@@ -7,6 +7,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Mostriciattolo5/Interfaces/Int_MCharacter.h"
 #include "Mostriciattolo5Character.generated.h"
 
 
@@ -66,6 +67,13 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 
+	// Int_MCharacter
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_IsActorDead();
+	virtual bool Int_IsActorDead_Implementation();
+
+
+
 	UFUNCTION(BlueprintCallable)
 	void FindCharacterToTarget(float TMouseX);
 	UFUNCTION(BlueprintCallable)
@@ -116,8 +124,7 @@ public:
 
 	
 
-	UPROPERTY(BlueprintReadWrite)
-	AActor* CurrentAI_Target;
+
 	UPROPERTY(BlueprintReadWrite)
 	bool CanBeTarget = false;
 	UPROPERTY(BlueprintReadWrite)
@@ -154,19 +161,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Speed")
 	float WalkSpeed = 147.f;
 
-	//SPOSTARE SU AICONTROLLER
-	/**quanto ci mette prima di tornare quello che stava facendo dopo che vede piu questo npc*/
-	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
-	float LooseTargetTime = 3.f;
-	/**quanto ci mette prima non calcolare piu questo npc come target dopo che e stato posseduto*/
-	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
-	float NotTargetTime = 0.5f;
-	/**Angolo in gradi del cono di vista interno (quello che se ci sei dentro ti insegue subito)*/
-	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
-	float InnerConeDegrees = 45.f;
-	/**percentuale della sight radius (settabile su pawn sensing) appartenente al cono interno*/
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Behaviour")
-	float InnerConeLength = 75.f;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float RotationSpeed = 5.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Possession")
@@ -215,8 +210,7 @@ public:
 	void DropWeapon();
 	UFUNCTION(BlueprintCallable)
 	void RotatePlayerTowardsTarget(AActor* TargetActor);
-	UFUNCTION(BlueprintCallable)
-	bool IsNotTarget();
+
 	UFUNCTION(BlueprintCallable)
 	bool StartSelectFocusMode();
 	UFUNCTION(BlueprintCallable)
@@ -230,8 +224,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurrenTarget(AMostriciattolo5Character* NewTarget);
 	UFUNCTION(BlueprintCallable)
-	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
-	UFUNCTION(BlueprintCallable)
 	bool GetIsUnderPossessAttack();
 	UFUNCTION(BlueprintCallable)
 	void SetIsUnderPossessAttack(bool IsUnderAttack);
@@ -242,8 +234,6 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 	UFUNCTION(BlueprintPure)
-	bool HasLostTarget();
-	UFUNCTION(BlueprintPure)
 	AMWeapon* GetFist();
 	UFUNCTION(BlueprintPure)
 	bool GetIsAiming();
@@ -252,13 +242,7 @@ public:
 	bool bIsAiming = false;
 
 
-	//Guardie Interface
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	bool Int_GetIsDead();
-	virtual bool Int_GetIsDead_Implementation();
 	
-
-
 private:
 
 	void InitWeapon();

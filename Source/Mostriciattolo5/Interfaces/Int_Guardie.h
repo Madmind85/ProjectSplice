@@ -23,11 +23,10 @@ class MOSTRICIATTOLO5_API IInt_Guardie
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* Int_GetCurrentNPCTarget();
 
-UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-bool Int_GetIsDead();
-UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-NPCStatus Int_GetNpcAIStatus();
+
 
 
 

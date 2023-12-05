@@ -144,6 +144,8 @@ UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 }
 
 
+
+
 void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 {
 	if (!GetCurrentFocus()) { return; }
@@ -199,20 +201,8 @@ void AMostriciattolo5Character::SetCurrentFocus(AMostriciattolo5Character* Focus
 
 
 
-bool AMostriciattolo5Character::HasLostTarget()
-		{
-	float NoSeeTime = TargetLastSeen + LooseTargetTime;
-	if (GetWorld()->GetTimeSeconds() >= NoSeeTime)
-	{
-		return true;
-	}
-	else 
-	{ 
-		return false; 
-	}	
-}
 
-bool AMostriciattolo5Character::Int_GetIsDead_Implementation()
+bool AMostriciattolo5Character::Int_IsActorDead_Implementation()
 {
 	return IsDead();
 }
@@ -228,18 +218,6 @@ void AMostriciattolo5Character::InitWeapon()
 	}
 }
 
-bool AMostriciattolo5Character::IsNotTarget()
-{
-	float NoSeeTime = TargetLastSeen + NotTargetTime;
-	if (GetWorld()->GetTimeSeconds() >= NoSeeTime)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
 bool AMostriciattolo5Character::StartSelectFocusMode()
 {
@@ -630,35 +608,7 @@ void AMostriciattolo5Character::InitPawnsInViewArray()
 }
 
 
-bool AMostriciattolo5Character::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
-{
-	if (!CharacterInSight) 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("mostriciattolo character 5 check inner sight angle BADA no character in sight")) 
-		return false;
-	}
 
-	//roba suggerita da Chatgpt che con qualche calcolo di cui non capisco nulla vede se CharacterInSight è all'interno dell'anmgolo InnerConeDegrees
-	FVector DirectionVector = GetActorLocation() - CharacterInSight->GetActorLocation();
-	DirectionVector.Normalize();
-	double DProduct = FVector::DotProduct(GetActorForwardVector(), DirectionVector);
-	double AngleInRadians = FMath::Acos(FMath::Abs(DProduct));
-	double AngleInDegrees = AngleInRadians * (180.0 / UE_PI);
-	//calcola la lunghezza del cono interno in  base alla percentuaòe(innerConeLength) della lunghezza di vista totale(GetPS_SightRadius())
-	float InnerConeStraightLength = (InnerConeLength / 100) * PS_SightRadius;
-	float DistanceFromActor = FVector::Distance(GetActorLocation(), CharacterInSight->GetActorLocation());
-
-	UE_LOG(LogTemp, Warning, TEXT("Mostriciattolo Character 5 - Check Inner Sight Angle: DProduct = %f, AngleInRadians = %f"), DProduct, AngleInRadians)
-
-	if (AngleInDegrees <= InnerConeDegrees && DistanceFromActor < InnerConeStraightLength)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
 bool AMostriciattolo5Character::GetIsUnderPossessAttack()
 {

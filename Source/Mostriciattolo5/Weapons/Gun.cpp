@@ -8,6 +8,8 @@
 #include "Mostriciattolo5/Mostriciattolo5Character.h"
 #include "Components/ArrowComponent.h"
 #include "Components/DecalComponent.h"
+#include "AIController.h"
+#include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 
@@ -64,8 +66,16 @@ void AGun::LaserAiming()
 		//DrawDebugLine(GetWorld(), MuzzleLoc->GetComponentLocation(), End, FColor::Emerald, false, 0.03f);
 		FHitResult Hit;
 		bool bHit;
-	
-		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit, nullptr) : bHit = GunLineTrace(true, Hit, OwnerCharacter->CurrentAI_Target);
+		AActor* CurrentTarget = nullptr;
+		AController* OwnerController = OwnerCharacter->GetController();
+		
+		//interface get current npc target from MostriciattoloAIController
+		if (OwnerController->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
+		{
+			CurrentTarget = IInt_Guardie::Execute_Int_GetCurrentNPCTarget(OwnerController);
+		}
+
+		OwnerCharacter->IsBeingPossessed ? bHit = GunLineTrace(false, Hit, nullptr) : bHit = GunLineTrace(true, Hit, CurrentTarget);
 		
 		if (bHit)
 		{
