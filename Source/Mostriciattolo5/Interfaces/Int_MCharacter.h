@@ -25,6 +25,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsActorDead();
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsTarget();
 	
 };

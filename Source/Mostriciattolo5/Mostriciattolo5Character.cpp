@@ -145,6 +145,15 @@ UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 
 
 
+bool AMostriciattolo5Character::Int_GetIsTarget_Implementation()
+{
+	if (CanBeTarget)
+	{
+		IsTarget = true;
+	}
+	return IsTarget;
+}
+
 void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 {
 	if (!GetCurrentFocus()) { return; }
@@ -469,6 +478,7 @@ void AMostriciattolo5Character::MakeBetterNoise(float LoudNess, APawn* NoiseInst
 	{
 		NoiseLoc = NoiseLocation;
 	}
+	
 
 	MakeNoise(LoudNess, NoiseInstigator, NoiseLoc, MaxRange, Tag);
 }

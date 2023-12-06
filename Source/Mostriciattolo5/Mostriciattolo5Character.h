@@ -71,8 +71,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsActorDead();
 	virtual bool Int_IsActorDead_Implementation();
-
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsTarget();
+	virtual bool Int_GetIsTarget_Implementation();
 
 	UFUNCTION(BlueprintCallable)
 	void FindCharacterToTarget(float TMouseX);

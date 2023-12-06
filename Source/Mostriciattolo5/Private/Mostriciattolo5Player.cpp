@@ -125,7 +125,9 @@ void AMostriciattolo5Player::JumpOut()
 void AMostriciattolo5Player::BeginPlay()
 {
 	Super::BeginPlay();     
-    
+
+    IsTarget = true;
+
     if (MGameMode)
     {
         MGameMode->Mostriciattolo_OS = this;

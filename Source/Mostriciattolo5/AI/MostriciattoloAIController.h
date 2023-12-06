@@ -47,7 +47,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	bool IsMCharacterDead(AActor* ActorToTest);
 	UFUNCTION(BlueprintCallable)
-	void OnPawnSeen(TArray<APawn*> SeenPawns);
+	void OnActorSeen(TArray<AActor*> SeenActors);
 
 private:
 
@@ -64,11 +64,10 @@ private:
 	UPROPERTY(EditDefaultsOnly,  Category = "Behaviour")
 	float InnerConeLength = 75.f;
 
-		
-	UAIPerceptionComponent* AIPerceptionComp;
+	void ProcessLastVisionStimulus();
 
 	AActor* SensedActor = nullptr;
-	void SetAIPerceprionComponent();
+	
 	FAIStimulus CurrentStimulus;
 	AActor* CurrentNPCTarget = nullptr;
 };

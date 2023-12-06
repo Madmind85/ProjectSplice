@@ -13,6 +13,22 @@
 #include "Kismet/GameplayStatics.h"
 
 
+void AMostriciattoloAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+
+	if (AI_Behavior)
+	{
+		RunBehaviorTree(AI_Behavior);
+	}
+	/*
+	APawn* MPlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+
+	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
+	*/
+}
+
 
 NPCStatus AMostriciattoloAIController::GetNpcAIStatus()
 {
@@ -41,34 +57,41 @@ bool AMostriciattoloAIController::IsMCharacterDead(AActor* ActorToTest)
 	else return true;
 }
 
-void AMostriciattoloAIController::OnPawnSeen(TArray<APawn*> SeenPawns)
+void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 {
-	if (!AIPerceptionComp) {SetAIPerceprionComponent();}
+
+	UAIPerceptionComponent* AIPerceptionComp = GetAIPerceptionComponent();
+	FAISenseID sightid = UAISense::GetSenseID<UAISense_Sight>();
+	FAISenseID hearid = UAISense::GetSenseID<UAISense_Hearing>();
+
 	//dati relativi al pawn percepito
 	FActorPerceptionBlueprintInfo PercInfo;
 
 	if (AIPerceptionComp)
-	{//loop tra i pawn percepiti
-		for (APawn* SPawn : SeenPawns)
+	{	//loop tra i pawn percepiti
+		for (AActor* SPawn : SeenActors)
 		{
 			AIPerceptionComp->GetActorsPerception(SPawn, PercInfo);
 			//salva l'attore percepito
 			SensedActor = PercInfo.Target;
-			//neested loop attraverso gli stimoli raccolti da questo pawn
+			//nested loop attraverso gli stimoli raccolti da questo pawn
 			TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
 			for (const FAIStimulus CStim : CurrentStimuli)
 			{
+				//Salva Lo Stimolo percepito
 				CurrentStimulus = CStim;
-				FAISenseID sightid = UAISense::GetSenseID<UAISense_Sight>();
-				FAISenseID hearid = UAISense::GetSenseID<UAISense_Hearing>();
-
-				if (CurrentStimulus.Type == sightid)
+				
+				if (CStim.Type == sightid)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("I SAW YOU!"));
+					ProcessLastVisionStimulus();
 				}
-				else if (CurrentStimulus.Type == hearid)
+				else if (CStim.Type == hearid && CStim.IsActive())
 				{
 					UE_LOG(LogTemp, Warning, TEXT("I HEARD YOU!"));
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Stimulus not active or not recognized"));
 				}
 					
 			}
@@ -77,10 +100,23 @@ void AMostriciattoloAIController::OnPawnSeen(TArray<APawn*> SeenPawns)
 	}
 }
 
-void AMostriciattoloAIController::SetAIPerceprionComponent()
+void AMostriciattoloAIController::ProcessLastVisionStimulus()
 {
-	AIPerceptionComp = GetOwner()->GetComponentByClass<UAIPerceptionComponent>();
+	if (SensedActor->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+	{
+		bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(SensedActor);
+		bool bIsTarget = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
+
+		if (bDead == false)
+		{
+			if (bIsTarget)
+			{
+				//setCurrentStatus to aggressivo (creare funzione si puo settare il valore sulla blackboars anche da c , esempio commentato in begin play)
+			}
+		}
+	}
 }
+
 
 AActor* AMostriciattoloAIController::Int_GetCurrentNPCTarget_Implementation()
 {
@@ -125,21 +161,4 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, 
 		{
 			return false;
 		}
-}
-
-void AMostriciattoloAIController::BeginPlay()
-{
-	Super::BeginPlay();
-
-	SetAIPerceprionComponent();
-	
-	if (AI_Behavior)
-	{
-		RunBehaviorTree(AI_Behavior);
-	}
-	/*
-	APawn* MPlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-
-	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
-	*/
 }
