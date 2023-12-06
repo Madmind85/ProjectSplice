@@ -6,12 +6,13 @@
 #include "AIController.h"
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Mostriciattolo5/Public/M_Enums.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "Mostriciattolo5/Interfaces/Int_MCharacter.h"
 #include "MostriciattoloAIController.generated.h"
 
 
 //class UBehaviorTree;
-
+class UAIPerceptionComponent;
 
 UCLASS()
 class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController
@@ -45,6 +46,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	bool IsMCharacterDead(AActor* ActorToTest);
+	UFUNCTION(BlueprintCallable)
+	void OnPawnSeen(TArray<APawn*> SeenPawns);
 
 private:
 
@@ -61,5 +64,11 @@ private:
 	UPROPERTY(EditDefaultsOnly,  Category = "Behaviour")
 	float InnerConeLength = 75.f;
 
+		
+	UAIPerceptionComponent* AIPerceptionComp;
+
+	AActor* SensedActor = nullptr;
+	void SetAIPerceprionComponent();
+	FAIStimulus CurrentStimulus;
 	AActor* CurrentNPCTarget = nullptr;
 };

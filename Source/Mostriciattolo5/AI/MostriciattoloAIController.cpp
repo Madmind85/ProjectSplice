@@ -5,6 +5,11 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Mostriciattolo5/Interfaces/Int_MCharacter.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISense.h"
+#include "Perception/AISense_Sight.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AIPerceptionSystem.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -34,6 +39,47 @@ bool AMostriciattoloAIController::IsMCharacterDead(AActor* ActorToTest)
 		else return true;
 	}
 	else return true;
+}
+
+void AMostriciattoloAIController::OnPawnSeen(TArray<APawn*> SeenPawns)
+{
+	if (!AIPerceptionComp) {SetAIPerceprionComponent();}
+	//dati relativi al pawn percepito
+	FActorPerceptionBlueprintInfo PercInfo;
+
+	if (AIPerceptionComp)
+	{//loop tra i pawn percepiti
+		for (APawn* SPawn : SeenPawns)
+		{
+			AIPerceptionComp->GetActorsPerception(SPawn, PercInfo);
+			//salva l'attore percepito
+			SensedActor = PercInfo.Target;
+			//neested loop attraverso gli stimoli raccolti da questo pawn
+			TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
+			for (const FAIStimulus CStim : CurrentStimuli)
+			{
+				CurrentStimulus = CStim;
+				FAISenseID sightid = UAISense::GetSenseID<UAISense_Sight>();
+				FAISenseID hearid = UAISense::GetSenseID<UAISense_Hearing>();
+
+				if (CurrentStimulus.Type == sightid)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("I SAW YOU!"));
+				}
+				else if (CurrentStimulus.Type == hearid)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("I HEARD YOU!"));
+				}
+					
+			}
+
+		}
+	}
+}
+
+void AMostriciattoloAIController::SetAIPerceprionComponent()
+{
+	AIPerceptionComp = GetOwner()->GetComponentByClass<UAIPerceptionComponent>();
 }
 
 AActor* AMostriciattoloAIController::Int_GetCurrentNPCTarget_Implementation()
@@ -83,10 +129,17 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, 
 
 void AMostriciattoloAIController::BeginPlay()
 {
-
 	Super::BeginPlay();
 
-	APawn* MPlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
+	SetAIPerceprionComponent();
 	
+	if (AI_Behavior)
+	{
+		RunBehaviorTree(AI_Behavior);
+	}
+	/*
+	APawn* MPlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+
+	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
+	*/
 }
