@@ -162,3 +162,43 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, 
 			return false;
 		}
 }
+
+void AMostriciattoloAIController::SetNPCSatateAsFermo()
+{
+}
+
+void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
+{
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
+	APawn* MPawn = GetPawn();
+	if (MPawn)
+	{
+		if (MPawn->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+		{
+			//toglie la mira
+			IInt_MCharacter::Execute_SetIsAiming(MPawn, false);
+		}
+	}
+}
+
+void AMostriciattoloAIController::SetNPCSatateAsAttento()
+{
+}
+
+void AMostriciattoloAIController::SetNPCSatateAsMinaccioso()
+{
+}
+
+void AMostriciattoloAIController::SetNPCSatateAsAggressivo()
+{
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
+	APawn* MPawn = GetPawn();
+	if (MPawn)
+	{
+		if (MPawn->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+		{
+			//mira
+			IInt_MCharacter::Execute_SetIsAiming(MPawn, true);
+		}
+	}
+}

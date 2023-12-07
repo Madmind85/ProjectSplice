@@ -154,6 +154,10 @@ bool AMostriciattolo5Character::Int_GetIsTarget_Implementation()
 	return IsTarget;
 }
 
+void AMostriciattolo5Character::SetIsAiming_Implementation(bool IsAiming)
+{
+}
+
 void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 {
 	if (!GetCurrentFocus()) { return; }

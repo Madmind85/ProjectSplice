@@ -27,5 +27,7 @@ public:
 	bool Int_IsActorDead();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_GetIsTarget();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsAiming(bool IsAiming);
 	
 };

@@ -18,7 +18,7 @@ class AMWeapon;
 
 
 UCLASS(config=Game)
-class AMostriciattolo5Character : public ACharacter
+class AMostriciattolo5Character : public ACharacter, public IInt_MCharacter
 {
 	GENERATED_BODY()
 
@@ -74,7 +74,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_GetIsTarget();
 	virtual bool Int_GetIsTarget_Implementation();
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetIsAiming(bool IsAiming);
+	virtual void SetIsAiming_Implementation(bool IsAiming);
 	UFUNCTION(BlueprintCallable)
 	void FindCharacterToTarget(float TMouseX);
 	UFUNCTION(BlueprintCallable)

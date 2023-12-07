@@ -15,7 +15,7 @@
 class UAIPerceptionComponent;
 
 UCLASS()
-class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController
+class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController, public IInt_Guardie
 {
 	GENERATED_BODY()
 
@@ -37,6 +37,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
 
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsFermo();
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsTranquillo();
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsAttento();
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsMinaccioso();
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsAggressivo();
+
 protected:
 	
 	virtual void BeginPlay()override;
@@ -48,6 +59,7 @@ protected:
 	bool IsMCharacterDead(AActor* ActorToTest);
 	UFUNCTION(BlueprintCallable)
 	void OnActorSeen(TArray<AActor*> SeenActors);
+
 
 private:
 
