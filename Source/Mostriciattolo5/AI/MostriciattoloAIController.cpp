@@ -117,6 +117,19 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	}
 }
 
+void AMostriciattoloAIController::SetPawnAim(bool bPawnAiming)
+{
+	APawn* MPawn = GetPawn();
+	if (MPawn)
+	{
+		if (MPawn->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+		{
+			//mira
+			IInt_MCharacter::Execute_SetIsAiming(MPawn, bPawnAiming);
+		}
+	}
+}
+
 
 AActor* AMostriciattoloAIController::Int_GetCurrentNPCTarget_Implementation()
 {
@@ -163,42 +176,55 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, 
 		}
 }
 
+
+
+void AMostriciattoloAIController::SetNPCSatateAsMorto()
+{
+	//Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6
+
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 0);
+	SetPawnAim(false);
+}
+
 void AMostriciattoloAIController::SetNPCSatateAsFermo()
 {
+
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 1);
+	SetPawnAim(false);
 }
 
 void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 {
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
-	APawn* MPawn = GetPawn();
-	if (MPawn)
-	{
-		if (MPawn->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
-		{
-			//toglie la mira
-			IInt_MCharacter::Execute_SetIsAiming(MPawn, false);
-		}
-	}
+	SetPawnAim(false);
+}
+void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
+{
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 3);
 }
 
-void AMostriciattoloAIController::SetNPCSatateAsAttento()
+
+void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point)
 {
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 4);
+
+	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), Suspect_Point);
+	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), MoveToLoc);
+	SetPawnAim(true);
 }
+
 
 void AMostriciattoloAIController::SetNPCSatateAsMinaccioso()
 {
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
 }
 
-void AMostriciattoloAIController::SetNPCSatateAsAggressivo()
+void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target, AActor* Aim_Target)
 {
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
-	APawn* MPawn = GetPawn();
-	if (MPawn)
-	{
-		if (MPawn->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
-		{
-			//mira
-			IInt_MCharacter::Execute_SetIsAiming(MPawn, true);
-		}
-	}
+
+	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
+	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Aim_Target);
+
+	SetPawnAim(true);
 }

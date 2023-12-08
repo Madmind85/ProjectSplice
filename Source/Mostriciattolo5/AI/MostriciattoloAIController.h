@@ -37,16 +37,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
 
+
+	//NPCStates /Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsMorto();
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsFermo();
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsTranquillo();
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsAttento();
+	void SetNPCSatateAsMinacciato();
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMinaccioso();
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsAggressivo();
+	void SetNPCSatateAsAggressivo(AActor* Target, AActor* Aim_Target);
 
 protected:
 	
@@ -82,4 +88,6 @@ private:
 	
 	FAIStimulus CurrentStimulus;
 	AActor* CurrentNPCTarget = nullptr;
+
+	void SetPawnAim(bool bPawnAiming);
 };
