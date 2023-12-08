@@ -17,3 +17,10 @@ enum class NPCStatus : uint8
 	
 };
 
+UENUM(BlueprintType)
+enum class ActorFaction : uint8
+{
+	Neutrale = 0 UMETA(DisplayName = "Neutrale"),
+	Compromesso = 1  UMETA(DisplayName = "Compromesso"),
+	Nemico = 2 UMETA(DisplayName = "Nemico"),
+};

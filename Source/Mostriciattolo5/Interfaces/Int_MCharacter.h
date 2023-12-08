@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "Mostriciattolo5/Public/M_Enums.h"
 #include "Int_MCharacter.generated.h"
 
 // This class does not need to be modified.
@@ -26,7 +27,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsActorDead();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	bool Int_GetIsTarget();
+	ActorFaction Int_GetIsTarget();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetIsAiming(bool IsAiming);
 	

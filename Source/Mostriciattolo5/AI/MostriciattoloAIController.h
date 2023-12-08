@@ -52,14 +52,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMinaccioso();
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsAggressivo(AActor* Target, AActor* Aim_Target);
+	void SetNPCSatateAsAggressivo(AActor* Target);
+	UFUNCTION(BlueprintPure)
+	NPCStatus GetNpcAIStatus();
 
 protected:
 	
 	virtual void BeginPlay()override;
 
-	UFUNCTION(BlueprintPure)
-	NPCStatus GetNpcAIStatus();
+
 
 	UFUNCTION(BlueprintCallable)
 	bool IsMCharacterDead(AActor* ActorToTest);

@@ -145,12 +145,13 @@ UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 
 
 
-bool AMostriciattolo5Character::Int_GetIsTarget_Implementation()
+ActorFaction AMostriciattolo5Character::Int_GetIsTarget_Implementation()
 {
 	if (CanBeTarget)
 	{
-		IsTarget = true;
+		IsTarget = ActorFaction::Compromesso;
 	}
+
 	return IsTarget;
 }
 

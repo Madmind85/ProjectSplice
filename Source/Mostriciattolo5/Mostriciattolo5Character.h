@@ -7,6 +7,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Mostriciattolo5/Public/M_Enums.h"
 #include "Mostriciattolo5/Interfaces/Int_MCharacter.h"
 #include "Mostriciattolo5Character.generated.h"
 
@@ -72,8 +73,8 @@ public:
 	bool Int_IsActorDead();
 	virtual bool Int_IsActorDead_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	bool Int_GetIsTarget();
-	virtual bool Int_GetIsTarget_Implementation();
+	ActorFaction Int_GetIsTarget();
+	virtual ActorFaction Int_GetIsTarget_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetIsAiming(bool IsAiming);
 	virtual void SetIsAiming_Implementation(bool IsAiming);
@@ -133,7 +134,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	float TargetLastSeen = 0.f;
 	UPROPERTY(BlueprintReadWrite)
-	bool IsTarget = false;
+	ActorFaction IsTarget = ActorFaction::Neutrale;
 	UPROPERTY(BlueprintReadWrite)
 	bool TSelectModeOn = false;
 	//forse mettere private con getter

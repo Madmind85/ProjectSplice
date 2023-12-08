@@ -32,6 +32,8 @@ void AMostriciattolo5Player::ControllNPCDelayed()
     if (MGameMode && GetCurrentPossessed())
     {
         IsControlling = true;
+        //se possiede non viene considerato dalla ia del nemico
+        IsTarget = ActorFaction::Neutrale;
         SetActorHiddenInGame(true);
         MGameMode->ControllNPC(GetCurrentPossessed());
         GetCurrentPossessed()->AfterPossession(this);
@@ -48,7 +50,7 @@ void AMostriciattolo5Player::ControllMainDelayed()
     }
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
     NoCollisionTarget = false;
-    IsTarget = true;
+    IsTarget = ActorFaction::Nemico;
     IsControlling = false;
     SetCurrentPossessed(nullptr);
 }
@@ -114,9 +116,7 @@ void AMostriciattolo5Player::JumpOut()
         AfterDepossessed(this);
 
         NoCollisionTarget = false;
-        IsTarget = true;
-
-        GetCurrentPossessed()->IsTarget = false;
+       
         //delay a IsBeingPossessed = falsePerPermettere di allontanarsi prima di attivare la collisione
         GetCurrentPossessed()->SetNotPossessedTimer();
     }
@@ -126,7 +126,7 @@ void AMostriciattolo5Player::BeginPlay()
 {
 	Super::BeginPlay();     
 
-    IsTarget = true;
+    IsTarget = ActorFaction::Nemico;
 
     if (MGameMode)
     {
@@ -134,6 +134,11 @@ void AMostriciattolo5Player::BeginPlay()
     }
 
 	SetActorTickEnabled(true);
+}
+
+ActorFaction AMostriciattolo5Player::Int_GetIsTarget_Implementation()
+{
+    return ActorFaction::Nemico;
 }
 
 void AMostriciattolo5Player::OnTeleportFinished()

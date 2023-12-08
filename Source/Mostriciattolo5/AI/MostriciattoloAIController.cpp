@@ -105,13 +105,23 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	if (SensedActor->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
 	{
 		bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(SensedActor);
-		bool bIsTarget = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
+		ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
+		NPCStatus CurrentStatus = GetNpcAIStatus();
 
 		if (bDead == false)
-		{
-			if (bIsTarget)
-			{
-				//setCurrentStatus to aggressivo (creare funzione si puo settare il valore sulla blackboars anche da c , esempio commentato in begin play)
+		{	//sela guardia vista è compromessa e questo npc non sta gia attacando qualcuno
+			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
+			{  //attacca
+				CurrentNPCTarget = SensedActor;
+				SetNPCSatateAsAggressivo(CurrentNPCTarget);
+			}
+			//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+			else if (Faction == ActorFaction::Nemico)
+			{	//attacca
+				CurrentNPCTarget = SensedActor;
+				SetNPCSatateAsAggressivo(CurrentNPCTarget);
+
+				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
 			}
 		}
 	}
@@ -219,12 +229,13 @@ void AMostriciattoloAIController::SetNPCSatateAsMinaccioso()
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
 }
 
-void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target, AActor* Aim_Target)
+void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 {
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
 
 	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
-	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Aim_Target);
+	//TODO creare funzione su interface per prendere aimtarget da Target
+	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
 
 	SetPawnAim(true);
 }
