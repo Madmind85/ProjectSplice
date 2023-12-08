@@ -110,21 +110,31 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		NPCStatus CurrentStatus = GetNpcAIStatus();
 
 		if (bDead == false)
-		{	//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
-			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
-			{  //attacca
-				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsAggressivo(CurrentNPCTarget);
-			}
-			//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
-			else if (Faction == ActorFaction::Nemico)
-			{	//attacca
-				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsAggressivo(CurrentNPCTarget);
+		{	//se lo sta  attualmente vedendo
+			if (CurrentStimulus.WasSuccessfullySensed())
+			{
+				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
+				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
+				{  //attacca
+					CurrentNPCTarget = SensedActor;
+					SetNPCSatateAsAggressivo(CurrentNPCTarget);
+				}
+				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+				else if (Faction == ActorFaction::Nemico)
+				{	//attacca
+					CurrentNPCTarget = SensedActor;
+					SetNPCSatateAsAggressivo(CurrentNPCTarget);
 
-				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+					//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+				}
+				//se ivece lo perde
+				
 			}
-			
+			else if (!CurrentStimulus.WasSuccessfullySensed())
+			{
+				//corre versoall'ultimo punto in cui ti ha visto
+				SetNPCSatateAsInseguendo( CurrentStimulus.StimulusLocation);
+			}
 		}
 		else if (bDead == true)
 		{
@@ -141,14 +151,17 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 
 void AMostriciattoloAIController::ProcessLastHearingStimulus()
 {
+	//Sesta attaccando o minacciando qualcuno non si caca il rumore
+	if (GetNpcAIStatus() == NPCStatus::Aggressivo) { return; }
 
-	if (CurrentStimulus.IsValid())
+	if (CurrentStimulus.WasSuccessfullySensed())
 	{
 		FVector GoToPoint = ProjPointToNavigation(CurrentStimulus.StimulusLocation);
 
 		if (CurrentStimulus.Tag == FName("Pericolo"))
 		{
-			SetNPCSatateAsMinaccioso(nullptr, GoToPoint);
+			//TODO SeLoVede anche è minaccioso
+			//Altrimneti corre verso lo sparo (inseguendo
 		}
 
 		else
@@ -243,7 +256,7 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, 
 
 void AMostriciattoloAIController::SetNPCSatateAsMorto()
 {
-	//Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6
+	//Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6 /Inseguendo = 7
 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 0);
 	SetPawnAim(false);
@@ -277,7 +290,7 @@ void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVect
 }
 
 
-void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedActor, FVector SuspectLocation)
+void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedActor)
 {
 	SetPawnAim(true);
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
@@ -285,10 +298,7 @@ void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedAct
 	{
 		//TODO comportamento miaccioso
 	}
-	else
-	{
-		GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), SuspectLocation);
-	}
+
 }
 
 void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
@@ -300,4 +310,10 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
 
 	SetPawnAim(true);
+}
+
+void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarget)
+{
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
+	//TODO aggiungere nell Int_MChar uno switch definito in bp perla velocita jog  e walk
 }

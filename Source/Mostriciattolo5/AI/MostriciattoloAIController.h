@@ -38,7 +38,7 @@ public:
 	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
 
 
-	//NPCStates /Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6
+	//NPCStates /Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6/Inseguendo = 7
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMorto();
 	UFUNCTION(BlueprintCallable)
@@ -50,9 +50,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point);
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsMinaccioso(AActor* ThreatenedActor, FVector SuspectLocation);
+	void SetNPCSatateAsMinaccioso(AActor* ThreatenedActor);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsAggressivo(AActor* Target);
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsInseguendo(FVector LastSeenTarget);
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
 

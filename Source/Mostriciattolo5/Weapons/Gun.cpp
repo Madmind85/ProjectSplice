@@ -126,17 +126,27 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 
 			UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 			ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
+			UActorComponent* Hitcomponent = Hit.GetComponent();
+			float CurrentDamage = WeaponDamage;
 
 			AActor* HitActor = Hit.GetActor();
 			if (HitActor)
 			{
 				if (HitActor == this) { return; }
 
+				if (Hitcomponent) 
+				{	//HeadShot
+					if (Hitcomponent->ComponentHasTag(FName("Head"))) {CurrentDamage *= 3;}
+					
+				}
+
+				//TODO spostare su interface
 				AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
 
-				FPointDamageEvent DamageEvent(WeaponDamage, Hit, ShotDirection, nullptr);
+				FPointDamageEvent DamageEvent(CurrentDamage, Hit, ShotDirection, nullptr);
 
-				HitActor->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+				HitActor->TakeDamage(CurrentDamage, DamageEvent, OwnerController, this);
+
 				BP_ShootEffect();
 				if (HitCharacter)
 				{

@@ -13,7 +13,8 @@ enum class NPCStatus : uint8
 	Minacciato = 3 UMETA(DisplayName = "Minacciato"),
 	Attento = 4  UMETA(DisplayName = "Attento"),
 	Minaccioso = 5 UMETA(DisplayName = "Minaccioso"),
-	Aggressivo = 6   UMETA(DisplayName = "Aggressivo")
+	Aggressivo = 6   UMETA(DisplayName = "Aggressivo"),
+	Inseguendo = 7  UMETA(DisplayName = "Inseguendo")
 	
 };
 
