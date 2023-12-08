@@ -95,6 +95,6 @@ private:
 	AActor* CurrentNPCTarget = nullptr;
 
 	void SetPawnAim(bool bPawnAiming);
-
+	bool IsPawnPossessed();
 	FVector ProjPointToNavigation(FVector Point);
 };

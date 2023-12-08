@@ -30,5 +30,7 @@ public:
 	ActorFaction Int_GetIsTarget();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetIsAiming(bool IsAiming);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_IsActorPossessed();
 	
 };

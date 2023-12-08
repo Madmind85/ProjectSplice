@@ -212,6 +212,11 @@ void AMostriciattolo5Character::SetCurrentFocus(AMostriciattolo5Character* Focus
 	CurrentFocus = FocusToSet;
 }
 
+bool AMostriciattolo5Character::Int_IsActorPossessed_Implementation()
+{
+	return IsBeingPossessed;
+}
+
 
 
 

@@ -184,6 +184,20 @@ void AMostriciattoloAIController::SetPawnAim(bool bPawnAiming)
 	}
 }
 
+bool AMostriciattoloAIController::IsPawnPossessed()
+{
+	APawn* MPawn = GetPawn();
+	if (MPawn)
+	{
+		if (MPawn->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+		{
+			return IInt_MCharacter::Execute_Int_IsActorPossessed(MPawn);
+		}
+		else return false;
+	}
+	else return false;
+}
+
 FVector AMostriciattoloAIController::ProjPointToNavigation(FVector Point)
 {
 	// Ottieni l'istanza del sistema di navigazione
@@ -276,12 +290,14 @@ void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 }
 void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 {
+	if (IsPawnPossessed()) { return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 3);
 }
 
 
 void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point)
 {
+	if (IsPawnPossessed()) { return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 4);
 
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), Suspect_Point);
@@ -292,6 +308,7 @@ void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVect
 
 void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedActor)
 {
+	if (IsPawnPossessed()) { return; }
 	SetPawnAim(true);
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
 	if (ThreatenedActor)
@@ -303,6 +320,7 @@ void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedAct
 
 void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 {
+	if (IsPawnPossessed()) { return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
 
 	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
@@ -314,6 +332,7 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 
 void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarget)
 {
+	if (IsPawnPossessed()) { return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 	//TODO aggiungere nell Int_MChar uno switch definito in bp perla velocita jog  e walk
 }

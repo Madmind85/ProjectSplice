@@ -82,6 +82,11 @@ public:
 	void FindCharacterToTarget(float TMouseX);
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentFocus(AMostriciattolo5Character* FocusToSet);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_IsActorPossessed();
+	virtual bool Int_IsActorPossessed_Implementation();
+
+
 
 	UCapsuleComponent* GetPossessSocket();
 
