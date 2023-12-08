@@ -8,6 +8,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISense.h"
 #include "Perception/AISense_Sight.h"
+#include "NavigationSystem.h"
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "Kismet/GameplayStatics.h"
@@ -87,7 +88,7 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 				}
 				else if (CStim.Type == hearid && CStim.IsActive())
 				{
-					UE_LOG(LogTemp, Warning, TEXT("I HEARD YOU!"));
+					ProcessLastHearingStimulus();
 				}
 				else
 				{
@@ -109,7 +110,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		NPCStatus CurrentStatus = GetNpcAIStatus();
 
 		if (bDead == false)
-		{	//sela guardia vista è compromessa e questo npc non sta gia attacando qualcuno
+		{	//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
 			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
 			{  //attacca
 				CurrentNPCTarget = SensedActor;
@@ -123,6 +124,36 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 
 				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
 			}
+			
+		}
+		else if (bDead == true)
+		{
+			//TODO reazione al cadavere
+			//chiama altre guardie vicine
+			//scansiona il cadavere
+			//tramite Int_MCharacter si accede all'identita dell'assassino (get guardkiller che si potrebbe settare dall'instigator del receive damage)
+			//settare variavbile sempre tramite interfaccia come gia scansonato senno lo fanno in eterno
+			//setta l'assassino come compromesso
+			//spawn del raccoglitore di cadaveri
+		}
+	}
+}
+
+void AMostriciattoloAIController::ProcessLastHearingStimulus()
+{
+
+	if (CurrentStimulus.IsValid())
+	{
+		FVector GoToPoint = ProjPointToNavigation(CurrentStimulus.StimulusLocation);
+
+		if (CurrentStimulus.Tag == FName("Pericolo"))
+		{
+			SetNPCSatateAsMinaccioso(nullptr, GoToPoint);
+		}
+
+		else
+		{
+			SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation);
 		}
 	}
 }
@@ -138,6 +169,28 @@ void AMostriciattoloAIController::SetPawnAim(bool bPawnAiming)
 			IInt_MCharacter::Execute_SetIsAiming(MPawn, bPawnAiming);
 		}
 	}
+}
+
+FVector AMostriciattoloAIController::ProjPointToNavigation(FVector Point)
+{
+	// Ottieni l'istanza del sistema di navigazione
+	const UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+
+	// Punto nel mondo che vuoi proiettare
+	FVector WorldPoint = Point;
+
+	// Variabile per memorizzare il risultato della proiezione
+	FNavLocation ProjectedPoint;
+
+	// Proietta il punto sulla superficie navigabile
+	bool bSuccess = NavSys->ProjectPointToNavigation(WorldPoint, ProjectedPoint);
+	
+	if (bSuccess)
+	{
+		return ProjectedPoint;
+	}
+	return WorldPoint;
+	
 }
 
 
@@ -224,9 +277,18 @@ void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVect
 }
 
 
-void AMostriciattoloAIController::SetNPCSatateAsMinaccioso()
+void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedActor, FVector SuspectLocation)
 {
+	SetPawnAim(true);
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
+	if (ThreatenedActor)
+	{
+		//TODO comportamento miaccioso
+	}
+	else
+	{
+		GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), SuspectLocation);
+	}
 }
 
 void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)

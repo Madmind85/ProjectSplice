@@ -50,18 +50,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point);
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsMinaccioso();
+	void SetNPCSatateAsMinaccioso(AActor* ThreatenedActor, FVector SuspectLocation);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsAggressivo(AActor* Target);
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
 
+
+
 protected:
 	
 	virtual void BeginPlay()override;
 
-
-
+	
 	UFUNCTION(BlueprintCallable)
 	bool IsMCharacterDead(AActor* ActorToTest);
 	UFUNCTION(BlueprintCallable)
@@ -84,6 +85,7 @@ private:
 	float InnerConeLength = 75.f;
 
 	void ProcessLastVisionStimulus();
+	void ProcessLastHearingStimulus();
 
 	AActor* SensedActor = nullptr;
 	
@@ -91,4 +93,6 @@ private:
 	AActor* CurrentNPCTarget = nullptr;
 
 	void SetPawnAim(bool bPawnAiming);
+
+	FVector ProjPointToNavigation(FVector Point);
 };
