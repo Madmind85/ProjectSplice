@@ -31,6 +31,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetIsAiming(bool IsAiming);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetRunning(bool IsRunning);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsActorPossessed();
 	
 };

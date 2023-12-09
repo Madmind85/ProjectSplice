@@ -23,6 +23,8 @@ void AMostriciattoloAIController::BeginPlay()
 	{
 		RunBehaviorTree(AI_Behavior);
 	}
+
+	SetNPCSatateAsTranquillo();
 	/*
 	APawn* MPlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
@@ -285,8 +287,9 @@ void AMostriciattoloAIController::SetNPCSatateAsFermo()
 
 void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 {
+	if (IsPawnPossessed()) { return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
-	SetPawnAim(false);
+	
 }
 void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 {
@@ -302,14 +305,14 @@ void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVect
 
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), Suspect_Point);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), MoveToLoc);
-	SetPawnAim(true);
+
 }
 
 
 void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedActor)
 {
 	if (IsPawnPossessed()) { return; }
-	SetPawnAim(true);
+
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
 	if (ThreatenedActor)
 	{
@@ -327,12 +330,11 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 	//TODO creare funzione su interface per prendere aimtarget da Target
 	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
 
-	SetPawnAim(true);
 }
 
 void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarget)
 {
-	if (IsPawnPossessed()) { return; }
+	if (IsPawnPossessed()) { return; }	
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 	//TODO aggiungere nell Int_MChar uno switch definito in bp perla velocita jog  e walk
 }

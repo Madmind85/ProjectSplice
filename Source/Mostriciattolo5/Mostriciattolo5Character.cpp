@@ -217,6 +217,12 @@ bool AMostriciattolo5Character::Int_IsActorPossessed_Implementation()
 	return IsBeingPossessed;
 }
 
+void AMostriciattolo5Character::SetRunning_Implementation(bool IsRunning)
+{
+
+
+}
+
 
 
 

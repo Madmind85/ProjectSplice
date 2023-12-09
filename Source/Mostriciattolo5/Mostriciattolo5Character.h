@@ -85,6 +85,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsActorPossessed();
 	virtual bool Int_IsActorPossessed_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetRunning(bool IsRunning);
+	virtual void SetRunning_Implementation(bool IsRunning);
 
 
 
