@@ -55,7 +55,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMinacciato();
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point);
+	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMinaccioso(AActor* ThreatenedActor);
 	UFUNCTION(BlueprintCallable)

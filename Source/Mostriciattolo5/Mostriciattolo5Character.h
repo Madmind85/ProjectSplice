@@ -88,7 +88,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetRunning(bool IsRunning);
 	virtual void SetRunning_Implementation(bool IsRunning);
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* Int_GetKillerActor();
+	virtual AActor* Int_GetKillerActor_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_ResetKillerActor();
+	virtual void Int_ResetKillerActor_Implementation();
 
 
 	UCapsuleComponent* GetPossessSocket();
@@ -135,8 +140,8 @@ public:
 	bool IsSpammingPossess = false;
 
 	
-
-
+	UPROPERTY(BlueprintReadWrite)
+	AActor* KillerActor = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	bool CanBeTarget = false;
 	UPROPERTY(BlueprintReadWrite)
@@ -200,7 +205,8 @@ public:
 	bool IsBeingPossessed = false;
 	
 	
-
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_OnDeath();
 	UFUNCTION(BlueprintImplementableEvent)
 	void AfterDepossessed(AMostriciattolo5Player* Possessor);
 	UFUNCTION(BlueprintImplementableEvent)
@@ -216,6 +222,8 @@ public:
 	void BP_TurnCameraToTarget();
 
 
+	UFUNCTION(BlueprintCallable)
+	void C_OnDeath();
 	UFUNCTION(BlueprintCallable)
 	void SetWeapon(AMWeapon* WeaponToSet);
 	UFUNCTION(BlueprintCallable)
@@ -295,6 +303,7 @@ private:
 
 	void SetFist();
 	void SetNotPossessedDelayed();
+	
 
 	bool bIsUnderPossessAttack = false;
 };

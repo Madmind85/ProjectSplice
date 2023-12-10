@@ -223,6 +223,16 @@ void AMostriciattolo5Character::SetRunning_Implementation(bool IsRunning)
 
 }
 
+AActor* AMostriciattolo5Character::Int_GetKillerActor_Implementation()
+{
+	return KillerActor;
+}
+
+void AMostriciattolo5Character::Int_ResetKillerActor_Implementation()
+{
+	KillerActor = nullptr;
+
+}
 
 
 
@@ -441,6 +451,15 @@ bool AMostriciattolo5Character::IsDead() const
 	
 }
 
+void AMostriciattolo5Character::C_OnDeath()
+{
+	if (IsBeingPossessed)
+	{
+		Depossess();
+		BP_OnDeath();
+	}
+}
+
 void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
 {
 	if (WeaponToSet )
@@ -511,6 +530,12 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
 
+	if (IsDead())
+	{
+		KillerActor = DamageCauser;
+		C_OnDeath();
+	}
+	
 	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
 	
 	

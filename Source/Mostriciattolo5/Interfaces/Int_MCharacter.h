@@ -34,5 +34,8 @@ public:
 	void SetRunning(bool IsRunning);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsActorPossessed();
-	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AActor* Int_GetKillerActor();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_ResetKillerActor();
 };

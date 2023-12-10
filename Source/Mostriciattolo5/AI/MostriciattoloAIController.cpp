@@ -140,6 +140,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		}
 		else if (bDead == true)
 		{
+			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 			//TODO reazione al cadavere
 			//chiama altre guardie vicine
 			//scansiona il cadavere
@@ -168,7 +169,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
-				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation);
+				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr);
 			}
 		}
 	}
@@ -304,14 +305,17 @@ void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 }
 
 
-void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point)
+void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor)
 {
 	if (IsPawnPossessed()) { return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 4);
 
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), Suspect_Point);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), MoveToLoc);
-
+	if (SuspectActor)
+	{
+		GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SuspectActor);
+	}
 }
 
 
