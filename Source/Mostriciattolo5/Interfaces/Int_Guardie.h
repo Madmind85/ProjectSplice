@@ -27,7 +27,8 @@ public:
 	AActor* Int_GetCurrentNPCTarget();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetCurrentNPCTarget(AActor* NewTarget);
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsTranquillo();
 
 
 

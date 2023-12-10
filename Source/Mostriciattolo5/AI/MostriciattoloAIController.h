@@ -7,6 +7,7 @@
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Mostriciattolo5/Public/M_Enums.h"
 #include "Perception/AIPerceptionTypes.h"
+#include  "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Mostriciattolo5/Interfaces/Int_MCharacter.h"
 #include "MostriciattoloAIController.generated.h"
 
@@ -15,7 +16,7 @@
 class UAIPerceptionComponent;
 
 UCLASS()
-class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController, public IInt_Guardie
+class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController, public IInt_Guardie, public IInt_MCharacter
 {
 	GENERATED_BODY()
 
@@ -29,6 +30,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetCurrentNPCTarget(AActor* NewTarget);
 	virtual void Int_SetCurrentNPCTarget_Implementation(AActor* NewTarget);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsTranquillo();
+	virtual void Int_SetNPCSatateAsTranquillo_Implementation();
+
+
+
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;

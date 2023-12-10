@@ -131,10 +131,10 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				}
 				//se ivece lo perde
 				
-			}
-			else if (!CurrentStimulus.WasSuccessfullySensed())
+			} //se ti sta sparando e ti perde
+			else if (GetNpcAIStatus() == NPCStatus::Aggressivo  &&  !CurrentStimulus.WasSuccessfullySensed())
 			{
-				//corre versoall'ultimo punto in cui ti ha visto
+				//corre verso l'ultimo punto in cui ti ha visto
 				SetNPCSatateAsInseguendo( CurrentStimulus.StimulusLocation);
 			}
 		}
@@ -153,22 +153,23 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 
 void AMostriciattoloAIController::ProcessLastHearingStimulus()
 {
-	//Sesta attaccando o minacciando qualcuno non si caca il rumore
-	if (GetNpcAIStatus() == NPCStatus::Aggressivo) { return; }
-
-	if (CurrentStimulus.WasSuccessfullySensed())
+	//Sesta attaccando, inseguendo o minacciando qualcuno, o è minacciato o fermo  non si caca il rumore
+	if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento)
 	{
-		FVector GoToPoint = ProjPointToNavigation(CurrentStimulus.StimulusLocation);
-
-		if (CurrentStimulus.Tag == FName("Pericolo"))
+		if (CurrentStimulus.WasSuccessfullySensed())
 		{
-			//TODO SeLoVede anche è minaccioso
-			//Altrimneti corre verso lo sparo (inseguendo
-		}
+			FVector GoToPoint = ProjPointToNavigation(CurrentStimulus.StimulusLocation);
 
-		else
-		{
-			SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation);
+			if (CurrentStimulus.Tag == FName("Pericolo"))
+			{
+				//TODO Se vede anche chi ha  generato il suono pericoloso diventa minaccioso
+				//Altrimneti corre verso lo sparo 
+			}
+			//se il rumore non è minaccioso lo caca solo se è tranquillo
+			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
+			{
+				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation);
+			}
 		}
 	}
 }
@@ -232,6 +233,11 @@ void AMostriciattoloAIController::Int_SetCurrentNPCTarget_Implementation(AActor*
 {
 	CurrentNPCTarget = NewTarget;
 	
+}
+
+void AMostriciattoloAIController::Int_SetNPCSatateAsTranquillo_Implementation()
+{
+	SetNPCSatateAsTranquillo();
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
@@ -336,5 +342,6 @@ void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarge
 {
 	if (IsPawnPossessed()) { return; }	
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
+	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), LastSeenTarget);
 	//TODO aggiungere nell Int_MChar uno switch definito in bp perla velocita jog  e walk
 }
