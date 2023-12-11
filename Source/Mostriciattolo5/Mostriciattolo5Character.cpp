@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.IbDea
 
 #include "Mostriciattolo5Character.h"
 #include "Camera/CameraComponent.h"
@@ -14,6 +14,7 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Weapons/MWeapon.h"
 #include "Weapons/MWeapon.h"
 #include "DrawDebugHelpers.h"
@@ -231,7 +232,6 @@ AActor* AMostriciattolo5Character::Int_GetKillerActor_Implementation()
 void AMostriciattolo5Character::Int_ResetKillerActor_Implementation()
 {
 	KillerActor = nullptr;
-
 }
 
 
@@ -456,8 +456,13 @@ void AMostriciattolo5Character::C_OnDeath()
 	if (IsBeingPossessed)
 	{
 		Depossess();
-		BP_OnDeath();
 	}
+	AController* Cont = GetController();
+	if (Cont->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
+	{
+		IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(Cont);
+	}
+	BP_OnDeath();
 }
 
 void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
@@ -532,7 +537,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 
 	if (IsDead())
 	{
-		KillerActor = DamageCauser;
+		KillerActor = EventInstigator->GetPawn();
 		C_OnDeath();
 	}
 	

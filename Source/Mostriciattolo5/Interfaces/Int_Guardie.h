@@ -29,6 +29,8 @@ public:
 	void Int_SetCurrentNPCTarget(AActor* NewTarget);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsTranquillo();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsFermo();
 
 
 

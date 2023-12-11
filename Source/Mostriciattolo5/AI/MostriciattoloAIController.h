@@ -33,6 +33,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsTranquillo();
 	virtual void Int_SetNPCSatateAsTranquillo_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsFermo();
+	virtual void Int_SetNPCSatateAsFermo_Implementation();
+
 
 
 

@@ -1,0 +1,8 @@
+{
+	"BuildId": "25360045",
+	"Modules": 
+	{
+		"KaiLocomotion": "UnrealEditor-KaiLocomotion-Win64-DebugGame.dll",
+		"KaiLocomotionEditor": "UnrealEditor-KaiLocomotionEditor-Win64-DebugGame.dll"
+	}
+}

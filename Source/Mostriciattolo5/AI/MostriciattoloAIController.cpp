@@ -111,10 +111,30 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 		NPCStatus CurrentStatus = GetNpcAIStatus();
 
+
+
 		if (bDead == false)
 		{	//se lo sta  attualmente vedendo
 			if (CurrentStimulus.WasSuccessfullySensed())
 			{
+				AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
+				if (Killer)
+				{
+					//setta il suspect actor(cadavere)
+					GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
+					//e setta lo stato su attennto
+					SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
+
+
+					//TODO reazione al cadavere
+					//chiama altre guardie vicine
+					//scansiona il cadavere
+					//tramite Int_MCharacter si accede all'identita dell'assassino (get guardkiller che si potrebbe settare dall'instigator del receive damage)
+					//settare variavbile sempre tramite interfaccia come gia scansonato senno lo fanno in eterno
+					//setta l'assassino come compromesso
+					//spawn del raccoglitore di cadaveri
+				}
+
 				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
 				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
 				{  //attacca
@@ -130,25 +150,24 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 					//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
 				}
 				//se ivece lo perde
-				
-			} //se ti sta sparando e ti perde
-			else if (GetNpcAIStatus() == NPCStatus::Aggressivo  &&  !CurrentStimulus.WasSuccessfullySensed())
+
+			}
+			//se ti sta sparando e ti perde
+			else if (GetNpcAIStatus() == NPCStatus::Aggressivo && !CurrentStimulus.WasSuccessfullySensed())
 			{
 				//corre verso l'ultimo punto in cui ti ha visto
-				SetNPCSatateAsInseguendo( CurrentStimulus.StimulusLocation);
+				SetNPCSatateAsInseguendo(CurrentStimulus.StimulusLocation);
 			}
+			//se c'è un cadavere
 		}
-		else if (bDead == true)
+		/*
+		if (bDead == true)
 		{
-			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
-			//TODO reazione al cadavere
-			//chiama altre guardie vicine
-			//scansiona il cadavere
-			//tramite Int_MCharacter si accede all'identita dell'assassino (get guardkiller che si potrebbe settare dall'instigator del receive damage)
-			//settare variavbile sempre tramite interfaccia come gia scansonato senno lo fanno in eterno
-			//setta l'assassino come compromesso
-			//spawn del raccoglitore di cadaveri
+			 
+			//che non è stato scanzsionato(ovvero ha ancora il killer settato)
+		
 		}
+		*/
 	}
 }
 
@@ -241,6 +260,11 @@ void AMostriciattoloAIController::Int_SetNPCSatateAsTranquillo_Implementation()
 	SetNPCSatateAsTranquillo();
 }
 
+void AMostriciattoloAIController::Int_SetNPCSatateAsFermo_Implementation()
+{
+	SetNPCSatateAsFermo();
+}
+
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight)
@@ -290,6 +314,7 @@ void AMostriciattoloAIController::SetNPCSatateAsFermo()
 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 1);
 	SetPawnAim(false);
+	//GetBrainComponent()->StopLogic(TEXT("Dead"));
 }
 
 void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
@@ -308,14 +333,13 @@ void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor)
 {
 	if (IsPawnPossessed()) { return; }
+
+
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 4);
 
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), Suspect_Point);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), MoveToLoc);
-	if (SuspectActor)
-	{
-		GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SuspectActor);
-	}
+
 }
 
 
