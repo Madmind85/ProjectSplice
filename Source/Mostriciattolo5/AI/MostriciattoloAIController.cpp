@@ -86,6 +86,7 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 				
 				if (CStim.Type == sightid)
 				{
+		
 					ProcessLastVisionStimulus();
 				}
 				else if (CStim.Type == hearid && CStim.IsActive())
@@ -112,29 +113,20 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		NPCStatus CurrentStatus = GetNpcAIStatus();
 
 
+		AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
+		if (Killer)
+		{
+				//setta il suspect actor(cadavere)
+				GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
+			//e setta lo stato su attennto
+			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 
-		if (bDead == false)
-		{	//se lo sta  attualmente vedendo
+		}
+
+		//if (bDead == false)
+		//{	//se lo sta  attualmente vedendo
 			if (CurrentStimulus.WasSuccessfullySensed())
 			{
-				AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
-				if (Killer)
-				{
-					//setta il suspect actor(cadavere)
-					GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
-					//e setta lo stato su attennto
-					SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
-
-
-					//TODO reazione al cadavere
-					//chiama altre guardie vicine
-					//scansiona il cadavere
-					//tramite Int_MCharacter si accede all'identita dell'assassino (get guardkiller che si potrebbe settare dall'instigator del receive damage)
-					//settare variavbile sempre tramite interfaccia come gia scansonato senno lo fanno in eterno
-					//setta l'assassino come compromesso
-					//spawn del raccoglitore di cadaveri
-				}
-
 				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
 				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
 				{  //attacca
@@ -151,7 +143,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				}
 				//se ivece lo perde
 
-			}
+		//	}
 			//se ti sta sparando e ti perde
 			else if (GetNpcAIStatus() == NPCStatus::Aggressivo && !CurrentStimulus.WasSuccessfullySensed())
 			{
