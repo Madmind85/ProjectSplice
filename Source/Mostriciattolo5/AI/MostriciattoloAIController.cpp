@@ -143,14 +143,21 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				}
 
 			}
-		}/*
+		}
 			//se ti sta sparando e ti perde
-		else if (GetNpcAIStatus() == NPCStatus::Aggressivo && !CurrentStimulus.WasSuccessfullySensed())
+		else if ( !CurrentStimulus.WasSuccessfullySensed())
 		{
+			if (GetNpcAIStatus() == NPCStatus::Aggressivo)
+			{
 				//corre verso l'ultimo punto in cui ti ha visto
 				SetNPCSatateAsInseguendo(CurrentStimulus.StimulusLocation);
+			}
+			else
+			{
+				SensedActor = nullptr;
+			}
 		}
-		*/
+		
 	}
 }
 
