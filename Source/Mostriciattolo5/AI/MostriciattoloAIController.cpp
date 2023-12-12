@@ -111,53 +111,44 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(SensedActor);
 		ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 		NPCStatus CurrentStatus = GetNpcAIStatus();
-
-
+		//se c'è un cadavere
 		AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
-		if (Killer)
-		{
-				//setta il suspect actor(cadavere)
-				GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
-			//e setta lo stato su attennto
-			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 
-		}
-
-		//if (bDead == false)
 		//{	//se lo sta  attualmente vedendo
-			if (CurrentStimulus.WasSuccessfullySensed())
-			{
-				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
-				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
-				{  //attacca
-					CurrentNPCTarget = SensedActor;
-					SetNPCSatateAsAggressivo(CurrentNPCTarget);
-				}
-				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
-				else if (Faction == ActorFaction::Nemico)
-				{	//attacca
-					CurrentNPCTarget = SensedActor;
-					SetNPCSatateAsAggressivo(CurrentNPCTarget);
+		if (CurrentStimulus.WasSuccessfullySensed())
+		{
+			//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
+			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
+			{  //attacca
+				CurrentNPCTarget = SensedActor;
+				SetNPCSatateAsAggressivo(CurrentNPCTarget);
+			}
+			//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+			else if (Faction == ActorFaction::Nemico)
+			{	//attacca
+				CurrentNPCTarget = SensedActor;
+				SetNPCSatateAsAggressivo(CurrentNPCTarget);
 
-					//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+			}
+			else if (Killer)//non scansionato(dopo killer si resetta)
+			{	//se non è in mezzo ad unarissa
+				if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento)
+				{
+					if (GetBlackboardComponent()->GetValueAsObject(FName("CurrentEnemy"))) {return;}
+					//setta il suspect actor(cadavere)
+					GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
+					//e setta lo stato su attennto
+					SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 				}
-				//se ivece lo perde
 
-		//	}
+			}
+		}/*
 			//se ti sta sparando e ti perde
-			else if (GetNpcAIStatus() == NPCStatus::Aggressivo && !CurrentStimulus.WasSuccessfullySensed())
-			{
+		else if (GetNpcAIStatus() == NPCStatus::Aggressivo && !CurrentStimulus.WasSuccessfullySensed())
+		{
 				//corre verso l'ultimo punto in cui ti ha visto
 				SetNPCSatateAsInseguendo(CurrentStimulus.StimulusLocation);
-			}
-			//se c'è un cadavere
-		}
-		/*
-		if (bDead == true)
-		{
-			 
-			//che non è stato scanzsionato(ovvero ha ancora il killer settato)
-		
 		}
 		*/
 	}

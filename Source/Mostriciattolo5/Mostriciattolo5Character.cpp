@@ -234,6 +234,11 @@ void AMostriciattolo5Character::Int_ResetKillerActor_Implementation()
 	KillerActor = nullptr;
 }
 
+void AMostriciattolo5Character::Int_SetFaction_Implementation(ActorFaction NewFaction)
+{
+	IsTarget = NewFaction;
+}
+
 
 
 bool AMostriciattolo5Character::Int_IsActorDead_Implementation()
@@ -535,12 +540,22 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
 
+	//Se spari a una guardia diventi suscettibile a essere un target (se visto) per 2 secondi
+	AMostriciattolo5Character* Shooter = Cast<AMostriciattolo5Character>(EventInstigator->GetPawn());
+	if (Shooter) 
+	{
+		Shooter->CanBeTarget = true;
+		FTimerHandle Timert;
+		GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
+	}
+	
+
 	if (IsDead())
 	{
 		KillerActor = EventInstigator->GetPawn();
 		C_OnDeath();
 	}
-	
+
 	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
 	
 	
@@ -595,6 +610,10 @@ void AMostriciattolo5Character::SetNotPossessedTimer()
 void AMostriciattolo5Character::SetNotPossessedDelayed()
 {
 	IsBeingPossessed = false;
+}
+void AMostriciattolo5Character::ResetCanBeTarget()
+{
+	CanBeTarget = false;
 }
 /*void AMostriciattolo5Character::TurnCameraToTargetr()
 {

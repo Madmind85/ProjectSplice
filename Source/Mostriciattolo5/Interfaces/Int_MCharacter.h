@@ -38,4 +38,6 @@ public:
 	AActor* Int_GetKillerActor();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_ResetKillerActor();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetFaction(ActorFaction NewFaction);
 };

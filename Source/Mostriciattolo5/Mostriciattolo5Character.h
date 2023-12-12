@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "Mostriciattolo5/Public/M_Enums.h"
+#include "Interfaces/Int_Guardie.h"
 #include "Mostriciattolo5/Interfaces/Int_MCharacter.h"
 #include "Mostriciattolo5Character.generated.h"
 
@@ -19,7 +20,7 @@ class AMWeapon;
 
 
 UCLASS(config=Game)
-class AMostriciattolo5Character : public ACharacter, public IInt_MCharacter
+class AMostriciattolo5Character : public ACharacter, public IInt_MCharacter, public IInt_Guardie
 {
 	GENERATED_BODY()
 
@@ -94,6 +95,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_ResetKillerActor();
 	virtual void Int_ResetKillerActor_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetFaction(ActorFaction NewFaction);
+	virtual void Int_SetFaction_Implementation(ActorFaction NewFaction);
 
 
 	UCapsuleComponent* GetPossessSocket();
@@ -303,6 +307,7 @@ private:
 
 	void SetFist();
 	void SetNotPossessedDelayed();
+	void ResetCanBeTarget();
 	
 
 	bool bIsUnderPossessAttack = false;
