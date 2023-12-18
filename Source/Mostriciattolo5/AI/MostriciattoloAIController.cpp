@@ -9,6 +9,8 @@
 #include "Perception/AISense.h"
 #include "Perception/AISense_Sight.h"
 #include "NavigationSystem.h"
+#include "GameFramework/Character.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "Kismet/GameplayStatics.h"
@@ -139,7 +141,15 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 					//setta il suspect actor(cadavere)
 					GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
 					//e setta lo stato su attennto
-					SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
+					ACharacter* SensedChar = Cast<ACharacter>(SensedActor);
+					if (SensedChar)
+					{
+						USkeletalMeshComponent* SMesh = SensedChar->GetMesh();
+						if (SMesh)
+						{
+							SetNPCSatateAsAttento(SMesh->GetComponentLocation(), SMesh->GetComponentLocation(), SensedActor);
+						}
+					}
 				}
 
 			}
