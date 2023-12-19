@@ -47,8 +47,8 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(EditAnywhere)
-	float MaxWeaponRange = 5000.f;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	float MaxWeaponRange = 1.f;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetIsAiming(bool IsAiming);

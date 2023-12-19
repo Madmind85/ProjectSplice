@@ -239,6 +239,21 @@ void AMostriciattolo5Character::Int_SetFaction_Implementation(ActorFaction NewFa
 	IsTarget = NewFaction;
 }
 
+AMWeapon* AMostriciattolo5Character::Int_GetCurrentWeapon_Implementation()
+{
+	AMWeapon* Weap;
+	GetCurrentWeapom(Weap);
+	return Weap;
+}
+
+void AMostriciattolo5Character::Int_AIAttack_Implementation(AActor* Target)
+{
+	if (Target)
+	{
+		Attack(true, Target);
+	}
+}
+
 
 
 bool AMostriciattolo5Character::Int_IsActorDead_Implementation()
@@ -454,6 +469,11 @@ bool AMostriciattolo5Character::IsDead() const
 		return false;
 	}
 	
+}
+
+void AMostriciattolo5Character::SetRootComp(USceneComponent* NewRoot)
+{
+	RootComponent = NewRoot;
 }
 
 void AMostriciattolo5Character::C_OnDeath()

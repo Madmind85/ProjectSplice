@@ -102,9 +102,12 @@ void AMostriciattolo5Player::SetCurrentPossessed(AMostriciattolo5Character* Char
 
 void AMostriciattolo5Player::JumpOut()
 {
-    if (GetCurrentPossessed() && GetCurrentPossessed()->GetPossessSocket())
+    AMostriciattolo5Character* Possessed = GetCurrentPossessed();
+
+    if (Possessed && Possessed->GetPossessSocket())
     {
-        GetCurrentPossessed()->MClearFocus();
+        IInt_MCharacter::Execute_SetIsAiming(Possessed, false);
+        Possessed->MClearFocus();
         FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
         FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
         FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -100.f;
@@ -117,7 +120,7 @@ void AMostriciattolo5Player::JumpOut()
 
         NoCollisionTarget = false;
        
-        //delay a IsBeingPossessed = falsePerPermettere di allontanarsi prima di attivare la collisione
+        //delay a IsBeingPossessed = false Per Permettere di allontanarsi prima di attivare la collisione
         GetCurrentPossessed()->SetNotPossessedTimer();
     }
 }
@@ -185,19 +188,27 @@ void AMostriciattolo5Player::InterceptPossessPoint()
     if (bHit || bHit2)
     {
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
+        AActor* HitActor = Hit.GetActor();
         
         if (HitComponent)
         {
             if (HitComponent->ComponentTags.Contains(TEXT("PossessFront"))) 
             { 
-                bFrontPossession = true; 
-            
-                PossessLineTrace(Hit);
+                if (HitActor)
+                {
+                    IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
+                        bFrontPossession = true;
+                    PossessLineTrace(Hit);
+                }
             }
             else if (HitComponent->ComponentTags.Contains(TEXT("PossessBack")))
             {
-                bFrontPossession = false;
-                PossessLineTrace(Hit);
+                if (HitActor)
+                {
+                    IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
+                    bFrontPossession = false;
+                    PossessLineTrace(Hit);
+                }
             }
             
         }

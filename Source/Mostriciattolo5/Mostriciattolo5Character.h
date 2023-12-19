@@ -98,6 +98,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetFaction(ActorFaction NewFaction);
 	virtual void Int_SetFaction_Implementation(ActorFaction NewFaction);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AMWeapon* Int_GetCurrentWeapon();
+	virtual AMWeapon* Int_GetCurrentWeapon_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_AIAttack(AActor* Target);
+	virtual void Int_AIAttack_Implementation(AActor* Target);
 
 
 	UCapsuleComponent* GetPossessSocket();
@@ -226,6 +232,9 @@ public:
 	void BP_TurnCameraToTarget();
 
 
+	/** Su on death */
+	UFUNCTION(BlueprintCallable)
+	void SetRootComp(USceneComponent* NewRoot);
 	UFUNCTION(BlueprintCallable)
 	void C_OnDeath();
 	UFUNCTION(BlueprintCallable)

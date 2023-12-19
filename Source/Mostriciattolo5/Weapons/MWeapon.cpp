@@ -31,7 +31,7 @@ void AMWeapon::SetIsAiming(bool IsAiming)
 {
 	if (OwnerCharacter)
 	{
-		OwnerCharacter->bIsAiming = true;
+		OwnerCharacter->bIsAiming = IsAiming;
 	}
 
 }

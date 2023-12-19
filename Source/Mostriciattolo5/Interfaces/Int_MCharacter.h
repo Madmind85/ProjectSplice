@@ -17,6 +17,9 @@ class UInt_MCharacter : public UInterface
 /**
  * 
  */
+
+class AMWeapon;
+
 class MOSTRICIATTOLO5_API IInt_MCharacter
 {
 	GENERATED_BODY()
@@ -40,4 +43,8 @@ public:
 	void Int_ResetKillerActor();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetFaction(ActorFaction NewFaction);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AMWeapon* Int_GetCurrentWeapon();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_AIAttack(AActor* Target);
 };
