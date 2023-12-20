@@ -155,7 +155,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 		}
 			//se ti sta sparando e ti perde
-		else if ( !CurrentStimulus.WasSuccessfullySensed())
+		/*else if (!CurrentStimulus.WasSuccessfullySensed())
 		{
 			if (GetNpcAIStatus() == NPCStatus::Aggressivo)
 			{
@@ -167,7 +167,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				SensedActor = nullptr;
 			}
 		}
-		
+		*/
 	}
 }
 
@@ -263,6 +263,12 @@ void AMostriciattoloAIController::Int_SetNPCSatateAsTranquillo_Implementation()
 void AMostriciattoloAIController::Int_SetNPCSatateAsFermo_Implementation()
 {
 	SetNPCSatateAsFermo();
+}
+
+void AMostriciattoloAIController::Int_SetNPCDead_Implementation()
+{
+	SetNPCSatateAsFermo();
+	BrainComponent->StopLogic(TEXT("Dead"));
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)

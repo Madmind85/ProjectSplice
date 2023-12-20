@@ -44,7 +44,5 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetFaction(ActorFaction NewFaction);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	AMWeapon* Int_GetCurrentWeapon();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Int_AIAttack(AActor* Target);
+	void Int_AIAttack(AAIController* AICon, AActor* Target);
 };

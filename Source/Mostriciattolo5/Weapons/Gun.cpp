@@ -137,7 +137,6 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 				if (Hitcomponent) 
 				{	//HeadShot
 					if (Hitcomponent->ComponentHasTag(FName("Head"))) {CurrentDamage *= 3;}
-					
 				}
 
 				//TODO spostare su interface

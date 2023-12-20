@@ -31,6 +31,8 @@ public:
 	void Int_SetNPCSatateAsTranquillo();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsFermo();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCDead();
 
 
 

@@ -17,7 +17,7 @@
 
 class AGun;
 class AMWeapon;
-
+class AAIController;
 
 UCLASS(config=Game)
 class AMostriciattolo5Character : public ACharacter, public IInt_MCharacter, public IInt_Guardie
@@ -99,11 +99,8 @@ public:
 	void Int_SetFaction(ActorFaction NewFaction);
 	virtual void Int_SetFaction_Implementation(ActorFaction NewFaction);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	AMWeapon* Int_GetCurrentWeapon();
-	virtual AMWeapon* Int_GetCurrentWeapon_Implementation();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Int_AIAttack(AActor* Target);
-	virtual void Int_AIAttack_Implementation(AActor* Target);
+	void Int_AIAttack(AAIController* AICon,AActor* Target);
+	virtual void Int_AIAttack_Implementation(AAIController* AICon, AActor* Target);
 
 
 	UCapsuleComponent* GetPossessSocket();

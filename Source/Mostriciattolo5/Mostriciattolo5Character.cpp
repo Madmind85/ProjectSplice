@@ -239,19 +239,11 @@ void AMostriciattolo5Character::Int_SetFaction_Implementation(ActorFaction NewFa
 	IsTarget = NewFaction;
 }
 
-AMWeapon* AMostriciattolo5Character::Int_GetCurrentWeapon_Implementation()
-{
-	AMWeapon* Weap;
-	GetCurrentWeapom(Weap);
-	return Weap;
-}
 
-void AMostriciattolo5Character::Int_AIAttack_Implementation(AActor* Target)
+
+void AMostriciattolo5Character::Int_AIAttack_Implementation(AAIController* AICon, AActor* Target)
 {
-	if (Target)
-	{
-		Attack(true, Target);
-	}
+	
 }
 
 
@@ -267,8 +259,11 @@ void AMostriciattolo5Character::InitWeapon()
 {
 	if (MWeaponClass)
 	{
-		//aggiungere arma
-	
+		AMWeapon* WeapToSet = GetWorld()->SpawnActor<AMWeapon>(MWeaponClass);
+		if (WeapToSet)
+		{
+			SetWeapon(WeapToSet);
+		}
 	}
 }
 
@@ -478,6 +473,7 @@ void AMostriciattolo5Character::SetRootComp(USceneComponent* NewRoot)
 
 void AMostriciattolo5Character::C_OnDeath()
 {
+	
 	if (IsBeingPossessed)
 	{
 		Depossess();
@@ -485,8 +481,10 @@ void AMostriciattolo5Character::C_OnDeath()
 	AController* Cont = GetController();
 	if (Cont->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
 	{
-		IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(Cont);
+		
+		IInt_Guardie::Execute_Int_SetNPCDead(Cont);
 	}
+	
 	BP_OnDeath();
 }
 
@@ -559,7 +557,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
-
+	
 	//Se spari a una guardia diventi suscettibile a essere un target (se visto) per 2 secondi
 	AMostriciattolo5Character* Shooter = Cast<AMostriciattolo5Character>(EventInstigator->GetPawn());
 	if (Shooter) 
@@ -569,10 +567,12 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 		GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
 	}
 	
-
+	//TODO  capire perchè non viene chiamato
 	if (IsDead())
 	{
+		
 		KillerActor = EventInstigator->GetPawn();
+		
 		C_OnDeath();
 	}
 
