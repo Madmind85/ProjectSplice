@@ -14,6 +14,7 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Mostriciattolo5/AI/MostriciattoloAIController.h"
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Weapons/MWeapon.h"
 #include "Weapons/MWeapon.h"
@@ -582,11 +583,18 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	}
 	else
 	{
-		AController* Contr = GetController();
+		AMostriciattoloAIController* Contr = Cast<AMostriciattoloAIController>(GetController());
 		if (Contr && Shooter)
 		{
-			IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
+			Contr->SetNPCSatateAsAggressivo(Shooter);
+			/*
+			if (Contr->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
+			{
+				IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
+			}
+			*/
 		}
+			
 	}
 	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
 	

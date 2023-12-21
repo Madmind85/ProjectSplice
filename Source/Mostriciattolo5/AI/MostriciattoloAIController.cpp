@@ -99,7 +99,7 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 			SensedActor = PercInfo.Target;
 			//nested loop attraverso gli stimoli raccolti da questo pawn
 			TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
-			for (const FAIStimulus CStim : CurrentStimuli)
+			for (const FAIStimulus& CStim : CurrentStimuli)
 			{
 				//Salva Lo Stimolo percepito
 				CurrentStimulus = CStim;
@@ -137,20 +137,24 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		//{	//se lo sta  attualmente vedendo
 		if (CurrentStimulus.WasSuccessfullySensed())
 		{
-			LastSeenTime = GetWorld()->GetTimeSeconds();
-			//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
-			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
-			{  //attacca
-				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsAggressivo(CurrentNPCTarget);
-			}
-			//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
-			else if (Faction == ActorFaction::Nemico)
-			{	//attacca
-				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsInseguendo(CurrentNPCTarget);
+			
+			if (bDead == false)
+			{
+				LastSeenTime = GetWorld()->GetTimeSeconds();
+				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
+				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
+				{  //attacca
+					CurrentNPCTarget = SensedActor;
+					SetNPCSatateAsAggressivo(CurrentNPCTarget);
+				}
+				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+				else if (Faction == ActorFaction::Nemico)
+				{	//attacca
+					CurrentNPCTarget = SensedActor;
+					SetNPCSatateAsInseguendo(CurrentNPCTarget);
 
-				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+					//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+				}
 			}
 			else if (Killer)//non scansionato(dopo killer si resetta)
 			{	//se non è in mezzo ad unarissa
