@@ -21,6 +21,8 @@ void AMostriciattoloAIController::BeginPlay()
 	Super::BeginPlay();
 
 
+	APawn* CurrentPawn = GetPawn();
+
 	if (AI_Behavior)
 	{
 		RunBehaviorTree(AI_Behavior);
@@ -32,6 +34,22 @@ void AMostriciattoloAIController::BeginPlay()
 
 	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
 	*/
+
+	bool bIsPatroller = IInt_MCharacter::Execute_Int_IsPatroller(CurrentPawn);
+	if (bIsPatroller)
+	{
+		GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), true);
+	}
+	else
+	{
+		
+		if (CurrentPawn)
+		{
+			GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), false);
+			GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());
+			GetBlackboardComponent()->SetValueAsRotator(FName("InitialRotation"), CurrentPawn->GetActorRotation());
+		}
+	}
 }
 
 
@@ -119,6 +137,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		//{	//se lo sta  attualmente vedendo
 		if (CurrentStimulus.WasSuccessfullySensed())
 		{
+			LastSeenTime = GetWorld()->GetTimeSeconds();
 			//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
 			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
 			{  //attacca
@@ -155,19 +174,16 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 		}
 			//se ti sta sparando e ti perde
-		/*else if (!CurrentStimulus.WasSuccessfullySensed())
+		else if (!CurrentStimulus.WasSuccessfullySensed())
 		{
-			if (GetNpcAIStatus() == NPCStatus::Aggressivo)
-			{
-				//corre verso l'ultimo punto in cui ti ha visto
-				SetNPCSatateAsInseguendo(CurrentStimulus.StimulusLocation);
-			}
-			else
+			if (LastSeenTime > QuitChaseTime)
 			{
 				SensedActor = nullptr;
+
+				Int_SetNPCSatateAsTranquillo();
 			}
 		}
-		*/
+		
 	}
 }
 

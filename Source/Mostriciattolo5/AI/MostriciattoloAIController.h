@@ -101,6 +101,12 @@ private:
 	/**percentuale della sight radius (settabile su pawn sensing) appartenente al cono interno*/
 	UPROPERTY(EditDefaultsOnly,  Category = "Behaviour")
 	float InnerConeLength = 75.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float LastSeenTime = 0.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float QuitChaseTime = 4.f;
+
+
 
 	void ProcessLastVisionStimulus();
 	void ProcessLastHearingStimulus();

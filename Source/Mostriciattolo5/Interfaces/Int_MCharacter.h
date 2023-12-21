@@ -45,4 +45,6 @@ public:
 	void Int_SetFaction(ActorFaction NewFaction);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_AIAttack(AAIController* AICon, AActor* Target);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_IsPatroller();
 };

@@ -101,7 +101,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_AIAttack(AAIController* AICon,AActor* Target);
 	virtual void Int_AIAttack_Implementation(AAIController* AICon, AActor* Target);
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_IsPatroller();
+	virtual bool Int_IsPatroller_Implementation();
 
 	UCapsuleComponent* GetPossessSocket();
 
@@ -277,6 +279,11 @@ public:
 private:
 
 	void InitWeapon();
+
+
+	UPROPERTY(EditAnywhere, Category = "Behavior")
+	bool IsPatroller = true;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	float MaxHealth = 30.f;

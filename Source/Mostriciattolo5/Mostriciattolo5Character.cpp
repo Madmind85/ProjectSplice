@@ -138,6 +138,11 @@ void AMostriciattolo5Character::BeginPlay()
 	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
 }
 
+bool AMostriciattolo5Character::Int_IsPatroller_Implementation()
+{
+	return IsPatroller;
+}
+
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 {
 	return PossessSocket;
@@ -578,7 +583,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	else
 	{
 		AController* Contr = GetController();
-		if (Contr)
+		if (Contr && Shooter)
 		{
 			IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
 		}
