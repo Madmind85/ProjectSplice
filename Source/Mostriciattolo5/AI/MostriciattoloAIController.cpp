@@ -377,5 +377,5 @@ void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarge
 	if (IsPawnPossessed()) { return; }	
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), LastSeenTarget);
-	//TODO aggiungere nell Int_MChar uno switch definito in bp perla velocita jog  e walk
+	
 }
