@@ -271,6 +271,11 @@ void AMostriciattoloAIController::Int_SetNPCDead_Implementation()
 	BrainComponent->StopLogic(TEXT("Dead"));
 }
 
+void AMostriciattoloAIController::Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy)
+{
+	SetNPCSatateAsAggressivo(CurrentEnemy);
+}
+
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight)

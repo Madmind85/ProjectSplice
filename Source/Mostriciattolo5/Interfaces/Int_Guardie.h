@@ -33,7 +33,8 @@ public:
 	void Int_SetNPCSatateAsFermo();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCDead();
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
 
 
 };

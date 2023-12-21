@@ -39,6 +39,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCDead();
 	virtual void Int_SetNPCDead_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
+	virtual void Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy);
 
 
 
