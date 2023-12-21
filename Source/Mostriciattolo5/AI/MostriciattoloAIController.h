@@ -67,7 +67,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsAggressivo(AActor* Target);
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsInseguendo(FVector LastSeenTarget);
+	void SetNPCSatateAsInseguendo(AActor* Target);
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
 

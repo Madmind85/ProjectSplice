@@ -129,7 +129,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			else if (Faction == ActorFaction::Nemico)
 			{	//attacca
 				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsAggressivo(CurrentNPCTarget);
+				SetNPCSatateAsInseguendo(CurrentNPCTarget);
 
 				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
 			}
@@ -372,10 +372,10 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 
 }
 
-void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarget)
+void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 {
 	if (IsPawnPossessed()) { return; }	
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
-	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), LastSeenTarget);
+	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
 	
 }
