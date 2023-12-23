@@ -119,4 +119,7 @@ private:
 	void SetPawnAim(bool bPawnAiming);
 	bool IsPawnPossessed();
 	FVector ProjPointToNavigation(FVector Point);
+
+	void AlertClosestGuards(ActorFaction Faction);
+	bool CanAlertGuards = true;
 };

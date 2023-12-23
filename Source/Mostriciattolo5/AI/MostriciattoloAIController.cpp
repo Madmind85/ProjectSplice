@@ -142,10 +142,15 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			{
 				LastSeenTime = GetWorld()->GetTimeSeconds();
 				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
-				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
+				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
 				{  //attacca
 					CurrentNPCTarget = SensedActor;
 					SetNPCSatateAsAggressivo(CurrentNPCTarget);
+					if (CanAlertGuards)
+					{
+						AlertClosestGuards(Faction);
+						CanAlertGuards = false;
+					}
 				}
 				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
 				else if (Faction == ActorFaction::Nemico)
@@ -153,7 +158,11 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 					CurrentNPCTarget = SensedActor;
 					SetNPCSatateAsInseguendo(CurrentNPCTarget);
 
-					//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+					if (CanAlertGuards)
+					{
+						AlertClosestGuards(Faction);
+						CanAlertGuards = false;
+					}
 				}
 			}
 			else if (Killer)//non scansionato(dopo killer si resetta)
@@ -185,6 +194,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				SensedActor = nullptr;
 
 				Int_SetNPCSatateAsTranquillo();
+				CanAlertGuards = true;
 			}
 		}
 		
@@ -261,6 +271,54 @@ FVector AMostriciattoloAIController::ProjPointToNavigation(FVector Point)
 	}
 	return WorldPoint;
 	
+}
+
+void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction)
+{
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+	APawn* OwnerPawn = GetPawn();
+
+	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(4000.f); 
+
+	TArray<FHitResult> OutHits;
+	if (OwnerPawn)
+	{
+		// Call the function
+		GetWorld()->SweepMultiByObjectType
+		(
+			OutHits,
+			OwnerPawn->GetActorLocation(),
+			OwnerPawn->GetActorLocation() +1.f,
+			FQuat::Identity,
+			ObjectQueryParams,
+			MyColSphere
+		);
+		
+		for (auto& Hit : OutHits)
+		{
+			AActor* OtherActor = Hit.GetActor();
+			
+			AMostriciattoloAIController* AIControl = IInt_MCharacter::Execute_Int_GetAIController(OtherActor);
+
+			if (AIControl)
+			{
+				NPCStatus CurrentStatus = AIControl->GetNpcAIStatus();
+
+				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
+				{  //attacca
+					AIControl->CurrentNPCTarget = SensedActor;
+					AIControl->SetNPCSatateAsAggressivo(CurrentNPCTarget);
+				}
+				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+				else if (Faction == ActorFaction::Nemico)
+				{	//cattura il mostriciattolo
+					AIControl->CurrentNPCTarget = SensedActor;
+					AIControl->SetNPCSatateAsInseguendo(CurrentNPCTarget);
+				}
+			}
+		}
+	}
 }
 
 

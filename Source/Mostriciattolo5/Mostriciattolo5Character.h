@@ -104,6 +104,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsPatroller();
 	virtual bool Int_IsPatroller_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AMostriciattoloAIController* Int_GetAIController();
+	virtual AMostriciattoloAIController* Int_GetAIController_Implementation();
 
 	UCapsuleComponent* GetPossessSocket();
 

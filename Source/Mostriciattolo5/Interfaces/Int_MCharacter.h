@@ -47,4 +47,6 @@ public:
 	void Int_AIAttack(AAIController* AICon, AActor* Target);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_IsPatroller();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	AMostriciattoloAIController* Int_GetAIController();
 };

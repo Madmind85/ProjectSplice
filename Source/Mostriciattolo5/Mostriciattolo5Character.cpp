@@ -144,6 +144,12 @@ bool AMostriciattolo5Character::Int_IsPatroller_Implementation()
 	return IsPatroller;
 }
 
+AMostriciattoloAIController* AMostriciattolo5Character::Int_GetAIController_Implementation()
+{
+	AMostriciattoloAIController* AICont = Cast<AMostriciattoloAIController>(GetController());
+	return AICont;
+}
+
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 {
 	return PossessSocket;
