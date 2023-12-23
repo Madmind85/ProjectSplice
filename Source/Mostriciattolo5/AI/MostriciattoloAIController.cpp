@@ -82,7 +82,7 @@ bool AMostriciattoloAIController::IsMCharacterDead(AActor* ActorToTest)
 
 void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 {
-
+	
 	UAIPerceptionComponent* AIPerceptionComp = GetAIPerceptionComponent();
 	FAISenseID sightid = UAISense::GetSenseID<UAISense_Sight>();
 	FAISenseID hearid = UAISense::GetSenseID<UAISense_Hearing>();
@@ -345,6 +345,7 @@ void AMostriciattoloAIController::Int_SetNPCSatateAsFermo_Implementation()
 
 void AMostriciattoloAIController::Int_SetNPCDead_Implementation()
 {
+	
 	SetNPCSatateAsFermo();
 	BrainComponent->StopLogic(TEXT("Dead"));
 }
@@ -352,6 +353,13 @@ void AMostriciattoloAIController::Int_SetNPCDead_Implementation()
 void AMostriciattoloAIController::Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy)
 {
 	SetNPCSatateAsAggressivo(CurrentEnemy);
+}
+
+void AMostriciattoloAIController::OnDeathController()
+{
+		SetNPCSatateAsFermo();
+		StopMovement();
+		BrainComponent->StopLogic(TEXT("Dead"));
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)

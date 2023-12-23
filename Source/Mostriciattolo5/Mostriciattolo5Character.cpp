@@ -491,11 +491,18 @@ void AMostriciattolo5Character::C_OnDeath()
 		Depossess();
 	}
 	AController* Cont = GetController();
+	AMostriciattoloAIController* AICont = Cast<AMostriciattoloAIController>(Cont);
+	if (AICont)
+	{
+		AICont->OnDeathController();
+	}
+	/*
 	if (Cont->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
 	{
 		
 		IInt_Guardie::Execute_Int_SetNPCDead(Cont);
 	}
+	*/
 	
 	BP_OnDeath();
 }

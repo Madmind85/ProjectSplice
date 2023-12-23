@@ -44,7 +44,7 @@ public:
 	virtual void Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy);
 
 
-
+	void OnDeathController();
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;
