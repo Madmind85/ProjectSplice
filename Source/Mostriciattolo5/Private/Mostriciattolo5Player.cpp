@@ -50,7 +50,6 @@ void AMostriciattolo5Player::ControllMainDelayed()
     }
     //quando si è allontanato lo puo' di nuovo allertare toccandolo
     NoCollisionTarget = false;
-    IsTarget = ActorFaction::Nemico;
     IsControlling = false;
     SetCurrentPossessed(nullptr);
 }

@@ -21,6 +21,8 @@ void AMostriciattoloAIController::BeginPlay()
 	Super::BeginPlay();
 
 
+	APawn* CurrentPawn = GetPawn();
+
 	if (AI_Behavior)
 	{
 		RunBehaviorTree(AI_Behavior);
@@ -32,6 +34,22 @@ void AMostriciattoloAIController::BeginPlay()
 
 	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
 	*/
+
+	bool bIsPatroller = IInt_MCharacter::Execute_Int_IsPatroller(CurrentPawn);
+	if (bIsPatroller)
+	{
+		GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), true);
+	}
+	else
+	{
+		
+		if (CurrentPawn)
+		{
+			GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), false);
+			GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());
+			GetBlackboardComponent()->SetValueAsRotator(FName("InitialRotation"), CurrentPawn->GetActorRotation());
+		}
+	}
 }
 
 
@@ -81,7 +99,7 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 			SensedActor = PercInfo.Target;
 			//nested loop attraverso gli stimoli raccolti da questo pawn
 			TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
-			for (const FAIStimulus CStim : CurrentStimuli)
+			for (const FAIStimulus& CStim : CurrentStimuli)
 			{
 				//Salva Lo Stimolo percepito
 				CurrentStimulus = CStim;
@@ -119,19 +137,24 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		//{	//se lo sta  attualmente vedendo
 		if (CurrentStimulus.WasSuccessfullySensed())
 		{
-			//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
-			if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
-			{  //attacca
-				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsAggressivo(CurrentNPCTarget);
-			}
-			//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
-			else if (Faction == ActorFaction::Nemico)
-			{	//attacca
-				CurrentNPCTarget = SensedActor;
-				SetNPCSatateAsAggressivo(CurrentNPCTarget);
+			
+			if (bDead == false)
+			{
+				LastSeenTime = GetWorld()->GetTimeSeconds();
+				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
+				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo))
+				{  //attacca
+					CurrentNPCTarget = SensedActor;
+					SetNPCSatateAsAggressivo(CurrentNPCTarget);
+				}
+				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+				else if (Faction == ActorFaction::Nemico)
+				{	//attacca
+					CurrentNPCTarget = SensedActor;
+					SetNPCSatateAsInseguendo(CurrentNPCTarget);
 
-				//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+					//TODO event dispatcher per far sapere alle guardie che il mostriciattolo è stato visto  quindi non ci sono più guardie compromesse
+				}
 			}
 			else if (Killer)//non scansionato(dopo killer si resetta)
 			{	//se non è in mezzo ad unarissa
@@ -155,19 +178,16 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 		}
 			//se ti sta sparando e ti perde
-		/*else if (!CurrentStimulus.WasSuccessfullySensed())
+		else if (!CurrentStimulus.WasSuccessfullySensed())
 		{
-			if (GetNpcAIStatus() == NPCStatus::Aggressivo)
-			{
-				//corre verso l'ultimo punto in cui ti ha visto
-				SetNPCSatateAsInseguendo(CurrentStimulus.StimulusLocation);
-			}
-			else
+			if (LastSeenTime > QuitChaseTime)
 			{
 				SensedActor = nullptr;
+
+				Int_SetNPCSatateAsTranquillo();
 			}
 		}
-		*/
+		
 	}
 }
 
@@ -271,6 +291,11 @@ void AMostriciattoloAIController::Int_SetNPCDead_Implementation()
 	BrainComponent->StopLogic(TEXT("Dead"));
 }
 
+void AMostriciattoloAIController::Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy)
+{
+	SetNPCSatateAsAggressivo(CurrentEnemy);
+}
+
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight)
@@ -372,10 +397,10 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 
 }
 
-void AMostriciattoloAIController::SetNPCSatateAsInseguendo(FVector LastSeenTarget)
+void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 {
 	if (IsPawnPossessed()) { return; }	
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
-	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), LastSeenTarget);
-	//TODO aggiungere nell Int_MChar uno switch definito in bp perla velocita jog  e walk
+	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
+	
 }

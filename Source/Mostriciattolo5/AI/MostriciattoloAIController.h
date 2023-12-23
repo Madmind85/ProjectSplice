@@ -39,6 +39,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCDead();
 	virtual void Int_SetNPCDead_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
+	virtual void Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy);
 
 
 
@@ -67,7 +70,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsAggressivo(AActor* Target);
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsInseguendo(FVector LastSeenTarget);
+	void SetNPCSatateAsInseguendo(AActor* Target);
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
 
@@ -98,6 +101,12 @@ private:
 	/**percentuale della sight radius (settabile su pawn sensing) appartenente al cono interno*/
 	UPROPERTY(EditDefaultsOnly,  Category = "Behaviour")
 	float InnerConeLength = 75.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float LastSeenTime = 0.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float QuitChaseTime = 4.f;
+
+
 
 	void ProcessLastVisionStimulus();
 	void ProcessLastHearingStimulus();

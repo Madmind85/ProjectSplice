@@ -14,6 +14,7 @@
 #include "Components/ArrowComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Mostriciattolo5/AI/MostriciattoloAIController.h"
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Weapons/MWeapon.h"
 #include "Weapons/MWeapon.h"
@@ -136,6 +137,11 @@ void AMostriciattolo5Character::BeginPlay()
 	}
 	//trova la value over time component
 	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
+}
+
+bool AMostriciattolo5Character::Int_IsPatroller_Implementation()
+{
+	return IsPatroller;
 }
 
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
@@ -567,7 +573,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 		GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
 	}
 	
-	//TODO  capire perchè non viene chiamato
+	
 	if (IsDead())
 	{
 		
@@ -575,7 +581,21 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 		
 		C_OnDeath();
 	}
-
+	else
+	{
+		AMostriciattoloAIController* Contr = Cast<AMostriciattoloAIController>(GetController());
+		if (Contr && Shooter)
+		{
+			Contr->SetNPCSatateAsAggressivo(Shooter);
+			/*
+			if (Contr->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
+			{
+				IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
+			}
+			*/
+		}
+			
+	}
 	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
 	
 	
