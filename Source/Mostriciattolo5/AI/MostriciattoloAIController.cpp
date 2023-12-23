@@ -22,12 +22,8 @@ void AMostriciattoloAIController::BeginPlay()
 
 
 	APawn* CurrentPawn = GetPawn();
-
-	if (AI_Behavior)
-	{
-		RunBehaviorTree(AI_Behavior);
-	}
-
+	RunAI_BehaviorTree();
+	
 	SetNPCSatateAsTranquillo();
 	/*
 	APawn* MPlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
@@ -52,6 +48,19 @@ void AMostriciattoloAIController::BeginPlay()
 	}
 }
 
+
+void AMostriciattoloAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (GetWorld()->GetTimeSeconds() > QuitChaseTime + LastSeenTime)
+	{
+		SensedActor = nullptr;
+
+		Int_SetNPCSatateAsTranquillo();
+		CanAlertGuards = true;
+	}
+}
 
 NPCStatus AMostriciattoloAIController::GetNpcAIStatus()
 {
@@ -140,6 +149,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			
 			if (bDead == false)
 			{
+				if (Faction == ActorFaction::Neutrale) { SetNPCSatateAsTranquillo(); return; }
+
 				LastSeenTime = GetWorld()->GetTimeSeconds();
 				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
 				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
@@ -187,17 +198,12 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 		}
 			//se ti sta sparando e ti perde
+		/*
 		else if (!CurrentStimulus.WasSuccessfullySensed())
 		{
-			if (LastSeenTime > QuitChaseTime)
-			{
-				SensedActor = nullptr;
-
-				Int_SetNPCSatateAsTranquillo();
-				CanAlertGuards = true;
-			}
+			
 		}
-		
+		*/
 	}
 }
 
@@ -322,6 +328,7 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction)
 }
 
 
+
 AActor* AMostriciattoloAIController::Int_GetCurrentNPCTarget_Implementation()
 {
 	return CurrentNPCTarget;
@@ -360,6 +367,15 @@ void AMostriciattoloAIController::OnDeathController()
 		SetNPCSatateAsFermo();
 		StopMovement();
 		BrainComponent->StopLogic(TEXT("Dead"));
+}
+
+void AMostriciattoloAIController::RunAI_BehaviorTree()
+{
+	if (AI_Behavior)
+	{
+		RunBehaviorTree(AI_Behavior);
+	}
+
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)

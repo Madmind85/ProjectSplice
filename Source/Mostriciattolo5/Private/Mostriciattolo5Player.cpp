@@ -107,8 +107,8 @@ void AMostriciattolo5Player::JumpOut()
     {
         IInt_MCharacter::Execute_SetIsAiming(Possessed, false);
         Possessed->MClearFocus();
-        FVector Target = GetCurrentPossessed()->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
-        FVector Start = GetCurrentPossessed()->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
+        FVector Target = Possessed->GetPossessSocket()->GetComponentLocation() + GetCurrentPossessed()->GetPossessSocket()->GetForwardVector() * 1000.f;
+        FVector Start = Possessed->GetActorLocation();//GetPossessSocket()->GetComponentLocation();
         FVector End = Start + GetCurrentPossessed()->GetActorForwardVector() * -100.f;
         SetActorLocation(GetCurrentPossessed()->GetActorLocation());
         SetActorRotation(GetCurrentPossessed()->GetActorRotation());
@@ -120,7 +120,7 @@ void AMostriciattolo5Player::JumpOut()
         NoCollisionTarget = false;
        
         //delay a IsBeingPossessed = false Per Permettere di allontanarsi prima di attivare la collisione
-        GetCurrentPossessed()->SetNotPossessedTimer();
+        Possessed->SetNotPossessedTimer();
     }
 }
 

@@ -22,6 +22,7 @@ class MOSTRICIATTOLO5_API AMostriciattoloAIController : public AAIController, pu
 
 public:
 	
+	virtual void Tick(float DeltaTime) override;
 
 	//Guardie Interface
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -45,6 +46,7 @@ public:
 
 
 	void OnDeathController();
+	void RunAI_BehaviorTree();
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;

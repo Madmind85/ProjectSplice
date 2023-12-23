@@ -660,10 +660,12 @@ void AMostriciattolo5Character::SetNotPossessedTimer()
 	GetWorld()->GetTimerManager().SetTimer(TimerH,this, &AMostriciattolo5Character::SetNotPossessedDelayed, 4.f, false, 4.f);
 
 }
+
 void AMostriciattolo5Character::SetNotPossessedDelayed()
 {
 	IsBeingPossessed = false;
 }
+
 void AMostriciattolo5Character::ResetCanBeTarget()
 {
 	CanBeTarget = false;
@@ -760,6 +762,15 @@ bool AMostriciattolo5Character::GetIsUnderPossessAttack()
 void AMostriciattolo5Character::SetIsUnderPossessAttack(bool IsUnderAttack)
 {
 	bIsUnderPossessAttack = IsUnderAttack;
+}
+
+void AMostriciattolo5Character::RunAIBehaviorTree()
+{
+	AMostriciattoloAIController* MCont = Cast<AMostriciattoloAIController>(GetController());
+	if (MCont)
+	{
+		MCont->RunAI_BehaviorTree();
+	}
 }
 
 bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen)

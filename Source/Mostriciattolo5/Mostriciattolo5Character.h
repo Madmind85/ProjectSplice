@@ -263,6 +263,8 @@ public:
 	bool GetIsUnderPossessAttack();
 	UFUNCTION(BlueprintCallable)
 	void SetIsUnderPossessAttack(bool IsUnderAttack);
+	UFUNCTION(BlueprintCallable)
+	void RunAIBehaviorTree();
 
 
 	UFUNCTION(BlueprintPure)
