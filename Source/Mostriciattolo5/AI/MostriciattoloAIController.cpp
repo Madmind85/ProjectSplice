@@ -115,7 +115,6 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 				
 				if (CStim.Type == sightid)
 				{
-		
 					ProcessLastVisionStimulus();
 				}
 				else if (CStim.Type == hearid && CStim.IsActive())
@@ -149,7 +148,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			
 			if (bDead == false)
 			{
-				if (Faction == ActorFaction::Neutrale) { SetNPCSatateAsTranquillo(); return; }
+				if (Faction == ActorFaction::Neutrale) { return; }
 
 				LastSeenTime = GetWorld()->GetTimeSeconds();
 				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
@@ -222,7 +221,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 				//Altrimneti corre verso lo sparo 
 			}
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
-			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
+			else //if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr);
 			}
@@ -376,6 +375,11 @@ void AMostriciattoloAIController::RunAI_BehaviorTree()
 		RunBehaviorTree(AI_Behavior);
 	}
 
+}
+
+bool AMostriciattoloAIController::SelfDestruct()
+{
+	return Destroy();
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)

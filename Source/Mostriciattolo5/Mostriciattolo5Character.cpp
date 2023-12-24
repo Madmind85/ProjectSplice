@@ -586,17 +586,23 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 		GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
 	}
 	
-	
+	AMostriciattoloAIController* Contr = Cast<AMostriciattoloAIController>(GetController());
+
 	if (IsDead())
 	{
-		
+		if (Contr)
+		{
+			bool bDestructed = Contr->SelfDestruct();
+
+		}
 		KillerActor = EventInstigator->GetPawn();
-		
 		C_OnDeath();
+		return DamageApplied;
 	}
+	
 	else
 	{
-		AMostriciattoloAIController* Contr = Cast<AMostriciattoloAIController>(GetController());
+		
 		if (Contr && Shooter)
 		{
 			Contr->SetNPCSatateAsAggressivo(Shooter);
@@ -606,9 +612,9 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 				IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
 			}
 			*/
-		}
-			
+		}	
 	}
+	
 	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
 	
 	

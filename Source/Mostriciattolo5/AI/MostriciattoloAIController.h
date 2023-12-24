@@ -47,6 +47,7 @@ public:
 
 	void OnDeathController();
 	void RunAI_BehaviorTree();
+	bool SelfDestruct();
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;
