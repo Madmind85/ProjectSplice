@@ -181,16 +181,14 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				
 				//if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento)
 				//{
-					//PER QUALCHE MOTIVO NON ARRIVA QUA MA SOPRA QUIESTO IF SI
-					
-					if (GetBlackboardComponent()->GetValueAsObject(FName("CurrentEnemy"))) {return;}
+					//if (GetBlackboardComponent()->GetValueAsObject(FName("CurrentEnemy"))) {return;}
 					//setta il suspect actor(cadavere)
 					//GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
 					//e setta lo stato su attennto
+					//SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 					ACharacter* SensedChar = Cast<ACharacter>(SensedActor);
 					if (SensedChar)
 					{
-						
 						USkeletalMeshComponent* SMesh = SensedChar->GetMesh();
 						if (SMesh)
 						{
@@ -199,7 +197,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 					}
 				//}
 
-			}
+			}	
 		}
 			//se ti sta sparando e ti perde
 		/*
