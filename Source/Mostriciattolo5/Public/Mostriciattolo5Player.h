@@ -77,8 +77,7 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay()override;
 	
-	//Int_MCharacter
-	virtual ActorFaction Int_GetIsTarget_Implementation()override;
+
 
 private:
 	

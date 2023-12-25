@@ -139,6 +139,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(SensedActor);
 		ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 		NPCStatus CurrentStatus = GetNpcAIStatus();
+	
 		//se c'è un cadavere
 		AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
 
@@ -148,8 +149,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			
 			if (bDead == false)
 			{
+				
 				if (Faction == ActorFaction::Neutrale) { return; }
-
 				LastSeenTime = GetWorld()->GetTimeSeconds();
 				//se la guardia vista è compromessa e questo npc non sta gia attacando qualcuno
 				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
@@ -177,22 +178,26 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 			else if (Killer)//non scansionato(dopo killer si resetta)
 			{	//se non è in mezzo ad unarissa
-				if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento)
-				{
+				
+				//if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento)
+				//{
+					//PER QUALCHE MOTIVO NON ARRIVA QUA MA SOPRA QUIESTO IF SI
+					
 					if (GetBlackboardComponent()->GetValueAsObject(FName("CurrentEnemy"))) {return;}
 					//setta il suspect actor(cadavere)
-					GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
+					//GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SensedActor);
 					//e setta lo stato su attennto
 					ACharacter* SensedChar = Cast<ACharacter>(SensedActor);
 					if (SensedChar)
 					{
+						
 						USkeletalMeshComponent* SMesh = SensedChar->GetMesh();
 						if (SMesh)
 						{
 							SetNPCSatateAsAttento(SMesh->GetComponentLocation(), SMesh->GetComponentLocation(), SensedActor);
 						}
 					}
-				}
+				//}
 
 			}
 		}

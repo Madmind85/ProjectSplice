@@ -32,8 +32,7 @@ void AMostriciattolo5Player::ControllNPCDelayed()
     if (MGameMode && GetCurrentPossessed())
     {
         IsControlling = true;
-        //se possiede non viene considerato dalla ia del nemico
-        IsTarget = ActorFaction::Neutrale;
+      
         SetActorHiddenInGame(true);
         MGameMode->ControllNPC(GetCurrentPossessed());
         GetCurrentPossessed()->AfterPossession(this);
@@ -138,10 +137,7 @@ void AMostriciattolo5Player::BeginPlay()
 	SetActorTickEnabled(true);
 }
 
-ActorFaction AMostriciattolo5Player::Int_GetIsTarget_Implementation()
-{
-    return ActorFaction::Nemico;
-}
+
 
 void AMostriciattolo5Player::OnTeleportFinished()
 {
@@ -186,6 +182,9 @@ void AMostriciattolo5Player::InterceptPossessPoint()
 
     if (bHit || bHit2)
     {
+        //se possiede non viene considerato dalla ia del nemico
+        IsTarget = ActorFaction::Neutrale;
+
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         AActor* HitActor = Hit.GetActor();
         

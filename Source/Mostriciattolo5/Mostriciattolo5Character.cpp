@@ -596,22 +596,22 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 
 		}
 		KillerActor = EventInstigator->GetPawn();
+	
 		C_OnDeath();
 		return DamageApplied;
 	}
 	
 	else
 	{
-		
 		if (Contr && Shooter)
 		{
 			Contr->SetNPCSatateAsAggressivo(Shooter);
-			/*
+			
 			if (Contr->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
 			{
 				IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
 			}
-			*/
+			
 		}	
 	}
 	
