@@ -38,7 +38,6 @@ void AMostriciattoloAIController::BeginPlay()
 	}
 	else
 	{
-		
 		if (CurrentPawn)
 		{
 			GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), false);
@@ -55,10 +54,7 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 
 	if (GetWorld()->GetTimeSeconds() > QuitChaseTime + LastSeenTime)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("bada time seconds = %f"), GetWorld()->GetTimeSeconds());
-		UE_LOG(LogTemp, Warning, TEXT("bada LastSeenTime = %f"), QuitChaseTime + LastSeenTime);
 		SensedActor = nullptr;
-		UE_LOG(LogTemp, Warning, TEXT("bada tick set tranquillo"));
 		Int_SetNPCSatateAsTranquillo();
 		CanAlertGuards = true;
 	}
@@ -136,33 +132,25 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 
 void AMostriciattoloAIController::ProcessLastVisionStimulus()
 {
-	SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 	bool bIsDead = IInt_MCharacter::Execute_Int_IsActorDead(SensedActor);
 	ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 	NPCStatus CurrentStatus = GetNpcAIStatus();
+	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
+
+
 	if (!bIsDead)
 	{
 		LastSeenTime = GetWorld()->GetTimeSeconds();
 		if (Faction == ActorFaction::Nemico)
 		{
-
-			 UE_LOG(LogTemp, Warning, TEXT("Nonmorto e nemico")) 
 			SetNPCSatateAsInseguendo(SensedActor);
 		}
 	}
-
-		
-		
-		
-
-		//se c'è un cadavere
-		AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
-		if (Killer)//non scansionato(dopo killer si resetta)
-		{	//se non è in mezzo ad unarissa
-
-		
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
-		}
+	else if (Killer)//non scansionato(dopo killer si resetta)
+	{	//se non è in mezzo ad unarissa
+		 UE_LOG(LogTemp, Warning, TEXT("bada attento scan")) 
+		SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
+	}
 
 
 
@@ -185,6 +173,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else //if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
+				 UE_LOG(LogTemp, Warning, TEXT("bada attentop rumore")) 
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr);
 			}
 		}
@@ -398,7 +387,6 @@ void AMostriciattoloAIController::SetNPCSatateAsFermo()
 
 void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 {
-	UE_LOG(LogTemp, Warning, TEXT("bada tranquillo"))
 	if (IsPawnPossessed()) { UE_LOG(LogTemp, Warning, TEXT("bada tranquillo possessed"))return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
 	
@@ -413,12 +401,13 @@ void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor)
 {
 	if (IsPawnPossessed()) { return; }
-
+	 UE_LOG(LogTemp, Warning, TEXT("bada attento set attento")) 
 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 4);
 
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), Suspect_Point);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), MoveToLoc);
+	GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), SuspectActor);
 
 }
 
