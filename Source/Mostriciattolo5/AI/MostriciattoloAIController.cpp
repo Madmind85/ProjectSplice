@@ -51,12 +51,20 @@ void AMostriciattoloAIController::BeginPlay()
 void AMostriciattoloAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	UE_LOG(LogTemp, Warning, TEXT("Bada current time = %f"), GetWorld()->GetTimeSeconds())
+		UE_LOG(LogTemp, Warning, TEXT("Bada QuitChaseTime + LastSeenTime = %f"), QuitChaseTime + LastSeenTime)
+	
+		//se il tempo attuale è maggiore del tempo in cui lo ha visto l'ultima volta + quitchasetime
 	if (GetWorld()->GetTimeSeconds() > QuitChaseTime + LastSeenTime)
 	{
-		SensedActor = nullptr;
-		Int_SetNPCSatateAsTranquillo();
-		CanAlertGuards = true;
+		uint8 CurrentState = GetBlackboardComponent()->GetValueAsEnum((FName("CurrentStatus")));
+		//se sta inseguendo o attaccando
+		if (CurrentState == 6 || CurrentState == 7)
+		{
+			SensedActor = nullptr;
+			Int_SetNPCSatateAsTranquillo();
+			CanAlertGuards = true;
+		}
 	}
 }
 
@@ -137,23 +145,27 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	NPCStatus CurrentStatus = GetNpcAIStatus();
 	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
 
-
 	if (!bIsDead)
 	{
-		LastSeenTime = GetWorld()->GetTimeSeconds();
 		if (Faction == ActorFaction::Nemico)
 		{
+			//momento in cui lo ha visto perl'ultima volta
+			LastSeenTime = GetWorld()->GetTimeSeconds();
 			SetNPCSatateAsInseguendo(SensedActor);
 		}
+		if (Faction == ActorFaction::Compromesso)
+		{
+			//momento in cui lo ha visto perl'ultima volta
+			LastSeenTime = GetWorld()->GetTimeSeconds();
+			SetNPCSatateAsAggressivo(SensedActor);
+		}
 	}
+
 	else if (Killer)//non scansionato(dopo killer si resetta)
 	{	//se non è in mezzo ad unarissa
-		 UE_LOG(LogTemp, Warning, TEXT("bada attento scan")) 
+		
 		SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 	}
-
-
-
 }
 
 void AMostriciattoloAIController::ProcessLastHearingStimulus()

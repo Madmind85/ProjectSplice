@@ -577,41 +577,35 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
 	
-	//Se spari a una guardia diventi suscettibile a essere un target (se visto) per 2 secondi
-	AMostriciattolo5Character* Shooter = Cast<AMostriciattolo5Character>(EventInstigator->GetPawn());
-	if (Shooter) 
-	{
-		Shooter->CanBeTarget = true;
-		FTimerHandle Timert;
-		GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
-	}
 	
+	AMostriciattolo5Character* Shooter = Cast<AMostriciattolo5Character>(EventInstigator->GetPawn());
+
 	AMostriciattoloAIController* Contr = Cast<AMostriciattoloAIController>(GetController());
 
 	if (IsDead())
-	{
+	{	//se lo vedono sparare mentre oneshotta qualcuno diventi suscettibile a essere un target (se visto) per 2 secondi
+		if (Shooter)
+		{
+			Shooter->CanBeTarget = true;
+			FTimerHandle Timert;
+			GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
+		}
+
 		if (Contr)
 		{
 			bool bDestructed = Contr->SelfDestruct();
-
 		}
+
 		KillerActor = EventInstigator->GetPawn();
 	
 		C_OnDeath();
 		return DamageApplied;
 	}
-	
 	else
-	{
-		if (Contr && Shooter)
+	{ //se sopari a una guardia e rimane viva ti setta come compromesso
+		if ( Shooter)
 		{
-			Contr->SetNPCSatateAsAggressivo(Shooter);
-			
-			if (Contr->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
-			{
-				IInt_Guardie::Execute_Int_SetNPCSatateAsAggressivo(Contr, Shooter);
-			}
-			
+			Shooter->IsTarget = ActorFaction::Compromesso;
 		}	
 	}
 	
