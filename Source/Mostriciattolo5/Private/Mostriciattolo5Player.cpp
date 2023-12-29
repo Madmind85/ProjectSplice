@@ -170,12 +170,15 @@ void AMostriciattolo5Player::InterceptPossessPoint()
     End += FVector(0.f, 0.f, PossessLineHeight1);
     Start += FVector(0.f, 0.f, PossessLineHeight1);
 
-    bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility);
+    FCollisionObjectQueryParams ObjectQueryParams;
+    ObjectQueryParams.AddObjectTypesToQuery(ECC_PhysicsBody);
+
+    bool bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, ObjectQueryParams);
     //seconda line trace
     FVector End2 = End + FVector(0.f, 0.f, PossessLineHeight2);
     FVector Start2 = Start + FVector(0.f, 0.f, PossessLineHeight2);
 
-    bool bHit2 = GetWorld()->LineTraceSingleByChannel(Hit, Start2, End2, ECC_Visibility);
+    bool bHit2 = GetWorld()->LineTraceSingleByObjectType(Hit, Start2, End2, ObjectQueryParams);
 
     DrawDebugLine(GetWorld(), Start, End, FColor::Cyan);
     DrawDebugLine(GetWorld(), Start2, End2, FColor::Cyan);
