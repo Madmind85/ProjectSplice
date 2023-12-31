@@ -51,8 +51,6 @@ void AMostriciattoloAIController::BeginPlay()
 void AMostriciattoloAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("Bada current time = %f"), GetWorld()->GetTimeSeconds())
-		UE_LOG(LogTemp, Warning, TEXT("Bada QuitChaseTime + LastSeenTime = %f"), QuitChaseTime + LastSeenTime)
 	
 		//se il tempo attuale è maggiore del tempo in cui lo ha visto l'ultima volta + quitchasetime
 	if (GetWorld()->GetTimeSeconds() > QuitChaseTime + LastSeenTime)

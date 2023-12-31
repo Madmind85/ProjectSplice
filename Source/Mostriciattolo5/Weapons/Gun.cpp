@@ -57,9 +57,10 @@ void AGun::Tick(float DeltaTime)
 void AGun::LaserAiming()
 {
 	if (!GetOwner()) { return; }
-
+	
 	if (MuzzleLoc)
 	{
+		
 		if (!OwnerCharacter) { SetOwnerCharacter(); }
 
 		FVector End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
@@ -243,6 +244,7 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes, AActor* AI_Targe
 
 	if (AIShooting)
 	{
+		
 		if (AI_Target)
 		{ 
 			FVector CharLoc = AI_Target->GetActorLocation();
@@ -266,6 +268,7 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes, AActor* AI_Targe
 	}
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	
 	OUTHitRes = Hit;
 	return bHit;
 }

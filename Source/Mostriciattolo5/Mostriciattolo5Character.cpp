@@ -661,7 +661,7 @@ float AMostriciattolo5Character::GetViewPOsition_X()
 void AMostriciattolo5Character::SetNotPossessedTimer()
 {
 	FTimerHandle TimerH;
-	GetWorld()->GetTimerManager().SetTimer(TimerH,this, &AMostriciattolo5Character::SetNotPossessedDelayed, 4.f, false, 4.f);
+	GetWorld()->GetTimerManager().SetTimer(TimerH,this, &AMostriciattolo5Character::SetNotPossessedDelayed, 1.5f, false, 1.5f);
 
 }
 
