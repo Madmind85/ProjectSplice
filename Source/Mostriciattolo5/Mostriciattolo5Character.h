@@ -148,8 +148,10 @@ public:
 
 	//Se true non puoi' usare depossess, viene resettata quando questo char viene posseduto
 	bool IsSpammingDepossess = false;
+	//se true non puoi usare possess viene resettata con un event alla fine della sequence di depossessione 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsSpammingPossess = false;
+
 
 	
 	UPROPERTY(BlueprintReadWrite)

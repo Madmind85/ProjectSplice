@@ -73,15 +73,12 @@ void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
             GetCurrentPossessed()->IsBeingPossessed = true;
             GetCurrentPossessed()->SetIsUnderPossessAttack(true);
            
-
-            if (ValueOverTimeComponent)
-            {
-                IsSpammingPossess = true;
-                FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("rootSocket")));
-                //ValueOverTimeComponent->StartTeleportingWithSpeed(GetActorLocation(), TeleportEnd, 1000.f);
-                OnTeleportFinished();
-                GetCharacterMovement()->StopMovementImmediately();
-            }
+            GetCharacterMovement()->StopMovementImmediately();
+            IsSpammingPossess = true;
+            FVector TeleportEnd = GetCurrentPossessed()->GetMesh()->GetSocketLocation(FName(TEXT("rootSocket")));
+               
+             OnTeleportFinished();
+            
         }
     }
 }
@@ -141,8 +138,8 @@ void AMostriciattolo5Player::BeginPlay()
 
 void AMostriciattolo5Player::OnTeleportFinished()
 {
-  
     SetCurrentFocus(nullptr);
+
     if (GetCurrentPossessed())
     {
         GetCurrentPossessed()->BP_ResetTarget();
@@ -192,13 +189,18 @@ void AMostriciattolo5Player::InterceptPossessPoint()
         AActor* HitActor = Hit.GetActor();
         
         if (HitComponent)
-        {
+        {   
+            ACharacter* HitChar = Cast<ACharacter>(HitActor);
             if (HitComponent->ComponentTags.Contains(TEXT("PossessFront"))) 
             { 
                 if (HitActor)
                 {
+                    if (HitChar)
+                    {
+                        IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
+                    }
                     IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
-                        bFrontPossession = true;
+                    bFrontPossession = true;
                     PossessLineTrace(Hit);
                 }
             }
@@ -206,6 +208,11 @@ void AMostriciattolo5Player::InterceptPossessPoint()
             {
                 if (HitActor)
                 {
+                    if (HitChar)
+                    {
+                        IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
+                    }
+                    IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitActor);
                     IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
                     bFrontPossession = false;
                     PossessLineTrace(Hit);
