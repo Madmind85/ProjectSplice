@@ -107,6 +107,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AMostriciattoloAIController* Int_GetAIController();
 	virtual AMostriciattoloAIController* Int_GetAIController_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_PlayIdleAnim();
+	void Int_PlayIdleAnim_Implementation();
 
 	UCapsuleComponent* GetPossessSocket();
 

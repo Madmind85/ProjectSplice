@@ -49,4 +49,6 @@ public:
 	bool Int_IsPatroller();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	AMostriciattoloAIController* Int_GetAIController();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_PlayIdleAnim();
 };

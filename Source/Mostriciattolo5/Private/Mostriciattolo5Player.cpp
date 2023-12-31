@@ -184,41 +184,36 @@ void AMostriciattolo5Player::InterceptPossessPoint()
     {
         //se possiede non viene considerato dalla ia del nemico
         IsTarget = ActorFaction::Neutrale;
-
+       
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         AActor* HitActor = Hit.GetActor();
-        
-        if (HitComponent)
-        {   
+        if (HitActor)
+        { 
             ACharacter* HitChar = Cast<ACharacter>(HitActor);
-            if (HitComponent->ComponentTags.Contains(TEXT("PossessFront"))) 
-            { 
-                if (HitActor)
-                {
-                    if (HitChar)
-                    {
-                        IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
-                    }
-                    IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
-                    bFrontPossession = true;
-                    PossessLineTrace(Hit);
-                }
-            }
-            else if (HitComponent->ComponentTags.Contains(TEXT("PossessBack")))
+      
+            if (HitChar)
             {
-                if (HitActor)
+                IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
+                IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
+               
+
+                if (HitComponent)
                 {
-                    if (HitChar)
+
+                    if (HitComponent->ComponentTags.Contains(TEXT("PossessFront")))
                     {
-                        IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
+                        bFrontPossession = true;
+                        PossessLineTrace(Hit);
                     }
-                    IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitActor);
-                    IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
-                    bFrontPossession = false;
-                    PossessLineTrace(Hit);
+
+                    else if (HitComponent->ComponentTags.Contains(TEXT("PossessBack")))
+                    {
+                        IInt_MCharacter::Execute_Int_PlayIdleAnim(HitChar);
+                        bFrontPossession = false;
+                        PossessLineTrace(Hit);
+                    }
                 }
             }
-            
         }
         
     }

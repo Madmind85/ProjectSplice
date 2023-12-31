@@ -150,6 +150,10 @@ AMostriciattoloAIController* AMostriciattolo5Character::Int_GetAIController_Impl
 	return AICont;
 }
 
+void AMostriciattolo5Character::Int_PlayIdleAnim_Implementation()
+{
+}
+
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 {
 	return PossessSocket;
