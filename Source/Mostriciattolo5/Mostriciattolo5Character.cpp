@@ -97,8 +97,10 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	if (GetCurrentFocus())
-	{//se non è piu visibile toglie il focus
-		if (!GetIsVisibleOnScreen(GetCurrentFocus()))
+	{
+		bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(GetCurrentFocus());
+		//se non è piu visibile o è morto toglie il focus
+		if (!GetIsVisibleOnScreen(GetCurrentFocus()) || bDead)
 		{
 			MClearFocus();
 		}
@@ -213,10 +215,13 @@ void AMostriciattolo5Character::FindCharacterToTarget(float TMouseX)
 				AMostriciattolo5Character* NextF = PawnsInView[CurrentIndex + 1];
 				if (NextF)
 				{
-					CurrentFocus->BP_ResetTarget();
-					CurrentFocus = NextF;
-					CurrentFocus->BP_SetTarget();
-
+					bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(NextF);
+					if (!bDead)
+					{
+						CurrentFocus->BP_ResetTarget();
+						CurrentFocus = NextF;
+						CurrentFocus->BP_SetTarget();
+					}
 				}
 			}
 		}
