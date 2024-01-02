@@ -2,20 +2,20 @@
 	"RemapUnityFiles": 
 	{
 		"Module.KaiLocomotionEditor.cpp.obj": [
-			"AnimGraphNode_KLSAimOffset.gen.cpp.obj",
-			"AnimGraphNode_KLSFootPlacement.gen.cpp.obj",
-			"AnimGraphNode_KLSMask.gen.cpp.obj",
-			"AnimGraphNode_KLSOrientationWarping.gen.cpp.obj",
-			"AnimGraphNode_KLSRandomPlayer.gen.cpp.obj",
-			"AnimGraphNode_KLSStrideWarping.gen.cpp.obj",
-			"KaiLocomotionEditor.init.gen.cpp.obj",
 			"AnimGraphNode_KLSAimOffset.cpp.obj",
 			"AnimGraphNode_KLSFootPlacement.cpp.obj",
 			"AnimGraphNode_KLSMask.cpp.obj",
 			"AnimGraphNode_KLSOrientationWarping.cpp.obj",
 			"AnimGraphNode_KLSRandomPlayer.cpp.obj",
 			"AnimGraphNode_KLSStrideWarping.cpp.obj",
-			"KaiLocomotionEditor.cpp.obj"
+			"KaiLocomotionEditor.cpp.obj",
+			"AnimGraphNode_KLSAimOffset.gen.cpp.obj",
+			"AnimGraphNode_KLSFootPlacement.gen.cpp.obj",
+			"AnimGraphNode_KLSMask.gen.cpp.obj",
+			"AnimGraphNode_KLSOrientationWarping.gen.cpp.obj",
+			"AnimGraphNode_KLSRandomPlayer.gen.cpp.obj",
+			"AnimGraphNode_KLSStrideWarping.gen.cpp.obj",
+			"KaiLocomotionEditor.init.gen.cpp.obj"
 		]
 	}
 }

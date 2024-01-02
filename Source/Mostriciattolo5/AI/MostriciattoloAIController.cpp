@@ -324,9 +324,16 @@ void AMostriciattoloAIController::Int_SetNPCSatateAsAggressivo_Implementation(AA
 
 void AMostriciattoloAIController::OnDeathController()
 {
-		SetNPCSatateAsFermo();
+		//SetNPCSatateAsFermo();
 		StopMovement();
-		BrainComponent->StopLogic(TEXT("Dead"));
+		if (GetPawn())
+		{
+			GetPawn()->DetachFromControllerPendingDestroy();
+		}
+		
+
+		//BrainComponent->StopLogic(TEXT("Dead"));
+		Destroy();
 }
 
 void AMostriciattoloAIController::RunAI_BehaviorTree()
