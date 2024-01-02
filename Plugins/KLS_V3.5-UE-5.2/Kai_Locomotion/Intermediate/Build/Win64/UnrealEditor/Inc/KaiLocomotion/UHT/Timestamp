@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSAimOffset.h
 E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSOrientationWarping.h
 E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSFootPlacement.h
@@ -15,3 +16,22 @@ E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\
 E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSRandomPlayer.h
 E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSBaseLinkedAnimInstance.h
 E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Character\KLSCharacterMovementComponent.h
+=======
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSAimOffset.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSFootPlacement.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSMask.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSMaskAnimInstance.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Character\KLSCharacterMovementComponent.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSBaseLinkedAnimInstance.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSStrideWarping.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSAnimationData.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSCharacterData.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSCustomJumps.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSOrientationWarping.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Data\KLSDataAssets.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Library\KLSLocomotionBlueprintLibrary.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_SlotCustom.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\AnimNode_KLSRandomPlayer.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSAnimBPData.h
+H:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public\Animation\KLSBaseAnimInstance.h
+>>>>>>> e1b86ee240bce686bdecddce2048164c3278c9f2
