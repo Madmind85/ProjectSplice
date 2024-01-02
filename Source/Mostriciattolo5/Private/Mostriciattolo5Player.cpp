@@ -188,14 +188,16 @@ void AMostriciattolo5Player::InterceptPossessPoint()
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         AActor* HitActor = Hit.GetActor();
 
-        if (IInt_MCharacter::Execute_Int_IsActorDead(HitActor)) { return; }
+        
 
         if (HitActor)
         { 
-            ACharacter* HitChar = Cast<ACharacter>(HitActor);
-      
+            AMostriciattolo5Character* HitChar = Cast<AMostriciattolo5Character>(HitActor);
+          
             if (HitChar)
             {
+                if (HitChar->IsDead()) { return; }
+
                 IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
                 IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
                
