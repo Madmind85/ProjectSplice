@@ -159,7 +159,7 @@ void AMostriciattolo5Player::InterceptPossessPoint()
 {
     if (IsSpammingPossess) { return; }
     if (GetCurrentPossessed()) { return; }
-
+    
     FHitResult Hit;
     FVector Start = GetActorLocation();
     FVector End = GetActorLocation() + GetActorForwardVector() * PossessReach;
@@ -187,6 +187,9 @@ void AMostriciattolo5Player::InterceptPossessPoint()
        
         UPrimitiveComponent* HitComponent = Hit.GetComponent();
         AActor* HitActor = Hit.GetActor();
+
+        if (IInt_MCharacter::Execute_Int_IsActorDead(HitActor)) { return; }
+
         if (HitActor)
         { 
             ACharacter* HitChar = Cast<ACharacter>(HitActor);

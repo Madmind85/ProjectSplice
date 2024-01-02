@@ -160,9 +160,17 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	}
 
 	else if (Killer)//non scansionato(dopo killer si resetta)
-	{	//se non è in mezzo ad unarissa
-		
-		SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
+	{	
+		ACharacter* MChar = Cast<ACharacter>(SensedActor);
+		if (MChar)
+		{
+			USkeletalMeshComponent* MMesh = MChar->GetMesh();
+			SetNPCSatateAsAttento(MMesh->GetComponentLocation(), MMesh->GetComponentLocation(), SensedActor);
+		}
+		else
+		{
+			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
+		}
 	}
 }
 
