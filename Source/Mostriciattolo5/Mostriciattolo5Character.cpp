@@ -79,7 +79,8 @@ AMostriciattolo5Character::AMostriciattolo5Character()
 
 void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 {
-	
+	if (IsDead()) { return; }
+
 	if (MWeapon)
 	{
 		MWeapon->WeaponAttack(bAIShooting, AI_Target);
