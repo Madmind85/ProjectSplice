@@ -259,6 +259,7 @@ void AMostriciattolo5Character::Int_ResetKillerActor_Implementation()
 void AMostriciattolo5Character::Int_SetFaction_Implementation(ActorFaction NewFaction)
 {
 	IsTarget = NewFaction;
+	SetFactionLights();
 }
 
 

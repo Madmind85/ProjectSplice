@@ -34,6 +34,9 @@ void AMostriciattolo5Player::ControllNPCDelayed()
         IsControlling = true;
       
         SetActorHiddenInGame(true);
+        //riattiva tutte le ia tramite variabile synced silla BB
+        AController* Cont = GetCurrentPossessed()->GetController();
+        IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(Cont, false);
         MGameMode->ControllNPC(GetCurrentPossessed());
         GetCurrentPossessed()->AfterPossession(this);
         
@@ -197,8 +200,8 @@ void AMostriciattolo5Player::InterceptPossessPoint()
             if (HitChar)
             {
                 if (HitChar->IsDead()) { return; }
-
-                IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController());
+                //disattiva tutte le ia tramite variabile synced sulla BB, si riattivano nella funzione ControllNPCDelayed su questa classe
+                IInt_Guardie::Execute_Int_SetNPCSatateAsFermo(HitChar->GetController(), true);
                 IInt_MCharacter::Execute_SetIsAiming(HitActor, false);
                
 

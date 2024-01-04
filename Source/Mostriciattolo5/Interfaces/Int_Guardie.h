@@ -30,11 +30,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsTranquillo();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Int_SetNPCSatateAsFermo();
+	void Int_SetNPCSatateAsFermo(bool IsFermo);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCDead();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
+	
 
 
 };

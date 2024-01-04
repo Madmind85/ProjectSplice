@@ -295,6 +295,12 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction)
 	}
 }
 
+void AMostriciattoloAIController::SetNPCStateAsAttivo()
+{
+	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
+	GetBlackboardComponent()->SetValueAsBool(FName("IsPossessing"), false);
+}
+
 
 
 AActor* AMostriciattoloAIController::Int_GetCurrentNPCTarget_Implementation()
@@ -313,9 +319,16 @@ void AMostriciattoloAIController::Int_SetNPCSatateAsTranquillo_Implementation()
 	SetNPCSatateAsTranquillo();
 }
 
-void AMostriciattoloAIController::Int_SetNPCSatateAsFermo_Implementation()
+void AMostriciattoloAIController::Int_SetNPCSatateAsFermo_Implementation(bool IsFermo)
 {
-	SetNPCSatateAsFermo();
+	if (IsFermo)
+	{
+		SetNPCSatateAsFermo();
+	}
+	else
+	{
+		SetNPCStateAsAttivo();
+	}
 }
 
 void AMostriciattoloAIController::Int_SetNPCDead_Implementation()
@@ -407,6 +420,8 @@ void AMostriciattoloAIController::SetNPCSatateAsFermo()
 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 1);
 	SetPawnAim(false);
+	GetBlackboardComponent()->SetValueAsBool(FName("IsPossessing"), true);
+
 	//GetBrainComponent()->StopLogic(TEXT("Dead"));
 }
 

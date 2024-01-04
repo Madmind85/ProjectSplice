@@ -237,6 +237,8 @@ public:
 	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn);
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_TurnCameraToTarget();
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetFactionLights();
 
 
 	/** Su on death */

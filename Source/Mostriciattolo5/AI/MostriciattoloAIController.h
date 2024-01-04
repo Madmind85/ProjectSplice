@@ -35,8 +35,8 @@ public:
 	void Int_SetNPCSatateAsTranquillo();
 	virtual void Int_SetNPCSatateAsTranquillo_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Int_SetNPCSatateAsFermo();
-	virtual void Int_SetNPCSatateAsFermo_Implementation();
+	void Int_SetNPCSatateAsFermo(bool IsFermo);
+	virtual void Int_SetNPCSatateAsFermo_Implementation(bool IsFermo);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCDead();
 	virtual void Int_SetNPCDead_Implementation();
@@ -125,4 +125,7 @@ private:
 
 	void AlertClosestGuards(ActorFaction Faction);
 	bool CanAlertGuards = true;
+
+	void SetNPCStateAsAttivo();
+	
 };
