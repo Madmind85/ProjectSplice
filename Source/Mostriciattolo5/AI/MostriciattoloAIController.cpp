@@ -151,7 +151,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			LastSeenTime = GetWorld()->GetTimeSeconds();
 			SetNPCSatateAsInseguendo(SensedActor);
 		}
-		if (Faction == ActorFaction::Compromesso)
+		else if (Faction == ActorFaction::Compromesso && GetNpcAIStatus()!= NPCStatus::Inseguendo)
 		{
 			//momento in cui lo ha visto perl'ultima volta
 			LastSeenTime = GetWorld()->GetTimeSeconds();
