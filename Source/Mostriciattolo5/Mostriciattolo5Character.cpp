@@ -258,8 +258,8 @@ void AMostriciattolo5Character::Int_ResetKillerActor_Implementation()
 
 void AMostriciattolo5Character::Int_SetFaction_Implementation(ActorFaction NewFaction)
 {
-	IsTarget = NewFaction;
-	SetFactionLights();
+	
+	SetFaction(NewFaction);
 }
 
 
@@ -616,7 +616,11 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	{ //se sopari a una guardia e rimane viva ti setta come compromesso
 		if ( Shooter)
 		{
-			Shooter->IsTarget = ActorFaction::Compromesso;
+			bool bPossessed = Shooter->IsBeingPossessed;
+			if (bPossessed)
+			{
+				Shooter->SetFaction(ActorFaction::Compromesso);
+			}	
 		}	
 	}
 	
@@ -680,6 +684,11 @@ void AMostriciattolo5Character::SetNotPossessedDelayed()
 void AMostriciattolo5Character::ResetCanBeTarget()
 {
 	CanBeTarget = false;
+}
+void AMostriciattolo5Character::SetFaction(ActorFaction NewFaction)
+{
+	IsTarget = NewFaction;
+	SetFactionLights();
 }
 /*void AMostriciattolo5Character::TurnCameraToTargetr()
 {

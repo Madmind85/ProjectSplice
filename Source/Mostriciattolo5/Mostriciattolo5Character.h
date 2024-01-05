@@ -333,7 +333,7 @@ private:
 	void SetFist();
 	void SetNotPossessedDelayed();
 	void ResetCanBeTarget();
-	
+	void SetFaction(ActorFaction NewFaction);
 
 	bool bIsUnderPossessAttack = false;
 };
