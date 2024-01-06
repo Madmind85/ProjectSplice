@@ -55,7 +55,7 @@ public:
 
 	/**vede se CharacterInSight è all'interno dell'anmgolo "InnerConeDegrees" e non olte la percentuale "innerConeLength" sulla lunghezza di vista totale*/
 	UFUNCTION(BlueprintCallable)
-	bool CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius);
+	bool CheckInnerSightAngle(AActor* CharacterInSight, float PS_SightRadius);
 
 
 	//NPCStates /Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6/Inseguendo = 7
@@ -75,6 +75,7 @@ public:
 	void SetNPCSatateAsAggressivo(AActor* Target);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsInseguendo(AActor* Target);
+
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
 

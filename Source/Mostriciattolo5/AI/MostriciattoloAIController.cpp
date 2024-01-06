@@ -144,20 +144,39 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	NPCStatus CurrentStatus = GetNpcAIStatus();
 	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
 	
+
 	if (!bIsDead)
 	{
 		if (Faction == ActorFaction::Nemico)
-		{
-			//momento in cui lo ha visto perl'ultima volta
-			UpdateLastSeenT();
-			SetNPCSatateAsInseguendo(SensedActor);
+		{		//senon è nel cono interno 
+			if (!CheckInnerSightAngle(SensedActor, 1500.f))
+			{
+			 UE_LOG(LogTemp, Warning, TEXT("not inner sight")) 
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("not inner sight"))
+				//momento in cui lo ha visto perl'ultima volta
+				UpdateLastSeenT();
+				SetNPCSatateAsInseguendo(SensedActor);
+			}
 		}
 		else if (Faction == ActorFaction::Compromesso && GetNpcAIStatus()!= NPCStatus::Inseguendo)
-		{
-			//momento in cui lo ha visto perl'ultima volta
-			UpdateLastSeenT();
-			SetNPCSatateAsAggressivo(SensedActor);
-		}
+		{		//senon è nel cono interno 
+			if (!CheckInnerSightAngle(SensedActor, 1500.f))
+			{
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
+			}
+			else
+			{
+				//momento in cui lo ha visto perl'ultima volta
+				UpdateLastSeenT();
+				SetNPCSatateAsAggressivo(SensedActor);
+			}
+			
+		}			
+		
 	}
 
 	else if (Killer)//non scansionato(dopo killer si resetta)
@@ -378,20 +397,21 @@ void AMostriciattoloAIController::UpdateLastSeenT()
 	UE_LOG(LogTemp, Warning, TEXT("LastSeenT updated to %f"), LastSeenT);
 }
 
-bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)
+bool AMostriciattoloAIController::CheckInnerSightAngle(AActor* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("mostriciattolo character 5 check inner sight angle BADA no character in sight"))
+		UE_LOG(LogTemp, Warning, TEXT("mostriciattolo ai check inner sight angle BADA no character in sight"))
 			return false;
 	}
-	AActor* OwnerA = GetOwner();
+	AActor* OwnerA = GetPawn();
 	if (!OwnerA)
 	{
+		 UE_LOG(LogTemp, Warning, TEXT(" mostriciattolo ai check inner sight no owner")) 
 		return false;
 	}
 	//vede se CharacterInSight è all'interno dell'anmgolo InnerConeDegrees
-	FVector DirectionVector = GetOwner()->GetActorLocation() - CharacterInSight->GetActorLocation();
+	FVector DirectionVector = OwnerA->GetActorLocation() - CharacterInSight->GetActorLocation();
 	DirectionVector.Normalize();
 	double DProduct = FVector::DotProduct(OwnerA->GetActorForwardVector(), DirectionVector);
 	double AngleInRadians = FMath::Acos(FMath::Abs(DProduct));
@@ -400,8 +420,8 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, 
 	float InnerConeStraightLength = (InnerConeLength / 100) * PS_SightRadius;
 	float DistanceFromActor = FVector::Distance(OwnerA->GetActorLocation(), CharacterInSight->GetActorLocation());
 
-	UE_LOG(LogTemp, Warning, TEXT("Mostriciattolo Character 5 - Check Inner Sight Angle: DProduct = %f, AngleInRadians = %f"), DProduct, AngleInRadians)
-
+	UE_LOG(LogTemp, Warning, TEXT("Mostriciattolo AIController- Check Inner Sight Angle: DProduct = %f, AngleInRadians = %f"), DProduct, AngleInRadians)
+		 UE_LOG(LogTemp, Warning, TEXT("Mostriciattolo AIController Check Inner Sight Angle InnerConeStraightLength = %f "), InnerConeStraightLength)
 		if (AngleInDegrees <= InnerConeDegrees && DistanceFromActor < InnerConeStraightLength)
 		{
 			return true;
