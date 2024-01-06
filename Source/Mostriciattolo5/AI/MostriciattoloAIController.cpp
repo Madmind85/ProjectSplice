@@ -53,8 +53,9 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 		//se il tempo attuale è maggiore del tempo in cui lo ha visto l'ultima volta + quitchasetime
-	if (GetWorld()->GetTimeSeconds() > QuitChaseTime + LastSeenTime)
+	if (GetWorld()->GetTimeSeconds() >= QuitChaseTime + LastSeenT)
 	{
+			
 		uint8 CurrentState = GetBlackboardComponent()->GetValueAsEnum((FName("CurrentStatus")));
 		//se sta inseguendo o attaccando
 		if (CurrentState == 6 || CurrentState == 7)
@@ -142,19 +143,19 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 	NPCStatus CurrentStatus = GetNpcAIStatus();
 	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
-
+	
 	if (!bIsDead)
 	{
 		if (Faction == ActorFaction::Nemico)
 		{
 			//momento in cui lo ha visto perl'ultima volta
-			LastSeenTime = GetWorld()->GetTimeSeconds();
+			UpdateLastSeenT();
 			SetNPCSatateAsInseguendo(SensedActor);
 		}
 		else if (Faction == ActorFaction::Compromesso && GetNpcAIStatus()!= NPCStatus::Inseguendo)
 		{
 			//momento in cui lo ha visto perl'ultima volta
-			LastSeenTime = GetWorld()->GetTimeSeconds();
+			UpdateLastSeenT();
 			SetNPCSatateAsAggressivo(SensedActor);
 		}
 	}
@@ -369,6 +370,12 @@ void AMostriciattoloAIController::RunAI_BehaviorTree()
 bool AMostriciattoloAIController::SelfDestruct()
 {
 	return Destroy();
+}
+
+void AMostriciattoloAIController::UpdateLastSeenT()
+{
+	LastSeenT = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("LastSeenT updated to %f"), LastSeenT);
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(APawn* CharacterInSight, float PS_SightRadius)

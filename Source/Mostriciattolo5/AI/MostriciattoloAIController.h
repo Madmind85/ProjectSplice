@@ -48,6 +48,7 @@ public:
 	void OnDeathController();
 	void RunAI_BehaviorTree();
 	bool SelfDestruct();
+	void UpdateLastSeenT();
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;
@@ -77,7 +78,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
 
-
+	UPROPERTY(BlueprintReadWrite, Category = "Behaviour")
+	float LastSeenTime = 0.f;
 
 protected:
 	
@@ -104,8 +106,7 @@ private:
 	/**percentuale della sight radius (settabile su pawn sensing) appartenente al cono interno*/
 	UPROPERTY(EditDefaultsOnly,  Category = "Behaviour")
 	float InnerConeLength = 75.f;
-	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
-	float LastSeenTime = 0.f;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float QuitChaseTime = 4.f;
 
@@ -127,5 +128,5 @@ private:
 	bool CanAlertGuards = true;
 
 	void SetNPCStateAsAttivo();
-	
+	float LastSeenT = 0.f;
 };

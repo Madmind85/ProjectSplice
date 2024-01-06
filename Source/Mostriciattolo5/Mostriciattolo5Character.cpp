@@ -620,6 +620,8 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			if (bPossessed)
 			{
 				Shooter->SetFaction(ActorFaction::Compromesso);
+				//come lo avesse visto, altrimenti se è di spalle torna tranquillo
+				Contr->UpdateLastSeenT();
 				Contr->SetNPCSatateAsAggressivo(Shooter);
 			}	
 		}	
