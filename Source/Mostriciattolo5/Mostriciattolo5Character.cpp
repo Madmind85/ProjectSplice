@@ -169,7 +169,7 @@ ActorFaction AMostriciattolo5Character::Int_GetIsTarget_Implementation()
 {
 	if (CanBeTarget)
 	{
-		IsTarget = ActorFaction::Compromesso;
+		SetFaction(ActorFaction::Compromesso);
 	}
 
 	return IsTarget;

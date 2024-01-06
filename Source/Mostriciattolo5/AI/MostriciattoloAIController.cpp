@@ -477,9 +477,7 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 
 void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 {
-	 UE_LOG(LogTemp, Warning, TEXT("bada inseguendo")) 
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
-	
 }
