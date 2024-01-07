@@ -607,8 +607,14 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			bool bDestructed = Contr->SelfDestruct();
 		}
 
-		KillerActor = EventInstigator->GetPawn();
-	
+		AMostriciattolo5Character* KillerChar =Cast< AMostriciattolo5Character>( EventInstigator->GetPawn());
+		if (KillerChar)
+		{
+			if (KillerChar->IsBeingPossessed)
+			{
+				KillerActor = KillerChar;
+			}
+		}
 		C_OnDeath();
 		return DamageApplied;
 	}
