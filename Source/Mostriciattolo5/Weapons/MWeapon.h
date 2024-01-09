@@ -62,6 +62,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	float AttackDelay = 0.5f;
+	/**La forza che viene applicata alla hit reaction da vivo(X) e sul colpo letale(Y)*/
+	UPROPERTY(EditDefaultsOnly)
+	FVector2D AliveNDeadHitStrength = FVector2D(3500.f, 3500.f);
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetOwnerChar(AActor* NewOwner);

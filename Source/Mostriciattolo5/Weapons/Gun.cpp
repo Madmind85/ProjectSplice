@@ -150,7 +150,8 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 				BP_ShootEffect();
 				if (HitCharacter)
 				{
-					HitCharacter->BP_HitEvent(Hit, OwnerPawn);
+					
+					HitCharacter->BP_HitEvent(Hit, OwnerPawn, AliveNDeadHitStrength);
 				}
 			}
 

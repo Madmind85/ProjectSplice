@@ -234,7 +234,7 @@ public:
 	void BP_ResetTarget();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn);
+	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn, FVector2D AliveAndDeadStrength);
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_TurnCameraToTarget();
 	UFUNCTION(BlueprintImplementableEvent)

@@ -74,9 +74,9 @@ void AMelee::InterceptTarget()
 		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(Hit.GetActor());
 		if (HitCharacter)
 		{
-			Hit.TraceStart = Owner->GetActorForwardVector();
-			Hit.TraceEnd = FVector::ZeroVector; //HitCharacter->GetActorLocation();
-			HitCharacter->BP_HitEvent(Hit, OwnerPawn);
+			Hit.TraceStart = Owner->GetActorLocation();
+			Hit.TraceEnd = HitCharacter->GetActorLocation();
+			HitCharacter->BP_HitEvent(Hit, OwnerPawn, AliveNDeadHitStrength);
 		}
 		CanHitMelee = false;
 	}
