@@ -597,7 +597,10 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	{	//se lo vedono sparare mentre oneshotta qualcuno diventi suscettibile a essere un target (se visto) per 2 secondi
 		if (Shooter)
 		{
-			Shooter->CanBeTarget = true;
+			if (Shooter->IsBeingPossessed)
+			{
+				Shooter->CanBeTarget = true;
+			}
 			FTimerHandle Timert;
 			GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
 		}
