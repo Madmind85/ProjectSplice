@@ -40,19 +40,28 @@ void AMelee::InterceptTarget()
 	FHitResult Hit;
 	FVector Start = GetActorLocation();
 	FVector End = GetActorLocation() + CollisionSphereLength;
-	TArray<AActor*> ActorsToIgnore;
-	ActorsToIgnore.Add(this);
-	ActorsToIgnore.Add(GetOwner());
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	ObjectTypes.Add(ObjectTypeQuery_MAX);
+	//TArray<AActor*> ActorsToIgnore;
+	//ActorsToIgnore.Add(this);
+	//ActorsToIgnore.Add(GetOwner());
+	//TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	//ObjectTypes.Add(ObjectTypeQuery_MAX);
 
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (!OwnerPawn) { return; }
 	AController* OwnerController = OwnerPawn->GetController();
 	if (!OwnerController) { return; }
+	//WorldLT
+	FQuat Rot;
+	FCollisionShape CollSphere = FCollisionShape::MakeSphere(CollisionSphereRadius);
+	FCollisionQueryParams CQParams;
+	CQParams.AddIgnoredActor(this);
+	CQParams.AddIgnoredActor(GetOwner());
+	
+	
 
 
-	bool bHit = UKismetSystemLibrary::SphereTraceSingleByProfile(this, Start, End, CollisionSphereRadius, FName("Pawn"), false, ActorsToIgnore, EDrawDebugTrace::None, Hit, true, FColor::Red, FColor::Green, 0.2f);
+	bool bHit = GetWorld()->SweepSingleByChannel(Hit, Start, End, Rot, ECollisionChannel::ECC_GameTraceChannel1, CollSphere, CQParams);
+		//UKismetSystemLibrary::SphereTraceSingleByProfile(this, Start, End, CollisionSphereRadius, FName("Pawn"), false, ActorsToIgnore, EDrawDebugTrace::None, Hit, true, FColor::Red, FColor::Green, 0.2f);
 
 	FPointDamageEvent DamageEvent(WeaponDamage, Hit, GetOwner()->GetActorRotation().Vector(), nullptr);
 	
