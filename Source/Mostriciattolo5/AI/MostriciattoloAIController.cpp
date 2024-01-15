@@ -108,29 +108,31 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 	{	//loop tra i pawn percepiti
 		for (AActor* SPawn : SeenActors)
 		{
-			AIPerceptionComp->GetActorsPerception(SPawn, PercInfo);
-			//salva l'attore percepito
-			SensedActor = PercInfo.Target;
-			//nested loop attraverso gli stimoli raccolti da questo pawn
-			TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
-			for (const FAIStimulus& CStim : CurrentStimuli)
+			if (Cast<APawn>(SPawn))
 			{
-				//Salva Lo Stimolo percepito
-				CurrentStimulus = CStim;
-				
-				if (CStim.Type == sightid)
+				AIPerceptionComp->GetActorsPerception(SPawn, PercInfo);
+				//salva l'attore percepito
+				SensedActor = PercInfo.Target;
+				//nested loop attraverso gli stimoli raccolti da questo pawn
+				TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
+				for (const FAIStimulus& CStim : CurrentStimuli)
 				{
-					ProcessLastVisionStimulus();
+					//Salva Lo Stimolo percepito
+					CurrentStimulus = CStim;
+
+					if (CStim.Type == sightid)
+					{
+						ProcessLastVisionStimulus();
+					}
+					else if (CStim.Type == hearid && CStim.IsActive())
+					{
+						ProcessLastHearingStimulus();
+					}
+					else
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Stimulus not active or not recognized"));
+					}
 				}
-				else if (CStim.Type == hearid && CStim.IsActive())
-				{
-					ProcessLastHearingStimulus();
-				}
-				else
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Stimulus not active or not recognized"));
-				}
-					
 			}
 
 		}

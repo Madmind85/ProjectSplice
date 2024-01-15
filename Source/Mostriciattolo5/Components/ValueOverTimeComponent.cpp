@@ -49,11 +49,12 @@ void UValueOverTimeComponent::BeginPlay()
 		{
 			MoveActorSmoothly(DeltaTime);
 		}
-
+		/*
 		if (OwnerChar->GetCurrentFocus())
 		{
 			RotateTowardsFocus();
 		}
+		*/
 	}
 
 	void UValueOverTimeComponent::CameraMoveOverTime(float DeltaTime)
@@ -187,7 +188,7 @@ void UValueOverTimeComponent::BeginPlay()
 
 
 	void UValueOverTimeComponent::RotateNPCTowardsFocus()
-	{
+	{/*
 		if (OwnerChar->IsBeingPossessed)
 		{
 			return;
@@ -202,4 +203,5 @@ void UValueOverTimeComponent::BeginPlay()
 			NewRot.Pitch = 0.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
+		*/
 	}
