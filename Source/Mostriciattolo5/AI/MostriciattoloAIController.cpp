@@ -151,12 +151,10 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{		//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
-			 UE_LOG(LogTemp, Warning, TEXT("not inner sight")) 
 				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
 			}
 			else
 			{
-				UE_LOG(LogTemp, Warning, TEXT("not inner sight"))
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
 				SetNPCSatateAsInseguendo(SensedActor);
