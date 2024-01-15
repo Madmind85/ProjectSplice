@@ -153,7 +153,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{		//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
+				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
+				//SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
 			}
 			else
 			{
@@ -166,6 +167,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{		//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
+				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
 				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
 			}
 			else
@@ -186,9 +188,11 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{
 			USkeletalMeshComponent* MMesh = MChar->GetMesh();
 			SetNPCSatateAsAttento(MMesh->GetComponentLocation(), MMesh->GetComponentLocation(), SensedActor);
+			UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere con killer"))
 		}
 		else
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere"))
 			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
 		}
 	}
@@ -211,7 +215,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else //if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
-				 UE_LOG(LogTemp, Warning, TEXT("bada attentop rumore")) 
+				 UE_LOG(LogTemp, Warning, TEXT("bada Attento rumore")) 
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr);
 			}
 		}
