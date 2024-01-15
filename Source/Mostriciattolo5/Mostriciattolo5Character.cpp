@@ -585,6 +585,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	//applicail  danno
 	Health -= DamageApplied;
 	if (Health < 0.f) { Health = 0.f; }
 	
@@ -600,9 +601,11 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			if (Shooter->IsBeingPossessed)
 			{
 				Shooter->CanBeTarget = true;
+
+				FTimerHandle Timert;
+				GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
 			}
-			FTimerHandle Timert;
-			GetWorld()->GetTimerManager().SetTimer(Timert, Shooter, &AMostriciattolo5Character::ResetCanBeTarget, 2.f, false, 2.f);
+			
 		}
 
 		if (Contr)
@@ -610,7 +613,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			bool bDestructed = Contr->SelfDestruct();
 		}
 
-		AMostriciattolo5Character* KillerChar =Cast< AMostriciattolo5Character>( EventInstigator->GetPawn());
+		AMostriciattolo5Character* KillerChar = Cast< AMostriciattolo5Character>(EventInstigator->GetPawn());
 		if (KillerChar)
 		{
 			if (KillerChar->IsBeingPossessed)
@@ -618,6 +621,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 				KillerActor = KillerChar;
 			}
 		}
+
 		C_OnDeath();
 		return DamageApplied;
 	}

@@ -150,7 +150,6 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 				BP_ShootEffect();
 				if (HitCharacter)
 				{
-					
 					HitCharacter->BP_HitEvent(Hit, OwnerPawn, AliveNDeadHitStrength);
 				}
 			}
@@ -245,9 +244,10 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes, AActor* AI_Targe
 
 	if (AIShooting)
 	{
-		
 		if (AI_Target)
 		{ 
+			 UE_LOG(LogTemp, Warning, TEXT("gunline trace aitarget = %s "), *AI_Target->GetActorLocation().ToString())
+				
 			FVector CharLoc = AI_Target->GetActorLocation();
 			if (AIHitCheck() == true)
 			{
@@ -261,13 +261,17 @@ bool AGun::GunLineTrace(bool AIShooting, FHitResult& OUTHitRes, AActor* AI_Targe
 				End = ShootLoc;
 			}
 		}
+		else
+		{
+				End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+		}
 	}
 	else
 	{
 		//FVector End = Location + Rotation.Vector() * MaxWeaponRange;
-		End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
+		 UE_LOG(LogTemp, Warning, TEXT("gunline trace muzzle loc = %s"), *MuzzleLoc->GetComponentLocation().ToString())
+			 End = (MuzzleLoc->GetComponentLocation() + MuzzleLoc->GetForwardVector() * -10000.f);
 	}
-
 	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 	
 	OUTHitRes = Hit;

@@ -454,6 +454,9 @@ void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 {
 	if (IsPawnPossessed()) { UE_LOG(LogTemp, Warning, TEXT("bada tranquillo possessed"))return; }
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
+	GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), nullptr);
+	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), nullptr);
+	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), nullptr);
 	
 }
 void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
