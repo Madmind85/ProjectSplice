@@ -53,6 +53,8 @@ public:
 	//****ROTATE OWNER TO FOCUS****//
 	UFUNCTION(BlueprintCallable)
 	void NPCRotateToFocus(AActor* FocusToSet);
+	UFUNCTION(BlueprintCallable)
+	void StopFacingFocus();
 
 private:
 

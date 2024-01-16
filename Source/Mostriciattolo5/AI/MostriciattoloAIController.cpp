@@ -154,7 +154,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
-				//SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor);
 			}
 			else
 			{
@@ -168,7 +168,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
 				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr);
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor);
 			}
 			else
 			{
