@@ -55,12 +55,13 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 		//se il tempo attuale è maggiore del tempo in cui lo ha visto l'ultima volta + quitchasetime
 	if (GetWorld()->GetTimeSeconds() >= QuitChaseTime + LastSeenT)
 	{
-			
+		SensedActor = nullptr;
+		GetBlackboardComponent()->SetValueAsBool(FName("TargetVisible"), false);
 		uint8 CurrentState = GetBlackboardComponent()->GetValueAsEnum((FName("CurrentStatus")));
+
 		//se sta inseguendo o attaccando
 		if (CurrentState == 6 || CurrentState == 7)
 		{
-			SensedActor = nullptr;
 			Int_SetNPCSatateAsTranquillo();
 			CanAlertGuards = true;
 		}
@@ -398,6 +399,7 @@ bool AMostriciattoloAIController::SelfDestruct()
 void AMostriciattoloAIController::UpdateLastSeenT()
 {
 	LastSeenT = GetWorld()->GetTimeSeconds();
+	GetBlackboardComponent()->SetValueAsBool(FName("TargetVisible"),true);
 	UE_LOG(LogTemp, Warning, TEXT("LastSeenT updated to %f"), LastSeenT);
 }
 
