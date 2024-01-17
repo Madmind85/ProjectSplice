@@ -156,7 +156,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor);
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor,ReactionTime);
 			}
 			else
 			{
@@ -172,7 +172,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
 				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor);
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor, ReactionTime);
 			}
 			else
 			{
@@ -198,13 +198,13 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		if (MChar)
 		{
 			USkeletalMeshComponent* MMesh = MChar->GetMesh();
-			SetNPCSatateAsAttento(MMesh->GetComponentLocation(), MMesh->GetComponentLocation(), SensedActor);
+			SetNPCSatateAsAttento(MMesh->GetComponentLocation(), MMesh->GetComponentLocation(), SensedActor,0.2f);
 			UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere con killer"))
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere"))
-			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor);
+			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor, 0.2f);
 		}
 	}
 }
@@ -227,7 +227,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			else //if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
 				 UE_LOG(LogTemp, Warning, TEXT("bada Attento rumore")) 
-				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr);
+				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr, ReactionTime);
 			}
 		}
 	}
@@ -484,10 +484,12 @@ void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 }
 
 
-void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor)
+void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor, float reactionTime)
 {
 	if (IsPawnPossessed()) { return; }
 	 UE_LOG(LogTemp, Warning, TEXT("bada attento set attento")) 
+
+	GetBlackboardComponent()->SetValueAsFloat(FName("ReactionTime"), reactionTime);
 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 4);
 

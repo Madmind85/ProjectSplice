@@ -68,7 +68,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMinacciato();
 	UFUNCTION(BlueprintCallable)
-	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor);
+	void SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor, float reactionTime);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsMinaccioso(AActor* ThreatenedActor);
 	UFUNCTION(BlueprintCallable)
@@ -81,6 +81,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Behaviour")
 	float LastSeenTime = 0.f;
+
+	void AlertClosestGuards(ActorFaction Faction);
 
 protected:
 	
@@ -126,7 +128,7 @@ private:
 	bool IsPawnPossessed();
 	FVector ProjPointToNavigation(FVector Point);
 
-	void AlertClosestGuards(ActorFaction Faction);
+	
 	bool CanAlertGuards = true;
 
 	void SetNPCStateAsAttivo();
