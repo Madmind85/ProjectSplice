@@ -163,7 +163,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
 
-				AlertClosestGuards(ActorFaction::Nemico);
+				AlertClosestGuards(ActorFaction::Nemico, SensedActor);
 				SetNPCSatateAsInseguendo(SensedActor);
 			}
 		}
@@ -178,7 +178,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			{
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
-				AlertClosestGuards(ActorFaction::Compromesso);
+				AlertClosestGuards(ActorFaction::Compromesso, SensedActor);
 				SetNPCSatateAsAggressivo(SensedActor);
 			}
 			
@@ -282,7 +282,7 @@ FVector AMostriciattoloAIController::ProjPointToNavigation(FVector Point)
 	
 }
 
-void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction)
+void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActor* EnemyToSet)
 {
 	FCollisionObjectQueryParams ObjectQueryParams;
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
@@ -303,7 +303,7 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction)
 			ObjectQueryParams,
 			MyColSphere
 		);
-		
+		DrawDebugSphere(GetWorld(), OwnerPawn->GetActorLocation(), 4000.f, 30, FColor::Magenta, false, 0.5f);
 		for (auto& Hit : OutHits)
 		{
 			AActor* OtherActor = Hit.GetActor();
@@ -316,13 +316,13 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction)
 
 				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
 				{  //attacca
-					AIControl->CurrentNPCTarget = SensedActor;
+					AIControl->CurrentNPCTarget = EnemyToSet;
 					AIControl->SetNPCSatateAsAggressivo(CurrentNPCTarget);
 				}
 				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
 				else if (Faction == ActorFaction::Nemico)
 				{	//cattura il mostriciattolo
-					AIControl->CurrentNPCTarget = SensedActor;
+					AIControl->CurrentNPCTarget = EnemyToSet;
 					AIControl->SetNPCSatateAsInseguendo(CurrentNPCTarget);
 				}
 			}

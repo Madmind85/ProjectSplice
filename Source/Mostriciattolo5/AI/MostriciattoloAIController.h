@@ -82,7 +82,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Behaviour")
 	float LastSeenTime = 0.f;
 
-	void AlertClosestGuards(ActorFaction Faction);
+	void AlertClosestGuards(ActorFaction Faction, AActor* EnemyToSet);
 
 protected:
 	
