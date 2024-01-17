@@ -55,6 +55,8 @@ public:
 	void NPCRotateToFocus(AActor* FocusToSet);
 	UFUNCTION(BlueprintCallable)
 	void StopFacingFocus();
+	UPROPERTY(EditDefaultsOnly, Category = "Focus")
+	float RotationToFocusSpeed = 0.2f;
 
 private:
 

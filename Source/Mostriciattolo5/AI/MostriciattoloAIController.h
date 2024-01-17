@@ -110,8 +110,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float QuitChaseTime = 4.f;
-
-
+	/**quanto ci mette prima di reagire alla vista periferica o ad un suono*/
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float ReactionTime = 2.f;
 
 	void ProcessLastVisionStimulus();
 	void ProcessLastHearingStimulus();

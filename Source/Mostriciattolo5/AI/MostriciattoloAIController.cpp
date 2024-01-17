@@ -20,6 +20,7 @@ void AMostriciattoloAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetBlackboardComponent()->SetValueAsFloat(FName("ReactionTime"), ReactionTime);
 
 	APawn* CurrentPawn = GetPawn();
 	RunAI_BehaviorTree();
