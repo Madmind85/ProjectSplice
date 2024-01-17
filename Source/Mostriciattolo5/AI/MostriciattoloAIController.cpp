@@ -162,6 +162,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			{
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
+
+				AlertClosestGuards(ActorFaction::Nemico);
 				SetNPCSatateAsInseguendo(SensedActor);
 			}
 		}
@@ -176,6 +178,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			{
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
+				AlertClosestGuards(ActorFaction::Compromesso);
 				SetNPCSatateAsAggressivo(SensedActor);
 			}
 			
@@ -185,6 +188,12 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 
 	else if (Killer)//non scansionato(dopo killer si resetta)
 	{	
+		//se sta inseguendo qualcuno non si caca il cadavere
+		if (GetNpcAIStatus() == NPCStatus::Inseguendo || GetNpcAIStatus() == NPCStatus::Aggressivo)
+		{
+			return;
+		}
+
 		ACharacter* MChar = Cast<ACharacter>(SensedActor);
 		if (MChar)
 		{
