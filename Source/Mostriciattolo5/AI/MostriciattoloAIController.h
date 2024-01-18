@@ -44,6 +44,7 @@ public:
 	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
 	virtual void Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy);
 
+
 	UFUNCTION(BlueprintCallable)
 	void OnDeathController();
 	void RunAI_BehaviorTree();

@@ -36,6 +36,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
 	
+	
 
 
 };

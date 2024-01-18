@@ -110,6 +110,13 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_PlayIdleAnim();
 	void Int_PlayIdleAnim_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetIsThreatened(bool IsThreatened);
+	void Int_SetIsThreatened_Implementation(bool IsThreatened);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsThreatened();
+	bool Int_GetIsThreatened_Implementation();
+
 
 	UCapsuleComponent* GetPossessSocket();
 
@@ -336,5 +343,6 @@ private:
 	void SetFaction(ActorFaction NewFaction);
 
 	bool bIsUnderPossessAttack = false;
+	bool IsActorThreatened = false;
 };
 

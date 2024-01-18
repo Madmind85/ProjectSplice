@@ -81,9 +81,16 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 {
 	if (IsDead()) { return; }
 
+	if (IsBeingPossessed && IsActorThreatened)
+	{
+		
+		SetFaction(ActorFaction::Compromesso);
+	}
+
 	if (MWeapon)
 	{
 		MWeapon->WeaponAttack(bAIShooting, AI_Target);
+
 	}	
 	else
 	{
@@ -155,6 +162,16 @@ AMostriciattoloAIController* AMostriciattolo5Character::Int_GetAIController_Impl
 
 void AMostriciattolo5Character::Int_PlayIdleAnim_Implementation()
 {
+}
+
+void AMostriciattolo5Character::Int_SetIsThreatened_Implementation(bool IsThreatened)
+{
+	IsActorThreatened = IsThreatened;
+}
+
+bool AMostriciattolo5Character::Int_GetIsThreatened_Implementation()
+{
+	return IsActorThreatened;
 }
 
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()

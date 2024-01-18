@@ -212,7 +212,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 void AMostriciattoloAIController::ProcessLastHearingStimulus()
 {
 	//Sesta attaccando, inseguendo o minacciando qualcuno, o è minacciato o fermo  non si caca il rumore
-	if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento)
+	if (GetNpcAIStatus() == NPCStatus::Tranquillo || GetNpcAIStatus() == NPCStatus::Attento )
 	{
 		if (CurrentStimulus.WasSuccessfullySensed())
 		{
@@ -220,12 +220,11 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 
 			if (CurrentStimulus.Tag == FName("Pericolo"))
 			{
-				//TODO Se vede anche chi ha  generato il suono pericoloso diventa minaccioso
-				SetNPCSatateAsMinaccioso(SensedActor);
-				//Altrimneti corre verso lo sparo 
+				// diventa minaccioso
+				SetNPCSatateAsMinaccioso(SensedActor);	
 			}
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
-			else //if (GetNpcAIStatus() == NPCStatus::Tranquillo)
+			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
 				 UE_LOG(LogTemp, Warning, TEXT("bada Attento rumore")) 
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr, ReactionTime);

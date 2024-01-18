@@ -51,4 +51,8 @@ public:
 	AMostriciattoloAIController* Int_GetAIController();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_PlayIdleAnim();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetIsThreatened(bool IsThreatened);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsThreatened();
 };
