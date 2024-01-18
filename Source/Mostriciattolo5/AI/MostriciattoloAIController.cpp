@@ -221,6 +221,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			if (CurrentStimulus.Tag == FName("Pericolo"))
 			{
 				//TODO Se vede anche chi ha  generato il suono pericoloso diventa minaccioso
+				SetNPCSatateAsMinaccioso(SensedActor);
 				//Altrimneti corre verso lo sparo 
 			}
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
@@ -507,7 +508,7 @@ void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedAct
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 5);
 	if (ThreatenedActor)
 	{
-		//TODO comportamento miaccioso
+		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), ThreatenedActor);
 	}
 
 }
