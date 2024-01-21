@@ -8,6 +8,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISense.h"
 #include "Perception/AISense_Sight.h"
+#include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 #include "NavigationSystem.h"
 #include "GameFramework/Character.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -46,6 +47,8 @@ void AMostriciattoloAIController::BeginPlay()
 			GetBlackboardComponent()->SetValueAsRotator(FName("InitialRotation"), CurrentPawn->GetActorRotation());
 		}
 	}
+
+	MostriciattoloGM = Cast<AMostriciattolo5GameMode>(GetWorld()->GetAuthGameMode());
 }
 
 
@@ -147,6 +150,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 	NPCStatus CurrentStatus = GetNpcAIStatus();
 	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
+
 	
 
 	if (!bIsDead)
@@ -344,10 +348,19 @@ void AMostriciattoloAIController::SetNPCStateAsAttivo()
 
 void AMostriciattoloAIController::VoiceNamesCheck(FName VoiceName)
 {
-	if (!VoiceNames.Contains(VoiceName))
+	float AlertT = 5.f;
+	if (SensedActor)
 	{
-		BP_VoiceFX(VoiceName);
-		VoiceNames.Add(VoiceName);
+		AlertT = IInt_MCharacter::Execute_Int_GetAlertTime(SensedActor);
+	}
+	FVector SoundLoc = FVector::ZeroVector;
+	if (GetPawn())
+	{
+		SoundLoc = GetPawn()->GetActorLocation();
+	}
+	if ((AlertT <= 0.f) && MostriciattoloGM)
+	{
+		MostriciattoloGM->BP_VoiceFXSelect(VoiceName,SoundLoc);
 	}
 }
 
@@ -546,6 +559,10 @@ void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
 	if (Target)
 	{
+		if (MostriciattoloGM && (IInt_MCharacter::Execute_Int_GetAlertTime(Target) <= 0.f))
+		{
+			MostriciattoloGM->BP_StartStopChaseSound(true);
+		}
 		IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
 		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);

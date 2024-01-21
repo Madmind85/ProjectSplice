@@ -139,4 +139,5 @@ private:
 	float LastSeenT = 0.f;
 	TArray<FName> VoiceNames;
 	void VoiceNamesCheck(FName VoiceName);
+	class AMostriciattolo5GameMode* MostriciattoloGM;
 };

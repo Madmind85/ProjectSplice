@@ -29,6 +29,10 @@ public:
     // Function to return control to AI
     UFUNCTION(BlueprintCallable, Category = "Game")
     void ReturnControlToAI();
+    UFUNCTION(BlueprintImplementableEvent)
+    void BP_StartStopChaseSound(bool bStart);
+    UFUNCTION(BlueprintImplementableEvent)
+    void BP_VoiceFXSelect(FName VoiceName, FVector VoiceLocation);
     
 
 private:

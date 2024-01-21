@@ -130,6 +130,7 @@ void AMostriciattolo5Character::BeginPlay()
 	Super::BeginPlay();
 
 	Health = MaxHealth;
+	
 
 	//Setta i pugni
 	if (!MFist) { SetFist(); }
@@ -618,7 +619,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 
 	//applicail  danno
 	Health -= DamageApplied;
-	Health = FMath::Clamp(Health, MaxHealth, 0.f);
+	Health = FMath::Clamp(Health, 0.f, MaxHealth);
 	//if (Health < 0.f) { Health = 0.f; }
 	
 	
