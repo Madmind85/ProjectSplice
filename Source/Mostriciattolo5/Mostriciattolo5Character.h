@@ -116,6 +116,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_GetIsThreatened();
 	bool Int_GetIsThreatened_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_UpdateAlertTime();
+	void Int_UpdateAlertTime_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	float Int_GetAlertTime();
+	float Int_GetAlertTime_Implementation();
 
 
 	UCapsuleComponent* GetPossessSocket();
@@ -141,6 +147,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AMWeapon> MWeaponClass;
+
+	float AlertTime = 0.f;
+	UPROPERTY(EditAnywhere, Category = "Mostriciattolo")
+	float MaxAlertTime = 5;
+
 
 public:
 
@@ -279,6 +290,8 @@ public:
 	void SetIsUnderPossessAttack(bool IsUnderAttack);
 	UFUNCTION(BlueprintCallable)
 	void RunAIBehaviorTree();
+	UFUNCTION(BlueprintCallable)
+	void UpdateAlertTime();
 
 
 	UFUNCTION(BlueprintPure)
@@ -344,5 +357,8 @@ private:
 
 	bool bIsUnderPossessAttack = false;
 	bool IsActorThreatened = false;
+
+	
+
 };
 

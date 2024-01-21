@@ -156,13 +156,14 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
+				VoiceNamesCheck(FName("PeripheralSight"));
 				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor,ReactionTime);
 			}
 			else
 			{
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
-
+				VoiceNamesCheck(FName("MonsterSight"));
 				AlertClosestGuards(ActorFaction::Nemico, SensedActor);
 				SetNPCSatateAsInseguendo(SensedActor);
 			}
@@ -171,11 +172,13 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{		//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
+				VoiceNamesCheck(FName("PeripheralSight"));
 				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
 				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor, ReactionTime);
 			}
 			else
 			{
+				VoiceNamesCheck(FName("GuardSight"));
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
 				AlertClosestGuards(ActorFaction::Compromesso, SensedActor);
@@ -193,6 +196,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{
 			return;
 		}
+		VoiceNamesCheck(FName("CorpseSight"));
 
 		ACharacter* MChar = Cast<ACharacter>(SensedActor);
 		if (MChar)
@@ -203,7 +207,6 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere"))
 			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor, 0.2f);
 		}
 	}
@@ -216,16 +219,19 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 	{
 		if (CurrentStimulus.WasSuccessfullySensed())
 		{
+			
 			FVector GoToPoint = ProjPointToNavigation(CurrentStimulus.StimulusLocation);
 
 			if (CurrentStimulus.Tag == FName("Pericolo"))
 			{
 				// diventa minaccioso
 				SetNPCSatateAsMinaccioso(SensedActor);	
+				VoiceNamesCheck(FName("ShootHearing"));
 			}
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
+				VoiceNamesCheck(FName("Hearing"));
 				 UE_LOG(LogTemp, Warning, TEXT("bada Attento rumore")) 
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr, ReactionTime);
 			}
@@ -334,6 +340,15 @@ void AMostriciattoloAIController::SetNPCStateAsAttivo()
 {
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
 	GetBlackboardComponent()->SetValueAsBool(FName("IsPossessing"), false);
+}
+
+void AMostriciattoloAIController::VoiceNamesCheck(FName VoiceName)
+{
+	if (!VoiceNames.Contains(VoiceName))
+	{
+		BP_VoiceFX(VoiceName);
+		VoiceNames.Add(VoiceName);
+	}
 }
 
 
@@ -529,6 +544,10 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 {
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
-	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
-	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
+	if (Target)
+	{
+		IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
+		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
+		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
+	}
 }

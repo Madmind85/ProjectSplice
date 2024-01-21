@@ -85,6 +85,9 @@ public:
 
 	void AlertClosestGuards(ActorFaction Faction, AActor* EnemyToSet);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_VoiceFX(FName VoiceName);
+
 protected:
 	
 	virtual void BeginPlay()override;
@@ -134,4 +137,6 @@ private:
 
 	void SetNPCStateAsAttivo();
 	float LastSeenT = 0.f;
+	TArray<FName> VoiceNames;
+	void VoiceNamesCheck(FName VoiceName);
 };

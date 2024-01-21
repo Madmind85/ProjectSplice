@@ -55,4 +55,8 @@ public:
 	void Int_SetIsThreatened(bool IsThreatened);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_GetIsThreatened();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_UpdateAlertTime();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	float Int_GetAlertTime();
 };

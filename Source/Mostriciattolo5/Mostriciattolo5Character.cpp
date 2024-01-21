@@ -104,6 +104,10 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	
+
+
+
 	if (GetCurrentFocus())
 	{
 		bool bDead = IInt_MCharacter::Execute_Int_IsActorDead(GetCurrentFocus());
@@ -172,6 +176,16 @@ void AMostriciattolo5Character::Int_SetIsThreatened_Implementation(bool IsThreat
 bool AMostriciattolo5Character::Int_GetIsThreatened_Implementation()
 {
 	return IsActorThreatened;
+}
+
+void AMostriciattolo5Character::Int_UpdateAlertTime_Implementation()
+{
+	UpdateAlertTime();
+}
+
+float AMostriciattolo5Character::Int_GetAlertTime_Implementation()
+{
+	return AlertTime;
 }
 
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
@@ -604,7 +618,8 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 
 	//applicail  danno
 	Health -= DamageApplied;
-	if (Health < 0.f) { Health = 0.f; }
+	Health = FMath::Clamp(Health, MaxHealth, 0.f);
+	//if (Health < 0.f) { Health = 0.f; }
 	
 	
 	AMostriciattolo5Character* Shooter = Cast<AMostriciattolo5Character>(EventInstigator->GetPawn());
@@ -824,6 +839,11 @@ void AMostriciattolo5Character::RunAIBehaviorTree()
 	{
 		MCont->RunAI_BehaviorTree();
 	}
+}
+
+void AMostriciattolo5Character::UpdateAlertTime()
+{
+	AlertTime = MaxAlertTime;
 }
 
 bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen)
