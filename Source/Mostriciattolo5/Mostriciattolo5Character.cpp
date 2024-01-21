@@ -644,8 +644,9 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 	}
 	else
 	{ //se sopari a una guardia e rimane viva ti setta come compromesso
-		if ( Shooter)
+		if ( Shooter && Contr)
 		{
+			Contr->SetNPCSatateAsAggressivo(Shooter);
 			bool bPossessed = Shooter->IsBeingPossessed;
 			if (bPossessed)
 			{
@@ -653,13 +654,11 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 				//come lo avesse visto, altrimenti se è di spalle torna tranquillo
 				Contr->UpdateLastSeenT();
 				Contr->AlertClosestGuards(ActorFaction::Compromesso, Shooter);
-				Contr->SetNPCSatateAsAggressivo(Shooter);
 			}	
 		}	
 	}
 	
 	//AMWeapon* MostMWeapon = Cast<AMWeapon>(DamageCauser);
-	
 	
 	return DamageApplied;
 }

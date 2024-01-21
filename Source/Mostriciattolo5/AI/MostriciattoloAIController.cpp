@@ -514,13 +514,16 @@ void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedAct
 
 void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 {
-	if (IsPawnPossessed()) { return; }
-	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
+	//if (IsPawnPossessed()) { return; } //crash
+	
+	if (Target)
+	{
+		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
+		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
+		//TODO creare funzione su interface per prendere aimtarget da Target
+		GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
 
-	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
-	//TODO creare funzione su interface per prendere aimtarget da Target
-	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
-
+	}
 }
 
 void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
