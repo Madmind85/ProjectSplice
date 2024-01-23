@@ -559,10 +559,9 @@ void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
 	if (Target)
 	{
-		if (MostriciattoloGM && (IInt_MCharacter::Execute_Int_GetAlertTime(Target) <= 0.f))
-		{
+	
 			MostriciattoloGM->BP_StartStopChaseSound(true);
-		}
+		
 		IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
 		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
