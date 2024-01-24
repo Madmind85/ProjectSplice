@@ -294,6 +294,8 @@ FVector AMostriciattoloAIController::ProjPointToNavigation(FVector Point)
 
 void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActor* EnemyToSet)
 {
+	//Da Rivedere completamente
+	// non trova tutte le guardie e  viene chiamato troppo spessonon 
 	FCollisionObjectQueryParams ObjectQueryParams;
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
 	APawn* OwnerPawn = GetPawn();
@@ -314,8 +316,11 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActo
 			MyColSphere
 		);
 		DrawDebugSphere(GetWorld(), OwnerPawn->GetActorLocation(), 4000.f, 30, FColor::Magenta, false, 0.5f);
-		for (auto& Hit : OutHits)
+		for (FHitResult Hit : OutHits)
 		{
+			FString actorName = GetName();
+			UE_LOG(LogTemp, Warning, TEXT("GUARD ALERTED %s"), *actorName)
+
 			AActor* OtherActor = Hit.GetActor();
 			
 			AMostriciattoloAIController* AIControl = IInt_MCharacter::Execute_Int_GetAIController(OtherActor);
@@ -330,8 +335,10 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActo
 					AIControl->SetNPCSatateAsAggressivo(CurrentNPCTarget);
 				}
 				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
-				else if (Faction == ActorFaction::Nemico)
-				{	//cattura il mostriciattolo
+				else if (Faction == ActorFaction::Nemico)	 
+				{
+					
+					//cattura il mostriciattolo
 					AIControl->CurrentNPCTarget = EnemyToSet;
 					AIControl->SetNPCSatateAsInseguendo(CurrentNPCTarget);
 				}
@@ -358,9 +365,15 @@ void AMostriciattoloAIController::VoiceNamesCheck(FName VoiceName)
 	{
 		SoundLoc = GetPawn()->GetActorLocation();
 	}
+	//se sta inseguendo il mostriciattolo non dice altri suoni
 	if ((AlertT <= 0.f) && MostriciattoloGM)
 	{
 		MostriciattoloGM->BP_VoiceFXSelect(VoiceName,SoundLoc);
+	}
+	 //se non quello della vista del mostriciattolo( comunque limitato in bp sul game mode) 
+	else if(VoiceName == FName("MonsterSight"))
+	{
+		MostriciattoloGM->BP_VoiceFXSelect(VoiceName, SoundLoc);
 	}
 }
 

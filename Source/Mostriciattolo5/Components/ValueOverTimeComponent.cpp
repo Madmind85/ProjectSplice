@@ -198,6 +198,7 @@ void UValueOverTimeComponent::BeginPlay()
 
 	void UValueOverTimeComponent::RotateNPCTowardsFocus()
 	{
+		/*
 		if (OwnerChar->IsBeingPossessed)
 		{
 			return;
@@ -213,5 +214,5 @@ void UValueOverTimeComponent::BeginPlay()
 			NewRot.Pitch = 0.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
-		
+		*/
 	}
