@@ -50,7 +50,7 @@ void UValueOverTimeComponent::BeginPlay()
 			MoveActorSmoothly(DeltaTime);
 		}
 		
-		if (OwnerChar->GetCurrentFocus())
+		if (NPCFocus)
 		{
 			RotateTowardsFocus();
 		}
@@ -128,13 +128,18 @@ void UValueOverTimeComponent::BeginPlay()
 	}
 
 
-	void UValueOverTimeComponent::NPCRotateToFocus(AActor* FocusToSet)
+	/*void UValueOverTimeComponent::NPCRotateToFocus(AActor* FocusToSet)
 	{
 		if (OwnerChar && FocusToSet)
 		{
 			NPCFocus = FocusToSet;
 			bCanRotateNPCToFocus = true;	
 		}
+	}*/
+
+	void UValueOverTimeComponent::SetNPCFocus(AActor* NewFocus)
+	{
+		NPCFocus = NewFocus;
 	}
 
 	void UValueOverTimeComponent::StopFacingFocus()
@@ -198,7 +203,7 @@ void UValueOverTimeComponent::BeginPlay()
 
 	void UValueOverTimeComponent::RotateNPCTowardsFocus()
 	{
-		/*
+		
 		if (OwnerChar->IsBeingPossessed)
 		{
 			return;
@@ -214,5 +219,5 @@ void UValueOverTimeComponent::BeginPlay()
 			NewRot.Pitch = 0.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
-		*/
+		
 	}

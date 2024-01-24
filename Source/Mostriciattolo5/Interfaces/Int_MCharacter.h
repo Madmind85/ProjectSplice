@@ -59,4 +59,6 @@ public:
 	void Int_UpdateAlertTime();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	float Int_GetAlertTime();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetVOTFocus(AActor* NewFocus);
 };

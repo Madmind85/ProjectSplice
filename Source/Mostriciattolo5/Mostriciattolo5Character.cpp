@@ -189,6 +189,14 @@ float AMostriciattolo5Character::Int_GetAlertTime_Implementation()
 	return AlertTime;
 }
 
+void AMostriciattolo5Character::Int_SetVOTFocus_Implementation(AActor* NewFocus)
+{
+	if (ValueOverTimeComponent)
+	{
+		ValueOverTimeComponent->SetNPCFocus(NewFocus);
+	}
+}
+
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 {
 	return PossessSocket;

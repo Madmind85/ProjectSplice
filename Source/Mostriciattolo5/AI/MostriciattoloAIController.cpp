@@ -516,6 +516,8 @@ void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 	GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), nullptr);
 	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), nullptr);
 	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), nullptr);
+	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), FVector::ZeroVector);
+	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), FVector::ZeroVector);
 	
 }
 void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
@@ -527,8 +529,9 @@ void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 
 void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVector Suspect_Point, AActor* SuspectActor, float reactionTime)
 {
+	
 	if (IsPawnPossessed()) { return; }
-	 UE_LOG(LogTemp, Warning, TEXT("bada attento set attento")) 
+	 UE_LOG(LogTemp, Warning, TEXT("porcoddio set attento")) 
 
 	GetBlackboardComponent()->SetValueAsFloat(FName("ReactionTime"), reactionTime);
 
@@ -569,10 +572,11 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 
 void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 {
+	
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
 	if (Target)
 	{
-	
+		UE_LOG(LogTemp, Warning, TEXT("inseguendo porcoddio"))
 			MostriciattoloGM->BP_StartStopChaseSound(true);
 		
 		IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
