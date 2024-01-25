@@ -189,11 +189,19 @@ float AMostriciattolo5Character::Int_GetAlertTime_Implementation()
 	return AlertTime;
 }
 
-void AMostriciattolo5Character::Int_SetVOTFocus_Implementation(AActor* NewFocus)
+void AMostriciattolo5Character::Int_SetVOTFocus_Implementation(AActor* NewFocus, FVector NewFocusLocation)
 {
 	if (ValueOverTimeComponent)
 	{
-		ValueOverTimeComponent->SetNPCFocus(NewFocus);
+		ValueOverTimeComponent->SetNPCFocus(NewFocus,NewFocusLocation);
+	}
+}
+
+void AMostriciattolo5Character::Int_ResetVOTFocus_Implementation()
+{
+	if (ValueOverTimeComponent)
+	{
+		ValueOverTimeComponent->ResetNPCFocus();
 	}
 }
 

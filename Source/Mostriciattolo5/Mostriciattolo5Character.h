@@ -123,9 +123,11 @@ public:
 	float Int_GetAlertTime();
 	float Int_GetAlertTime_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Int_SetVOTFocus(AActor* NewFocus);
-	void Int_SetVOTFocus_Implementation(AActor* NewFocus);
-
+	void Int_SetVOTFocus(AActor* NewFocus, FVector NewFocusLocation);
+	void Int_SetVOTFocus_Implementation(AActor* NewFocus, FVector NewFocusLocation);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_ResetVOTFocus();
+	void Int_ResetVOTFocus_Implementation();
 
 
 	UCapsuleComponent* GetPossessSocket();

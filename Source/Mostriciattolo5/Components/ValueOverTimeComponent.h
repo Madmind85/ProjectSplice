@@ -52,7 +52,9 @@ public:
 
 	//****ROTATE OWNER TO FOCUS****//
 	UFUNCTION(BlueprintCallable)
-	void SetNPCFocus(AActor* NewFocus);
+	void SetNPCFocus(AActor* NewFocus, FVector NewFocusLocation);
+	UFUNCTION(BlueprintCallable)
+	void ResetNPCFocus();
 	//void NPCRotateToFocus(AActor* FocusToSet);
 	UFUNCTION(BlueprintCallable)
 	void StopFacingFocus();
@@ -84,4 +86,5 @@ private:
 	void IsFacingFocusCheck();
 	void RotateNPCTowardsFocus();
 	AActor* NPCFocus;
+	FVector NPCFocusLocation;
 };

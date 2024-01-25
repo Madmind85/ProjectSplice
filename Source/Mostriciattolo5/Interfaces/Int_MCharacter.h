@@ -60,5 +60,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	float Int_GetAlertTime();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Int_SetVOTFocus(AActor* NewFocus);
+	void Int_SetVOTFocus(AActor* NewFocus, FVector NewFocusLocation);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_ResetVOTFocus();
 };
