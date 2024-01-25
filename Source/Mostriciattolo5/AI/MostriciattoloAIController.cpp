@@ -159,9 +159,14 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{		//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
+				if (GetNpcAIStatus() != NPCStatus::Inseguendo || GetNpcAIStatus() != NPCStatus::Aggressivo)
+				{
+					return;
+				}
 				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
 				VoiceNamesCheck(FName("PeripheralSight"));
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor,ReactionTime);
+				//suspect actor si setta solo quando è il cadavere
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr,ReactionTime);
 			}
 			else
 			{
@@ -173,12 +178,17 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 		}
 		else if (Faction == ActorFaction::Compromesso && GetNpcAIStatus()!= NPCStatus::Inseguendo)
-		{		//senon è nel cono interno 
+		{		
+			if (GetNpcAIStatus() != NPCStatus::Inseguendo || GetNpcAIStatus() != NPCStatus::Aggressivo)
+			{
+				return;
+			}
+			//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
 				VoiceNamesCheck(FName("PeripheralSight"));
 				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
-				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, SensedActor, ReactionTime);
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr, ReactionTime);
 			}
 			else
 			{
@@ -228,9 +238,16 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 
 			if (CurrentStimulus.Tag == FName("Pericolo"))
 			{
-				// diventa minaccioso
-				SetNPCSatateAsMinaccioso(SensedActor);	
-				VoiceNamesCheck(FName("ShootHearing"));
+				if (GetNpcAIStatus() == NPCStatus::Minaccioso)
+				{
+					SetNPCSatateAsAggressivo(SensedActor);
+				}
+				else
+				{
+					// diventa minaccioso
+					SetNPCSatateAsMinaccioso(SensedActor);
+					VoiceNamesCheck(FName("ShootHearing"));
+				}		
 			}
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)

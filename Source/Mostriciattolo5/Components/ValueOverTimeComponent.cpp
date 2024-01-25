@@ -49,6 +49,7 @@ void UValueOverTimeComponent::BeginPlay()
 		
 		if (bCanRotateNPCToFocus)
 		{
+			 UE_LOG(LogTemp, Warning, TEXT("rotationtime %f"), GetWorld()->GetTimeSeconds()) 
 			RotateTowardsFocus();
 		}
 		
@@ -143,6 +144,7 @@ void UValueOverTimeComponent::BeginPlay()
 
 	void UValueOverTimeComponent::ResetNPCFocus()
 	{
+		 UE_LOG(LogTemp, Warning, TEXT("resetrotation")) 
 		NPCFocus = nullptr;
 		bCanRotateNPCToFocus = false;
 	}
