@@ -58,12 +58,14 @@ public:
 	//void NPCRotateToFocus(AActor* FocusToSet);
 	UFUNCTION(BlueprintCallable)
 	void StopFacingFocus();
-	UPROPERTY(EditDefaultsOnly, Category = "Focus")
-	float RotationToFocusSpeed = 0.2f;
+	
 
 private:
 
 	class AMostriciattolo5Character* OwnerChar = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Focus")
+	float RotationToFocusSpeed = 1.0f;
 
 	//****ACTOR TELEPORT****//
 	void MoveActorSmoothly(float DeltaS);

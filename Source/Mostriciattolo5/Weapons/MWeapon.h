@@ -56,6 +56,8 @@ public:
 	bool GetIsAiming();
 	UFUNCTION(BlueprintCallable)
 	virtual void WeaponAttack(bool AIAttack, AActor* AI_Target);
+	UFUNCTION(BlueprintCallable)
+	void Bash();
 
 	UPROPERTY(BlueprintReadWrite)
 	bool CanHitMelee = false;

@@ -156,13 +156,12 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	if (!bIsDead)
 	{
 		if (Faction == ActorFaction::Nemico)
-		{		//senon è nel cono interno 
+		{		
+			//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
-			{
-				if (GetNpcAIStatus() != NPCStatus::Inseguendo || GetNpcAIStatus() != NPCStatus::Aggressivo)
-				{
-					return;
-				}
+			{	//Mentre sta inseguendo il mostro se lo vede con la coda dell' occhio non lo perde 
+				if (GetNpcAIStatus() != NPCStatus::Aggressivo) { return; }
+				if (GetNpcAIStatus() != NPCStatus::Inseguendo) { UpdateLastSeenT(); return; }
 				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
 				VoiceNamesCheck(FName("PeripheralSight"));
 				//suspect actor si setta solo quando è il cadavere
@@ -177,15 +176,14 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				SetNPCSatateAsInseguendo(SensedActor);
 			}
 		}
-		else if (Faction == ActorFaction::Compromesso && GetNpcAIStatus()!= NPCStatus::Inseguendo)
+		else if (Faction == ActorFaction::Compromesso )
 		{		
-			if (GetNpcAIStatus() != NPCStatus::Inseguendo || GetNpcAIStatus() != NPCStatus::Aggressivo)
-			{
-				return;
-			}
 			//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, 1500.f))
 			{
+				//mentre sta sparando a un npc se lo vede con lacoda dell'occhio non lo perde (updatelast seen)mentre se vede il mostro lo ignora(non è sicuro di cosa sia)
+				if (GetNpcAIStatus() != NPCStatus::Aggressivo) { UpdateLastSeenT(); return; }
+				if (GetNpcAIStatus() != NPCStatus::Inseguendo) { return; }
 				VoiceNamesCheck(FName("PeripheralSight"));
 				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
 				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr, ReactionTime);
@@ -199,7 +197,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				SetNPCSatateAsAggressivo(SensedActor);
 			}
 			
-		}			
+		}	
+	
 		
 	}
 
@@ -529,6 +528,7 @@ void AMostriciattoloAIController::SetNPCSatateAsFermo()
 void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 {
 	if (IsPawnPossessed()) { UE_LOG(LogTemp, Warning, TEXT("bada tranquillo possessed"))return; }
+	 UE_LOG(LogTemp, Warning, TEXT("DioCan Tranquillo")) 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
 	GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), nullptr);
 	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), nullptr);
@@ -548,7 +548,7 @@ void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVect
 {
 	
 	if (IsPawnPossessed()) { return; }
-	 UE_LOG(LogTemp, Warning, TEXT("porcoddio set attento")) 
+	UE_LOG(LogTemp, Warning, TEXT("DioCan Attento"))
 
 	GetBlackboardComponent()->SetValueAsFloat(FName("ReactionTime"), reactionTime);
 
@@ -579,6 +579,8 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 	
 	if (Target)
 	{
+		
+		UE_LOG(LogTemp, Warning, TEXT("DioCan Aggressivo"))
 		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
 		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
 		//TODO creare funzione su interface per prendere aimtarget da Target

@@ -52,6 +52,10 @@ void AMWeapon::WeaponAttack(bool AIAttack, AActor* AI_Target)
 		GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack,AttackDelay,false);
 	}
 }
+void AMWeapon::Bash()
+{
+	 UE_LOG(LogTemp, Warning, TEXT("Bash")) 
+}
 void AMWeapon::SetOwnerChar(AActor* NewOwner)
 {
 	SetOwner(NewOwner);

@@ -48,9 +48,8 @@ void UValueOverTimeComponent::BeginPlay()
 		}
 		
 		if (bCanRotateNPCToFocus)
-		{
-			 UE_LOG(LogTemp, Warning, TEXT("rotationtime %f"), GetWorld()->GetTimeSeconds()) 
-			RotateTowardsFocus();
+		{ 
+			RotateNPCTowardsFocus();
 		}
 		
 	}
@@ -222,15 +221,14 @@ void UValueOverTimeComponent::BeginPlay()
 		{
 			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocus->GetActorLocation());
 
-			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.2f, 1.f);
+			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.1f, RotationToFocusSpeed);
 			NewRot.Pitch = 0.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
 		else
 		{
 			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocusLocation);
-
-			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.2f, 1.f);
+			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.1f,RotationToFocusSpeed);
 			NewRot.Pitch = 0.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
