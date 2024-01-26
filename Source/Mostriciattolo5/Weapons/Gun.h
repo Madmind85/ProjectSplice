@@ -61,9 +61,9 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-	UParticleSystem* MuzzleFlash;
+	UParticleSystem* MuzzleFlash = nullptr;
 	UPROPERTY(EditAnywhere)
-	UParticleSystem* ProjectileEffect;
+	UParticleSystem* ProjectileEffect = nullptr;
 
 
 	void PullTrigger(bool bAIShooting,AActor* AI_Target);

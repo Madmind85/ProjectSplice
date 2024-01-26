@@ -89,21 +89,9 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 
 	if (MWeapon)
 	{
-		if (AI_Target)
-		{
-			if (GetDistanceTo(AI_Target) < 100.f)
-			{
-				MWeapon->Bash();
-			}
-			else
-			{
-				MWeapon->WeaponAttack(bAIShooting, AI_Target);
-			}
-		}
-		else
-		{
-			MWeapon->WeaponAttack(bAIShooting, AI_Target);
-		}
+
+		MWeapon->WeaponAttack(bAIShooting, AI_Target);
+		
 	}	
 	else
 	{

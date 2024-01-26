@@ -37,11 +37,18 @@ protected:
 	void BP_WeaponEffect();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_WeaponAnim();
+	UFUNCTION(BlueprintCallable)
+	void Bash();
+
 
 	class AMostriciattolo5Character* OwnerCharacter = nullptr;
 
 	void SetOwnerCharacter();
 
+	UPROPERTY(EditAnywhere, Category = "Melee")
+	float CollisionSphereRadius = 10.f;
+	UPROPERTY(EditAnywhere, Category = "Melee")
+	float CollisionSphereLength = 2.f;
 
 public:	
 
@@ -56,10 +63,9 @@ public:
 	bool GetIsAiming();
 	UFUNCTION(BlueprintCallable)
 	virtual void WeaponAttack(bool AIAttack, AActor* AI_Target);
-	UFUNCTION(BlueprintCallable)
-	void Bash();
+	
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Category = "Melee")
 	bool CanHitMelee = false;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -74,7 +80,8 @@ public:
 
 
 private:
-
-	
+	void InterceptTarget();
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* HitEffect;
 
 };

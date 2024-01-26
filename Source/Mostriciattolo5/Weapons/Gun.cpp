@@ -97,7 +97,21 @@ void AGun::SetIsAiming(bool IsAiming)
 
 void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
-	PullTrigger(AIAttack, AI_Target);
+	if (AI_Target)
+	{
+		if (GetDistanceTo(AI_Target) < 100.f)
+		{
+			Super::WeaponAttack(AIAttack, AI_Target);
+		}
+		else
+		{
+			PullTrigger(AIAttack, AI_Target);
+		}
+	}
+	else
+	{
+		PullTrigger(AIAttack, AI_Target);
+	}
 }
 
 	
