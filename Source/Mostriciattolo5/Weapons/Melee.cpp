@@ -11,10 +11,6 @@ void AMelee::Tick(float DeltaTime)
 	
 }
 
-void AMelee::SetHitCollisionActive(bool NewCollisionActive)
-{
-	bHitCollisionActive = NewCollisionActive;
-}
 
 void AMelee::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
@@ -22,13 +18,5 @@ void AMelee::WeaponAttack(bool AIAttack, AActor* AI_Target)
 
 }
 
-void AMelee::HitCollisionCheck()
-{
-	if (bHitCollisionActive)
-	{
-		bHitCollisionActive = false;
-		//sweep per intercettare 
-	}
-	
-}
+
 

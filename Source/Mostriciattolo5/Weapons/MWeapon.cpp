@@ -121,7 +121,7 @@ void AMWeapon::InterceptTarget()
 		UParticleSystemComponent* HitEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, Hit.Location, GetActorRotation());
 		HitEffectComponent->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
 		//la riga qui sotto crasha se chiamata da gun
-		//Hit.GetActor()->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
+		Hit.GetActor()->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
 		BP_WeaponEffect();
 		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(Hit.GetActor());
 		if (HitCharacter)
@@ -131,6 +131,21 @@ void AMWeapon::InterceptTarget()
 			HitCharacter->BP_HitEvent(Hit, OwnerPawn, AliveNDeadHitStrength);
 		}
 		CanHitMelee = false;
+	}
+
+}
+
+
+void AMWeapon::SetHitCollisionActive(bool NewCollisionActive)
+{
+	bHitCollisionActive = NewCollisionActive;
+}
+void AMWeapon::HitCollisionCheck()
+{
+	if (bHitCollisionActive)
+	{
+		bHitCollisionActive = false;
+		//sweep per intercettare 
 	}
 
 }

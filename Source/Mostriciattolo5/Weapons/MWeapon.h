@@ -50,6 +50,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Melee")
 	float CollisionSphereLength = 2.f;
 
+
+	void HitCollisionCheck();
+	bool bHitCollisionActive = false;
+
 public:	
 
 	// Called every frame
@@ -77,7 +81,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void SetOwnerChar(AActor* NewOwner);
 	
-
+	UFUNCTION(BlueprintCallable)
+	void SetHitCollisionActive(bool NewCollisionActive);
 
 private:
 	void InterceptTarget();

@@ -166,6 +166,7 @@ public:
 	virtual void OnTeleportFinished();
 	void MClearFocus();
 	void SetNotPossessedTimer();
+	AActor* GetNPCFocus();
 
 	/** Returns CameraBoom subobject 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -364,7 +365,7 @@ private:
 	bool bIsUnderPossessAttack = false;
 	bool IsActorThreatened = false;
 
-	
+	AActor* NPCFocus = nullptr;
 
 };
 

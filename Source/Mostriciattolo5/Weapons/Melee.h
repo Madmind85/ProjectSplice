@@ -18,8 +18,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	void SetHitCollisionActive(bool NewCollisionActive);
+	
 
 	virtual void WeaponAttack(bool AIAttack, AActor* AI_Target) override;
 
@@ -28,8 +27,7 @@ protected:
 
 
 private:
-	void HitCollisionCheck();
-	bool bHitCollisionActive = false;
+
 	
 
 };

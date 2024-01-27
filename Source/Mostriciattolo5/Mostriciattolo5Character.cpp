@@ -195,6 +195,7 @@ void AMostriciattolo5Character::Int_SetVOTFocus_Implementation(AActor* NewFocus,
 	if (ValueOverTimeComponent)
 	{
 		ValueOverTimeComponent->SetNPCFocus(NewFocus,NewFocusLocation);
+		NPCFocus = NewFocus;
 	}
 }
 
@@ -203,6 +204,7 @@ void AMostriciattolo5Character::Int_ResetVOTFocus_Implementation()
 	if (ValueOverTimeComponent)
 	{
 		ValueOverTimeComponent->ResetNPCFocus();
+		NPCFocus = nullptr;
 	}
 }
 
@@ -740,6 +742,11 @@ void AMostriciattolo5Character::SetNotPossessedTimer()
 	FTimerHandle TimerH;
 	GetWorld()->GetTimerManager().SetTimer(TimerH,this, &AMostriciattolo5Character::SetNotPossessedDelayed, 1.5f, false, 1.5f);
 
+}
+
+AActor* AMostriciattolo5Character::GetNPCFocus()
+{
+	return NPCFocus;
 }
 
 void AMostriciattolo5Character::SetNotPossessedDelayed()
