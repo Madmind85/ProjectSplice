@@ -49,13 +49,7 @@ bool AMWeapon::GetIsAiming()
 
 void AMWeapon::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
-	if (bCanAttack)
-	{
-		bCanAttack = false;
-		BP_WeaponAnim();
-		FTimerHandle Timer;
-		GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack,AttackDelay,false);
-	}
+	WeaponAnim();
 }
 
 void AMWeapon::SetOwnerChar(AActor* NewOwner)
@@ -117,10 +111,13 @@ void AMWeapon::InterceptTarget()
 	FPointDamageEvent DamageEvent(WeaponDamage, Hit, GetOwner()->GetActorRotation().Vector(), nullptr);
 
 	if (Hit.GetActor() && Hit.GetActor() != this)
-	{
+	{	
 		UParticleSystemComponent* HitEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, Hit.Location, GetActorRotation());
-		HitEffectComponent->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
-		//la riga qui sotto crasha se chiamata da gun
+		if (HitEffectComponent)
+		{
+			HitEffectComponent->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
+		}
+		
 		Hit.GetActor()->TakeDamage(WeaponDamage, DamageEvent, OwnerController, this);
 		BP_WeaponEffect();
 		AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(Hit.GetActor());
@@ -148,4 +145,15 @@ void AMWeapon::HitCollisionCheck()
 		//sweep per intercettare 
 	}
 
+}
+
+void AMWeapon::WeaponAnim()
+{
+	if (bCanAttack)
+	{
+		bCanAttack = false;
+		BP_WeaponAnim();
+		FTimerHandle Timer;
+		GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack, AttackDelay, false);
+	}
 }

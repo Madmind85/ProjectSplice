@@ -53,6 +53,7 @@ protected:
 
 	void HitCollisionCheck();
 	bool bHitCollisionActive = false;
+	void WeaponAnim();
 
 public:	
 
