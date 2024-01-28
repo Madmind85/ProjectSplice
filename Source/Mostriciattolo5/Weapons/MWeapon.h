@@ -32,6 +32,8 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	float WeaponDamage = 15.f;
+	UPROPERTY(EditAnywhere)
+	float GunMeleeHitDistance = 80.f;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_WeaponEffect();
@@ -89,5 +91,6 @@ private:
 	void InterceptTarget();
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* HitEffect;
+	
 
 };

@@ -99,7 +99,7 @@ void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 {
 	if (AI_Target)
 	{
-		if (GetDistanceTo(AI_Target) < 100.f)
+		if (GetDistanceTo(AI_Target) < GunMeleeHitDistance)
 		{
 			WeaponAnim();
 		}

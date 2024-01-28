@@ -209,7 +209,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{
 			return;
 		}
-		VoiceNamesCheck(FName("CorpseSight"));
+		//sistemare in modo da non hiamarlo in continuazione
+		//VoiceNamesCheck(FName("CorpseSight"));
 
 		ACharacter* MChar = Cast<ACharacter>(SensedActor);
 		if (MChar)
