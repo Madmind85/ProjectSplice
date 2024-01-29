@@ -313,8 +313,8 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActo
 {
 	//Da Rivedere completamente
 	// non trova tutte le guardie e  viene chiamato troppo spessonon 
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+	ECollisionChannel ECC = ECollisionChannel::ECC_Pawn;
 	APawn* OwnerPawn = GetPawn();
 
 	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(4000.f); 
@@ -323,43 +323,54 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActo
 	if (OwnerPawn)
 	{
 		// Call the function
-		GetWorld()->SweepMultiByObjectType
+		GetWorld()->SweepMultiByChannel
 		(
 			OutHits,
 			OwnerPawn->GetActorLocation(),
 			OwnerPawn->GetActorLocation() +1.f,
 			FQuat::Identity,
-			ObjectQueryParams,
+			ECC,
 			MyColSphere
 		);
-		DrawDebugSphere(GetWorld(), OwnerPawn->GetActorLocation(), 4000.f, 30, FColor::Magenta, false, 0.5f);
-		for (FHitResult Hit : OutHits)
+		DrawDebugSphere(GetWorld(), OwnerPawn->GetActorLocation(), 3000.f, 30, FColor::Magenta, false, 0.5f);
+
+		UE_LOG(LogTemp, Warning, TEXT("GUARD ALERTED %i"), OutHits.Num())
+
+		for (FHitResult& Hit : OutHits)
 		{
-			FString actorName = GetName();
-			UE_LOG(LogTemp, Warning, TEXT("GUARD ALERTED %s"), *actorName)
-
-			AActor* OtherActor = Hit.GetActor();
 			
-			AMostriciattoloAIController* AIControl = IInt_MCharacter::Execute_Int_GetAIController(OtherActor);
-
-			if (AIControl)
+			AActor* OtherActor = Hit.GetActor();
+			if (OtherActor)
 			{
-				NPCStatus CurrentStatus = AIControl->GetNpcAIStatus();
-
-				if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
-				{  //attacca
-					AIControl->CurrentNPCTarget = EnemyToSet;
-					AIControl->SetNPCSatateAsAggressivo(CurrentNPCTarget);
-				}
-				//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
-				else if (Faction == ActorFaction::Nemico)	 
+			
+				if (OtherActor->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
 				{
-					
-					//cattura il mostriciattolo
-					AIControl->CurrentNPCTarget = EnemyToSet;
-					AIControl->SetNPCSatateAsInseguendo(CurrentNPCTarget);
+					AMostriciattoloAIController* AIControl = IInt_MCharacter::Execute_Int_GetAIController(OtherActor);
+
+					if (AIControl)
+					{
+						NPCStatus CurrentStatus = AIControl->GetNpcAIStatus();
+
+						if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
+						{  //attacca
+							AIControl->CurrentNPCTarget = EnemyToSet;
+							AIControl->SetNPCSatateAsAggressivo(CurrentNPCTarget);
+						}
+						//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
+						else if (Faction == ActorFaction::Nemico)
+						{
+
+							//cattura il mostriciattolo
+							AIControl->CurrentNPCTarget = EnemyToSet;
+							AIControl->SetNPCSatateAsInseguendo(CurrentNPCTarget);
+						}
+					}
 				}
-			}
+				
+			} 
+			
+			
+			
 		}
 	}
 }
