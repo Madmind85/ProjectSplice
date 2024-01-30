@@ -257,6 +257,8 @@ public:
 	void BP_SetTarget();
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ResetTarget();
+	UFUNCTION(BlueprintImplementableEvent)
+	void MakeAlertSound();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitEvent(FHitResult HitRes, APawn* AttackingPawn, FVector2D AliveAndDeadStrength);
