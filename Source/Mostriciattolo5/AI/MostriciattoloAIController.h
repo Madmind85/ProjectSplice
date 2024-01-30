@@ -83,10 +83,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Behaviour")
 	float LastSeenTime = 0.f;
 
-	void AlertClosestGuards(ActorFaction Faction, AActor* EnemyToSet);
+	void AlertClosestGuards(AActor* EnemyToSet);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_VoiceFX(FName VoiceName);
+	UFUNCTION(BlueprintImplementableEvent)
+	void MakeAlertSound(FVector SoundLocation);
 
 protected:
 	

@@ -67,8 +67,8 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 		if (CurrentState == 6 || CurrentState == 7)
 		{
 			Int_SetNPCSatateAsTranquillo();
-			CanAlertGuards = true;
 		}
+		CanAlertGuards = true;
 	}
 }
 
@@ -172,7 +172,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
 				VoiceNamesCheck(FName("MonsterSight"));
-				AlertClosestGuards(ActorFaction::Nemico, SensedActor);
+				AlertClosestGuards(SensedActor);
 				SetNPCSatateAsInseguendo(SensedActor);
 			}
 		}
@@ -193,7 +193,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				VoiceNamesCheck(FName("GuardSight"));
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
-				AlertClosestGuards(ActorFaction::Compromesso, SensedActor);
+				AlertClosestGuards(SensedActor);
 				SetNPCSatateAsAggressivo(SensedActor);
 			}
 			
@@ -309,8 +309,13 @@ FVector AMostriciattoloAIController::ProjPointToNavigation(FVector Point)
 	
 }
 
-void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActor* EnemyToSet)
+void AMostriciattoloAIController::AlertClosestGuards(AActor* EnemyToSet)
 {
+	if (CanAlertGuards)
+	{
+		MakeAlertSound(EnemyToSet->GetActorLocation());
+	}
+	/*
 	//Da Rivedere completamente
 	// non trova tutte le guardie e  viene chiamato troppo spessonon 
 
@@ -352,18 +357,23 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActo
 						NPCStatus CurrentStatus = AIControl->GetNpcAIStatus();
 
 						if (Faction == ActorFaction::Compromesso && (CurrentStatus != NPCStatus::Aggressivo) && (CurrentStatus != NPCStatus::Inseguendo))
-						{  //attacca
+						{  
+							UE_LOG(LogTemp, Warning, TEXT("Alert Guard NPC Compromesso")) 
+							//attacca	
+							UpdateLastSeenT();
 							AIControl->CurrentNPCTarget = EnemyToSet;
 							AIControl->SetNPCSatateAsAggressivo(CurrentNPCTarget);
 						}
 						//se invece è stato visto il mostriciattolo anche se questo npc sta gia attaccando qualcuno
 						else if (Faction == ActorFaction::Nemico)
 						{
-
 							//cattura il mostriciattolo
+							UpdateLastSeenT();
 							AIControl->CurrentNPCTarget = EnemyToSet;
 							AIControl->SetNPCSatateAsInseguendo(CurrentNPCTarget);
+							
 						}
+
 					}
 				}
 				
@@ -373,6 +383,7 @@ void AMostriciattoloAIController::AlertClosestGuards(ActorFaction Faction, AActo
 			
 		}
 	}
+	*/
 }
 
 void AMostriciattoloAIController::SetNPCStateAsAttivo()
@@ -560,7 +571,7 @@ void AMostriciattoloAIController::SetNPCSatateAsAttento(FVector MoveToLoc, FVect
 {
 	
 	if (IsPawnPossessed()) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("DioCan Attento"))
+	
 
 	GetBlackboardComponent()->SetValueAsFloat(FName("ReactionTime"), reactionTime);
 
