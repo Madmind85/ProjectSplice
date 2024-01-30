@@ -245,7 +245,14 @@ public:
 	TArray<AMostriciattolo5Character*> PawnsInView;
 	UPROPERTY(BlueprintReadOnly)
 	bool IsBeingPossessed = false;
-	
+	UPROPERTY(BlueprintReadWrite)
+	bool CanTraceWalls = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool WallDetected = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool FixWallRotRealTime = false;
+	UPROPERTY(BlueprintReadWrite)
+	FVector WallNormal;
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnDeath();
@@ -321,6 +328,8 @@ private:
 
 	void InitWeapon();
 
+	void DetectWall();
+
 
 	UPROPERTY(EditAnywhere, Category = "Behavior")
 	bool IsPatroller = true;
@@ -368,6 +377,8 @@ private:
 	bool IsActorThreatened = false;
 
 	AActor* NPCFocus = nullptr;
+
+	
 
 };
 

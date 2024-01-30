@@ -106,7 +106,7 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	
-
+	DetectWall();
 
 
 	if (GetCurrentFocus())
@@ -341,6 +341,37 @@ void AMostriciattolo5Character::InitWeapon()
 	}
 }
 
+void AMostriciattolo5Character::DetectWall()
+{
+	if (IsBeingPossessed && CanTraceWalls)
+	{
+		FHitResult Hit;
+		FVector  Start = GetActorLocation();
+		FVector End = Start + FVector(1.f, 1.f, 1.f);
+		FQuat Rot;
+		FCollisionObjectQueryParams Params = ECC_WorldStatic;
+		FCollisionShape  Sphere = FCollisionShape::MakeSphere(40.f);
+		bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, Rot, Params, Sphere);
+
+		if (bHit)
+		{
+			WallDetected = true;
+			DrawDebugSphere(GetWorld(), GetActorLocation(), 40.f, 30.f, FColor::Red, false, 0.1f);
+			
+			WallNormal = Hit.ImpactNormal;
+			FRotator NormalRot = WallNormal.Rotation();
+			float FixedValue = NormalRot.Yaw + 180.f;
+		//	if (FixWallRotRealTime)
+		//	{
+				SetActorRotation(FRotator(0, FixedValue, 0));
+		//	}
+
+			Hit.TraceEnd;
+
+		}
+	}
+}
+
 
 bool AMostriciattolo5Character::StartSelectFocusMode()
 {
@@ -467,17 +498,24 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-		if (GetCurrentFocus())
+		if (WallDetected)
 		{
-			 
+			 UE_LOG(LogTemp, Warning, TEXT("wallo detected")) 
+
+			float MoveX = WallNormal.X * -1;
+			float MoveY = WallNormal.Y;
+			AddMovementInput(FVector( MoveY, MoveX, 0.f), MovementVector.Y);
+		}
+		else if (GetCurrentFocus())
+		{ 
+			UE_LOG(LogTemp, Warning, TEXT("wallo focus"))
 			//RotatePlayerTowardsTarget(GetCurrentFocus()); //gia al tick
 			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 			AddMovementInput(RightDirection, MovementVector.X);
-			
 		}
 		else
 		{
-			
+			UE_LOG(LogTemp, Warning, TEXT("wallo not detected"))
 			// add movement 
 			AddMovementInput(ForwardDirection, MovementVector.Y);
 			AddMovementInput(RightDirection, MovementVector.X);
