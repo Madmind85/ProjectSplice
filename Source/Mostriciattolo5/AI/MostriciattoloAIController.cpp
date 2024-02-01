@@ -394,6 +394,14 @@ void AMostriciattoloAIController::SetNPCStateAsAttivo()
 
 void AMostriciattoloAIController::VoiceNamesCheck(FName VoiceName)
 {
+
+	//TODO forse un delay di un secondo  e poi chiamare qusta funzione 
+	//per fare in modo che se gli sparano vada in combat prima di sentire il suono dello sparo,senno se gli sparano dice che ha sentito un siuono
+	//tipo 
+	// FTimerHandle Timer;
+	// GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMostriciattoloAIController::VoiceNamesCheck_Delayed, 2.f, false, 2.f);
+	//per fare questo meglio mettere come variabile di classe FName VoiceName, cosi non passiamo niente sulla funzione delegate
+
 	float AlertT = 5.f;
 	if (SensedActor)
 	{

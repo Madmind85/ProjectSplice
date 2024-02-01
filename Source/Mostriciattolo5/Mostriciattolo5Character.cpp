@@ -83,8 +83,10 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 
 	if (IsBeingPossessed && IsActorThreatened)
 	{
-		
-		SetFaction(ActorFaction::Compromesso);
+		if (IsTarget != ActorFaction::Compromesso)
+		{
+			SetFaction(ActorFaction::Compromesso);
+		}
 	}
 
 	if (MWeapon)
@@ -220,7 +222,10 @@ ActorFaction AMostriciattolo5Character::Int_GetIsTarget_Implementation()
 {
 	if (CanBeTarget)
 	{
-		SetFaction(ActorFaction::Compromesso);
+		if (IsTarget != ActorFaction::Compromesso)
+		{
+			SetFaction(ActorFaction::Compromesso);
+		}
 	}
 
 	return IsTarget;
@@ -360,7 +365,7 @@ void AMostriciattolo5Character::DetectWall()
 			
 			WallNormal = Hit.ImpactNormal;
 			FRotator NormalRot = WallNormal.Rotation();
-			float FixedValue = NormalRot.Yaw + 180.f;
+			float FixedValue = NormalRot.Yaw ;
 		//	if (FixWallRotRealTime)
 		//	{
 				SetActorRotation(FRotator(0, FixedValue, 0));
@@ -368,6 +373,14 @@ void AMostriciattolo5Character::DetectWall()
 
 			Hit.TraceEnd;
 
+			float CurrentSpeed = GetVelocity().Length();
+			if (CurrentSpeed > 0)
+			{
+					FVector PullToWall;
+				PullToWall = (GetActorForwardVector() * -0.5) + GetActorLocation();
+				float CurrentZ = GetActorLocation().Z;
+				SetActorLocation(FVector(PullToWall.X, PullToWall.Y, CurrentZ));
+			}
 		}
 	}
 }
@@ -723,7 +736,10 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			bool bPossessed = Shooter->IsBeingPossessed;
 			if (bPossessed)
 			{
-				Shooter->SetFaction(ActorFaction::Compromesso);
+				if (Shooter->IsTarget != ActorFaction::Compromesso)
+				{
+					Shooter->SetFaction(ActorFaction::Compromesso);
+				}
 				//come lo avesse visto, altrimenti se è di spalle torna tranquillo
 				Contr->UpdateLastSeenT();
 				MakeAlertSound();
