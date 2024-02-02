@@ -401,27 +401,34 @@ void AMostriciattoloAIController::VoiceNamesCheck(FName VoiceName)
 	// FTimerHandle Timer;
 	// GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMostriciattoloAIController::VoiceNamesCheck_Delayed, 2.f, false, 2.f);
 	//per fare questo meglio mettere come variabile di classe FName VoiceName, cosi non passiamo niente sulla funzione delegate
-
-	float AlertT = 5.f;
-	if (SensedActor)
-	{
-		AlertT = IInt_MCharacter::Execute_Int_GetAlertTime(SensedActor);
-	}
-	FVector SoundLoc = FVector::ZeroVector;
 	if (GetPawn())
 	{
-		SoundLoc = GetPawn()->GetActorLocation();
+		bool bDead = Execute_Int_IsActorDead(GetPawn());
+		if (!bDead)
+		{
+			float AlertT = 5.f;
+			if (SensedActor)
+			{
+				AlertT = IInt_MCharacter::Execute_Int_GetAlertTime(SensedActor);
+			}
+			FVector SoundLoc = FVector::ZeroVector;
+			if (GetPawn())
+			{
+				SoundLoc = GetPawn()->GetActorLocation();
+			}
+			//se sta inseguendo il mostriciattolo non dice altri suoni
+			if ((AlertT <= 0.f) && MostriciattoloGM)
+			{
+				MostriciattoloGM->BP_VoiceFXSelect(VoiceName, SoundLoc);
+			}
+			//se non quello della vista del mostriciattolo( comunque limitato in bp sul game mode) 
+			else if (VoiceName == FName("MonsterSight"))
+			{
+				MostriciattoloGM->BP_VoiceFXSelect(VoiceName, SoundLoc);
+			}
+		}
 	}
-	//se sta inseguendo il mostriciattolo non dice altri suoni
-	if ((AlertT <= 0.f) && MostriciattoloGM)
-	{
-		MostriciattoloGM->BP_VoiceFXSelect(VoiceName,SoundLoc);
-	}
-	 //se non quello della vista del mostriciattolo( comunque limitato in bp sul game mode) 
-	else if(VoiceName == FName("MonsterSight"))
-	{
-		MostriciattoloGM->BP_VoiceFXSelect(VoiceName, SoundLoc);
-	}
+	
 }
 
 
@@ -610,8 +617,6 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 	
 	if (Target)
 	{
-		
-		UE_LOG(LogTemp, Warning, TEXT("DioCan Aggressivo"))
 		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 6);
 		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
 		//TODO creare funzione su interface per prendere aimtarget da Target
@@ -626,7 +631,6 @@ void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
 	if (Target)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("inseguendo porcoddio"))
 			MostriciattoloGM->BP_StartStopChaseSound(true);
 		
 		IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
