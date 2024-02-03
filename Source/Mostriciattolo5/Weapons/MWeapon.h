@@ -18,6 +18,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	bool BeingHeld = false;
+	UFUNCTION(BlueprintCallable)
+	void WeaponAnim();
 
 protected:
 	// Called when the game starts or when spawned
@@ -55,7 +57,7 @@ protected:
 
 	void HitCollisionCheck();
 	bool bHitCollisionActive = false;
-	void WeaponAnim();
+	
 
 public:	
 
