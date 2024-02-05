@@ -18,14 +18,15 @@
 void AMostriciattolo5Player::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
     AlertTime -= 1.f * DeltaSeconds;
     AlertTime = FMath::Clamp(AlertTime, 0.f, MaxAlertTime);
-   
-    if (AlertTime <= 0.f && MGameMode) 
-    { 
-        MGameMode->BP_StartStopChaseSound(false); 
+
+    if (AlertTime <= 0.f && MGameMode)
+    {
+        MGameMode->BP_StartStopChaseSound(false);
     }
-    
+
     UE_LOG(LogTemp, Warning, TEXT("alert time = %f "), AlertTime)
 
 }

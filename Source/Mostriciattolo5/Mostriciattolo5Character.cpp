@@ -109,7 +109,21 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 
 	
 	DetectWall();
+	
+	if (IsBeingPossessed)
+	{
+		AlertTime -= 1.f * DeltaSeconds;
+		AlertTime = FMath::Clamp(AlertTime, 0.f, MaxAlertTime);
 
+		if (AlertTime <= 0.f && MGameMode)
+		{
+			
+			MGameMode->BP_StartStopChaseSound(false);
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("alert time = %f "), AlertTime)
+	}
+	
 
 	if (GetCurrentFocus())
 	{
