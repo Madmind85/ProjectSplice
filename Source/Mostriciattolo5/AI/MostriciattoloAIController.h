@@ -121,6 +121,10 @@ private:
 	/**quanto ci mette prima di reagire alla vista periferica o ad un suono*/
 	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
 	float ReactionTime = 2.f;
+	/**Da settare uguale alla sight radius dell' AI
+	Perception perchè non si riesce ad accedere aquel valore*/
+	UPROPERTY(EditDefaultsOnly, Category = "Behaviour")
+	float SightRadiusForInnerConeCheck = 2500.f;
 
 	void ProcessLastVisionStimulus();
 	void ProcessLastHearingStimulus();

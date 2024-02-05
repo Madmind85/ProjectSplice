@@ -61,13 +61,13 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 	{
 		SensedActor = nullptr;
 		GetBlackboardComponent()->SetValueAsBool(FName("TargetVisible"), false);
-		uint8 CurrentState = GetBlackboardComponent()->GetValueAsEnum((FName("CurrentStatus")));
+		//uint8 CurrentState = GetBlackboardComponent()->GetValueAsEnum((FName("CurrentStatus")));
 
 		//se sta inseguendo o attaccando
-		if (CurrentState == 6 || CurrentState == 7)
-		{
-			Int_SetNPCSatateAsTranquillo();
-		}
+		//if (CurrentState == 6 || CurrentState == 7)
+		//{
+			//Int_SetNPCSatateAsTranquillo();
+		//}
 		CanAlertGuards = true;
 	}
 }
@@ -158,7 +158,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		if (Faction == ActorFaction::Nemico)
 		{		
 			//senon è nel cono interno 
-			if (!CheckInnerSightAngle(SensedActor, 1500.f))
+			if (!CheckInnerSightAngle(SensedActor, SightRadiusForInnerConeCheck))
 			{	//Mentre sta inseguendo il mostro se lo vede con la coda dell' occhio non lo perde 
 				if (GetNpcAIStatus() != NPCStatus::Aggressivo) { return; }
 				if (GetNpcAIStatus() != NPCStatus::Inseguendo) { UpdateLastSeenT(); return; }
@@ -179,7 +179,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		else if (Faction == ActorFaction::Compromesso )
 		{		
 			//senon è nel cono interno 
-			if (!CheckInnerSightAngle(SensedActor, 1500.f))
+			if (!CheckInnerSightAngle(SensedActor, SightRadiusForInnerConeCheck))
 			{
 				//mentre sta sparando a un npc se lo vede con lacoda dell'occhio non lo perde (updatelast seen)mentre se vede il mostro lo ignora(non è sicuro di cosa sia)
 				if (GetNpcAIStatus() != NPCStatus::Aggressivo) { UpdateLastSeenT(); return; }
@@ -621,7 +621,11 @@ void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
 		//TODO creare funzione su interface per prendere aimtarget da Target
 		GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
-
+		bool bIsPossessed = Execute_Int_IsActorPossessed(Target);
+		if (bIsPossessed)
+		{
+			IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
+		}
 	}
 }
 
