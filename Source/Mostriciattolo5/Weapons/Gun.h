@@ -54,7 +54,7 @@ public:
 	FVector ShotDirection;
 	FName HitBoneBName;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UDecalComponent* LaserDot;
 
 
