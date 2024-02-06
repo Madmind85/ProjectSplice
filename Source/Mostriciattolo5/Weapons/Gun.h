@@ -27,7 +27,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	
-
+	UFUNCTION(BlueprintCallable)
+	void SetLaserAim(bool Active);
 	
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* MuzzleLoc;
@@ -54,9 +55,7 @@ public:
 	FVector ShotDirection;
 	FName HitBoneBName;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	UDecalComponent* LaserDot;
-
+	
 
 
 private:
@@ -64,20 +63,20 @@ private:
 	UParticleSystem* MuzzleFlash = nullptr;
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ProjectileEffect = nullptr;
+	UPROPERTY(EditAnywhere)
+	class UPoseableMeshComponent* LaserRay = nullptr;
+	UPROPERTY(EditAnywhere)
+	UDecalComponent* LaserDot = nullptr;
+
 
 
 	void PullTrigger(bool bAIShooting,AActor* AI_Target);
 
 	void LaserAiming();
 
-	
-	
-
 	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes, AActor* AI_Target);
 
 	bool AIHitCheck();
-
-	
 
 	float RandShootError = 0.f;
 };

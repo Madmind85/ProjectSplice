@@ -9,6 +9,8 @@
 #include "Components/ArrowComponent.h"
 #include "Components/DecalComponent.h"
 #include "AIController.h"
+#include "Components/PoseableMeshComponent.h"
+#include "Components/SkinnedMeshComponent.h"
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -29,7 +31,9 @@ AGun::AGun()
 
 	LaserDot = CreateDefaultSubobject<UDecalComponent>(TEXT("LaserDot"));
 	LaserDot->SetupAttachment(Root);
-	
+
+	LaserRay = CreateDefaultSubobject<UPoseableMeshComponent>(TEXT("LaserRay"));
+	LaserRay->SetupAttachment(Root);
 }
 
 // Called when the game starts or when spawned
@@ -37,9 +41,10 @@ void AGun::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (LaserDot)
+	if (LaserDot  && LaserRay)
 	{
 		LaserDot->SetVisibility(false);
+		LaserRay->SetVisibility(false);
 	}
 } 
 
@@ -52,6 +57,15 @@ void AGun::Tick(float DeltaTime)
 		LaserAiming();
 	}
 
+}
+
+void AGun::SetLaserAim(bool Active)
+{
+	if (LaserDot && LaserRay)
+	{
+		LaserDot->SetVisibility(Active);
+		LaserRay->SetVisibility(Active);
+	}
 }
 
 void AGun::LaserAiming()
@@ -80,7 +94,11 @@ void AGun::LaserAiming()
 		
 		if (bHit)
 		{
-			LaserDot->SetWorldLocation(Hit.Location);
+			if (LaserDot && LaserRay)
+			{
+				LaserDot->SetWorldLocation(Hit.Location);
+				LaserRay->SetBoneLocationByName(FName("Laser_end"), Hit.Location, EBoneSpaces::WorldSpace);
+			}
 		}
 		
 	}
@@ -89,9 +107,10 @@ void AGun::LaserAiming()
 void AGun::SetIsAiming(bool IsAiming)
 {
 	bIsAiming = IsAiming;
-	if (LaserDot)
+	if (LaserDot && LaserRay)
 	{
 		LaserDot->SetVisibility(IsAiming);
+		LaserRay->SetVisibility(IsAiming);
 	}
 }
 
@@ -101,6 +120,7 @@ void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 	{
 		if (GetDistanceTo(AI_Target) < GunMeleeHitDistance)
 		{
+			SetIsAiming(false);
 			WeaponAnim();
 		}
 		else
@@ -172,6 +192,12 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 			FTimerHandle TimerH;
 			GetWorld()->GetTimerManager().SetTimer(TimerH, this, &AGun::ResetCanAttack, AttackDelay, false);
 		}
+	
+	}
+	else if (bCanAttack)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("weapon anim"))
+			WeaponAnim();
 	}
 }
 
