@@ -333,6 +333,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Behavior")
 	bool IsPatroller = true;
+	UPROPERTY(EditAnywhere, Category = "Behavior")
+	class ATargetPoint* InitialRotTarget = nullptr;
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")

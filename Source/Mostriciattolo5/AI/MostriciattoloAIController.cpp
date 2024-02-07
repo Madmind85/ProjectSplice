@@ -44,7 +44,7 @@ void AMostriciattoloAIController::BeginPlay()
 		{
 			GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), false);
 			GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());
-			GetBlackboardComponent()->SetValueAsRotator(FName("InitialRotation"), CurrentPawn->GetActorRotation());
+			
 		}
 	}
 
@@ -506,6 +506,11 @@ void AMostriciattoloAIController::UpdateLastSeenT()
 	LastSeenT = GetWorld()->GetTimeSeconds();
 	GetBlackboardComponent()->SetValueAsBool(FName("TargetVisible"),true);
 	UE_LOG(LogTemp, Warning, TEXT("LastSeenT updated to %f"), LastSeenT);
+}
+
+void AMostriciattoloAIController::SetInitialRotation(FVector Target)
+{
+	GetBlackboardComponent()->SetValueAsVector(FName("InitialRotation"), Target);
 }
 
 bool AMostriciattoloAIController::CheckInnerSightAngle(AActor* CharacterInSight, float PS_SightRadius)

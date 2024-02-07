@@ -50,6 +50,7 @@ public:
 	void RunAI_BehaviorTree();
 	bool SelfDestruct();
 	void UpdateLastSeenT();
+	void SetInitialRotation(FVector Target);
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AI_Behavior = nullptr;
