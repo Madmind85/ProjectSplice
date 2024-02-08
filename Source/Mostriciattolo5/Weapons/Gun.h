@@ -21,16 +21,18 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
+	void SetupShootValues(float GunChargeValue);
+
 	UFUNCTION(BlueprintCallable)
 	void SetLaserAim(bool Active);
-	UFUNCTION(BlueprintCallable)
-	void SetupShootValues(float GunChargeValue);
+	
 	
 	UPROPERTY(EditAnywhere)
 	class UArrowComponent* MuzzleLoc;
@@ -40,8 +42,7 @@ public:
 	void BP_ShootEffect();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
 	float RecoilAmount = -0.6f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
-	FName CameraShakeName = FName("Shoot1");
+
 	
 	
 	UPROPERTY(EditDefaultsOnly, Category = "MissingChance")
@@ -71,26 +72,35 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UDecalComponent* LaserDot = nullptr;
 
+	
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	float Recoil_1 = -0.6f;
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	float Recoil_2 = -1.f;
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	float Recoil_3 = -1.5f;
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	float Damage_1 = 15.f;
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	float Damage_2 = 20.f;
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	float Damage_3 = 30.f;
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	FName CameraShake_1 = FName("Shoot1");
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	FName CameraShake_2 = FName("Shoot2");
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	FName CameraShake_3 = FName("Shoot3");
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
-	FVector2D Force_2 =  FVector2D(4500.f, 3500.f);
+	FVector2D Force_1 = FVector2D(3500.f, 3500.f);
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
-	FVector2D Force_3 = FVector2D(6000.f, 4500.f);
+	FVector2D Force_2 =  FVector2D(4500.f, 4000.f);
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
-	float Charge_2 = 1.3f;
+	FVector2D Force_3 = FVector2D(6000.f, 5000.f);
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
-	float Charge_3 = 2.8f;
+	float Charge_2 = 1.5f;
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	float Charge_3 = 3.0f;
 
 
 	void PullTrigger(bool bAIShooting,AActor* AI_Target);
@@ -100,6 +110,8 @@ private:
 	bool GunLineTrace(bool AIShooting, FHitResult &OUTHitRes, AActor* AI_Target);
 
 	bool AIHitCheck();
+
+	void H_SetShootValues(float Recoil, float Damage, FVector2D Force, FName CameraShake);
 
 	float RandShootError = 0.f;
 };

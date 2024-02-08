@@ -46,6 +46,8 @@ void AGun::BeginPlay()
 		LaserDot->SetVisibility(false);
 		LaserRay->SetVisibility(false);
 	}
+	SetOwnerCharacter();
+
 } 
 
 // Called every frame
@@ -73,17 +75,20 @@ void AGun::SetupShootValues(float GunChargeValue)
 	if (GunChargeValue < Charge_2)
 	{
 		//valori normali
-		 UE_LOG(LogTemp, Warning, TEXT(" sparo normale")) 
+		UE_LOG(LogTemp, Warning, TEXT(" sparo normale"))
+			H_SetShootValues(Recoil_1, Damage_1, Force_1, CameraShake_1);
 	}
 	else if (GunChargeValue < Charge_3)
 	{
 		//valori di charge 2
-		 UE_LOG(LogTemp, Warning, TEXT("spero medio")) 
+		UE_LOG(LogTemp, Warning, TEXT("sparo medio"))
+			H_SetShootValues(Recoil_2, Damage_2, Force_2, CameraShake_2);
 	}
 	else
 	{
 		 UE_LOG(LogTemp, Warning, TEXT("sparo forte")) 
-		//valori charge 3
+		//valori charge 3		
+			 H_SetShootValues(Recoil_3, Damage_3, Force_3, CameraShake_3);
 	}
 }
 
@@ -144,11 +149,23 @@ void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 		}
 		else
 		{
+			
 			PullTrigger(AIAttack, AI_Target);
 		}
 	}
 	else
 	{
+		if (!OwnerCharacter)
+		{
+			SetOwnerCharacter();
+		}
+		if (CanBeCharged && OwnerCharacter)
+		{
+			//WeaponChargeTimeDeveessere settao dall'input tenedo premuto fire
+			float Charge = OwnerCharacter->WeaponChargeTime;
+			SetupShootValues(Charge);
+		}
+
 		PullTrigger(AIAttack, AI_Target);
 	}
 }
@@ -280,6 +297,14 @@ bool AGun::AIHitCheck()
 	{
 		return false;
 	}
+}
+
+void AGun::H_SetShootValues(float Recoil, float Damage, FVector2D Force, FName CameraShake)
+{
+	RecoilAmount = Recoil;
+	WeaponDamage = Damage;
+	AliveNDeadHitStrength = Force;
+	CameraShakeName = CameraShake;
 }
 
 

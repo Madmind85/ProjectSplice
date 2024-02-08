@@ -181,7 +181,8 @@ public:
 	bool IsSpammingPossess = false;
 
 
-	
+	UPROPERTY(BlueprintReadWrite)
+	float WeaponChargeTime = 0.f;
 	UPROPERTY(BlueprintReadWrite)
 	AActor* KillerActor = nullptr;
 	UPROPERTY(BlueprintReadWrite)

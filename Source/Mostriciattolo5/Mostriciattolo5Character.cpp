@@ -92,9 +92,7 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 
 	if (MWeapon)
 	{
-
 		MWeapon->WeaponAttack(bAIShooting, AI_Target);
-		
 	}	
 	else
 	{

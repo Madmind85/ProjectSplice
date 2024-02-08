@@ -64,15 +64,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon Stats")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Charge Values")
+	bool CanBeCharged = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Stats")
 	float MaxWeaponRange = 1.f;
-	UPROPERTY(BlueprintReadWrite, Category = "Weapon Stats")
+	UPROPERTY(BlueprintReadWrite, Category = "Stats")
 	float ChargeTime = 0.f;
 	/**La forza che viene applicata alla hit reaction da vivo(X) e sul colpo letale(Y)*/
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Stats")
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	FVector2D AliveNDeadHitStrength = FVector2D(3500.f, 3500.f);
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Stats")
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	float AttackDelay = 0.5f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
+	FName CameraShakeName = FName("Shoot1");
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetIsAiming(bool IsAiming);
