@@ -63,8 +63,16 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Weapon Stats")
 	float MaxWeaponRange = 1.f;
+	UPROPERTY(BlueprintReadWrite, Category = "Weapon Stats")
+	float ChargeTime = 0.f;
+	/**La forza che viene applicata alla hit reaction da vivo(X) e sul colpo letale(Y)*/
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Stats")
+	FVector2D AliveNDeadHitStrength = FVector2D(3500.f, 3500.f);
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Stats")
+	float AttackDelay = 0.5f;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetIsAiming(bool IsAiming);
@@ -72,16 +80,14 @@ public:
 	bool GetIsAiming();
 	UFUNCTION(BlueprintCallable)
 	virtual void WeaponAttack(bool AIAttack, AActor* AI_Target);
+
 	
 
 	UPROPERTY(BlueprintReadWrite, Category = "Melee")
 	bool CanHitMelee = false;
 
-	UPROPERTY(EditDefaultsOnly)
-	float AttackDelay = 0.5f;
-	/**La forza che viene applicata alla hit reaction da vivo(X) e sul colpo letale(Y)*/
-	UPROPERTY(EditDefaultsOnly)
-	FVector2D AliveNDeadHitStrength = FVector2D(3500.f, 3500.f);
+	
+	
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetOwnerChar(AActor* NewOwner);
