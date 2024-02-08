@@ -34,19 +34,14 @@ void AMostriciattoloAIController::BeginPlay()
 	*/
 
 	bool bIsPatroller = IInt_MCharacter::Execute_Int_IsPatroller(CurrentPawn);
-	if (bIsPatroller)
+	
+	GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), bIsPatroller);
+
+	if (CurrentPawn)
 	{
-		GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), true);
+		GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());	
 	}
-	else
-	{
-		if (CurrentPawn)
-		{
-			GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), false);
-			GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());
-			
-		}
-	}
+	
 
 	MostriciattoloGM = Cast<AMostriciattolo5GameMode>(GetWorld()->GetAuthGameMode());
 }
