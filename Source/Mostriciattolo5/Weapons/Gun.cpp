@@ -68,6 +68,25 @@ void AGun::SetLaserAim(bool Active)
 	}
 }
 
+void AGun::SetupShootValues(float GunChargeValue)
+{
+	if (GunChargeValue < Charge_2)
+	{
+		//valori normali
+		 UE_LOG(LogTemp, Warning, TEXT(" sparo normale")) 
+	}
+	else if (GunChargeValue < Charge_3)
+	{
+		//valori di charge 2
+		 UE_LOG(LogTemp, Warning, TEXT("spero medio")) 
+	}
+	else
+	{
+		 UE_LOG(LogTemp, Warning, TEXT("sparo forte")) 
+		//valori charge 3
+	}
+}
+
 void AGun::LaserAiming()
 {
 	if (!GetOwner()) { return; }
