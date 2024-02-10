@@ -40,6 +40,7 @@ void AMostriciattoloAIController::BeginPlay()
 	if (CurrentPawn)
 	{
 		GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());	
+		GetBlackboardComponent()->SetValueAsVector(FName("InitialRotation"), CurrentPawn->GetActorLocation()+ CurrentPawn->GetActorForwardVector()*50.f);
 	}
 	
 

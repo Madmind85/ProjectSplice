@@ -98,9 +98,16 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	FVector2D Force_3 = FVector2D(6000.f, 5000.f);
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	USoundBase* ShotSound_1 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	USoundBase* ShotSound_2 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
+	USoundBase* ShotSound_3 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	float Charge_2 = 1.5f;
 	UPROPERTY(EditAnywhere, Category = "Charge Values")
 	float Charge_3 = 3.0f;
+
 
 
 	void PullTrigger(bool bAIShooting,AActor* AI_Target);
