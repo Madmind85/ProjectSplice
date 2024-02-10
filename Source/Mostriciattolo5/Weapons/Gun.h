@@ -118,7 +118,7 @@ private:
 
 	bool AIHitCheck();
 
-	void H_SetShootValues(float Recoil, float Damage, FVector2D Force, FName CameraShake);
+	void H_SetShootValues(float Recoil, float Damage, FVector2D Force, FName CameraShake, USoundBase* ShotSound);
 
 	float RandShootError = 0.f;
 };

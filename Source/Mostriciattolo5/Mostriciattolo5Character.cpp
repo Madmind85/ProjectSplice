@@ -168,17 +168,7 @@ void AMostriciattolo5Character::BeginPlay()
 	}
 	//trova la value over time component
 	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
-	/*
-	if (GetController())
-	{
-		AMostriciattoloAIController* AI_Cont = Cast<AMostriciattoloAIController>(GetController());
-		if (AI_Cont && InitialRotTarget)
-		{
-			
-			AI_Cont->SetInitialRotation(InitialRotTarget->GetActorLocation());
-		}
-	}
-	*/
+
 }
 
 bool AMostriciattolo5Character::Int_IsPatroller_Implementation()

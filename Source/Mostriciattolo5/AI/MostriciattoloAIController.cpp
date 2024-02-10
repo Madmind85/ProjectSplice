@@ -504,11 +504,6 @@ void AMostriciattoloAIController::UpdateLastSeenT()
 	UE_LOG(LogTemp, Warning, TEXT("LastSeenT updated to %f"), LastSeenT);
 }
 
-void AMostriciattoloAIController::SetInitialRotation(FVector Target)
-{
-	GetBlackboardComponent()->SetValueAsVector(FName("InitialRotation"), Target);
-}
-
 bool AMostriciattoloAIController::CheckInnerSightAngle(AActor* CharacterInSight, float PS_SightRadius)
 {
 	if (!CharacterInSight)

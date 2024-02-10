@@ -78,6 +78,8 @@ public:
 	float AttackDelay = 0.5f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
 	FName CameraShakeName = FName("Shoot1");
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
+	USoundBase* WeaponAttackSound = nullptr;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetIsAiming(bool IsAiming);
