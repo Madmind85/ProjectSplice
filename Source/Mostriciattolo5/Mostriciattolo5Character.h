@@ -138,6 +138,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UCapsuleComponent* PossessSocket;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Charge")
+	float WeaponCharge_2 = 3.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Charge")
+	float WeaponCharge_3 = 5.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Charge")
+	float WeaponCharge_Explode = 7.f;
 
 	
 
