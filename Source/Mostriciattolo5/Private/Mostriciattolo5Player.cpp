@@ -64,6 +64,7 @@ void AMostriciattolo5Player::ControllMainDelayed()
     NoCollisionTarget = false;
     IsControlling = false;
     SetCurrentPossessed(nullptr);
+
 }
 
 void AMostriciattolo5Player::SetViewToTheMonster()
@@ -77,6 +78,7 @@ void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
     if (Char)
     {//il target diventa il posseduto
         SetCurrentPossessed(Char);
+      
         if (GetCurrentPossessed())
         {
 
