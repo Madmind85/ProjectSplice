@@ -953,4 +953,3 @@ bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* 
 		
 		return false;
 }
-	
