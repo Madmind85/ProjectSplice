@@ -141,12 +141,12 @@ void AMostriciattolo5Player::BeginPlay()
 
     IsTarget = ActorFaction::Nemico;
     AlertTime = 0.f;
-
+    /*
     if (MGameMode)
     {
         MGameMode->Mostriciattolo_OS = this;
     }
-
+    */
 	SetActorTickEnabled(true);
 }
 

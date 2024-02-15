@@ -35,6 +35,8 @@ public:
 	void Int_SetNPCDead();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	NPCStatus Int_GetCurrentNPCState();
 	
 	
 

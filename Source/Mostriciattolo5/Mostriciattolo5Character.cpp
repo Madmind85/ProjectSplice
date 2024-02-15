@@ -18,7 +18,7 @@
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Weapons/MWeapon.h"
 #include "Weapons/MWeapon.h"
-#include "Engine/TargetPoint.h"
+#include "Engine/TargetPoint.h"ù
 #include "DrawDebugHelpers.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 
@@ -535,9 +535,9 @@ void AMostriciattolo5Character::Move(const FInputActionValue& Value)
 		}
 		else if (GetCurrentFocus())
 		{ 
-			UE_LOG(LogTemp, Warning, TEXT("wallo focus"))
+			UE_LOG(LogTemp, Warning, TEXT(" focus"))
 			//RotatePlayerTowardsTarget(GetCurrentFocus()); //gia al tick
-			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+			AddMovementInput(ForwardDirection, MovementVector.Y);
 			AddMovementInput(RightDirection, MovementVector.X);
 		}
 		else

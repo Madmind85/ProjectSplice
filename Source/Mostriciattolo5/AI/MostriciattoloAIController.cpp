@@ -469,6 +469,11 @@ void AMostriciattoloAIController::Int_SetNPCSatateAsAggressivo_Implementation(AA
 	SetNPCSatateAsAggressivo(CurrentEnemy);
 }
 
+NPCStatus AMostriciattoloAIController::Int_GetCurrentNPCState_Implementation()
+{
+	return GetNpcAIStatus();
+}
+
 void AMostriciattoloAIController::OnDeathController()
 {
 		//SetNPCSatateAsFermo();

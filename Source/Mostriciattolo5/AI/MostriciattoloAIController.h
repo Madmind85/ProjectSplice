@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
 	virtual void Int_SetNPCSatateAsAggressivo_Implementation(AActor* CurrentEnemy);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	NPCStatus Int_GetCurrentNPCState();
+	virtual NPCStatus Int_GetCurrentNPCState_Implementation();
 
 
 	UFUNCTION(BlueprintCallable)

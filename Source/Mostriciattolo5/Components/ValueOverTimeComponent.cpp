@@ -222,7 +222,7 @@ void UValueOverTimeComponent::BeginPlay()
 			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocus->GetActorLocation());
 
 			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, 0.1f, RotationToFocusSpeed);
-			NewRot.Pitch = 0.f;
+			NewRot.Pitch = 5.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
 		else
