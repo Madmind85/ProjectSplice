@@ -154,7 +154,7 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
-	class UValueOver	TimeComponent* ValueOverTimeComponent;
+	class UValueOverTimeComponent* ValueOverTimeComponent;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
