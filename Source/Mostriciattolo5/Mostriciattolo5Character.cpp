@@ -106,7 +106,8 @@ void AMostriciattolo5Character::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	
+	if (IsDead()) { return; }
+
 	DetectWall();
 	
 	if (IsBeingPossessed)
