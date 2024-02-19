@@ -87,6 +87,7 @@ void AMostriciattolo5Player::PossessLineTrace(FHitResult Hit)
             GetCurrentPossessed()->CanBeTarget = true;
             GetCurrentPossessed()->IsBeingPossessed = true;
             GetCurrentPossessed()->SetIsUnderPossessAttack(true);
+            GetCurrentPossessed()->SetCanRotateToTarget(false, nullptr);
            
             GetCharacterMovement()->StopMovementImmediately();
             IsSpammingPossess = true;

@@ -328,7 +328,9 @@ public:
 
 	class AMostriciattolo5GameMode* MGameMode;
 	bool bIsAiming = false;
-
+	/**setta la variabile su value over time component per far ruotare il character verso un focus  */
+	UFUNCTION(BlueprintCallable)
+	void SetCanRotateToTarget(bool CanRotate, AActor* Focus);
 
 	
 private:

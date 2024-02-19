@@ -479,6 +479,21 @@ bool AMostriciattolo5Character::GetIsAiming()
 	}
 }
 
+void AMostriciattolo5Character::SetCanRotateToTarget(bool CanRotate, AActor* Focus)
+{
+	if (ValueOverTimeComponent)
+	{
+		if (CanRotate)
+		{
+			ValueOverTimeComponent->SetNPCFocus(Focus, Focus->GetActorLocation());
+		}
+		else
+		{
+			ValueOverTimeComponent->StopFacingFocus();
+		}	
+	}
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////

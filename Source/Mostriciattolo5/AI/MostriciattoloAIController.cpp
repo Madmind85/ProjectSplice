@@ -97,45 +97,47 @@ bool AMostriciattoloAIController::IsMCharacterDead(AActor* ActorToTest)
 
 void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 {
-	
-	UAIPerceptionComponent* AIPerceptionComp = GetAIPerceptionComponent();
-	FAISenseID sightid = UAISense::GetSenseID<UAISense_Sight>();
-	FAISenseID hearid = UAISense::GetSenseID<UAISense_Hearing>();
+	if (CanSense)
+	{
+		UAIPerceptionComponent* AIPerceptionComp = GetAIPerceptionComponent();
+		FAISenseID sightid = UAISense::GetSenseID<UAISense_Sight>();
+		FAISenseID hearid = UAISense::GetSenseID<UAISense_Hearing>();
 
-	//dati relativi al pawn percepito
-	FActorPerceptionBlueprintInfo PercInfo;
+		//dati relativi al pawn percepito
+		FActorPerceptionBlueprintInfo PercInfo;
 
-	if (AIPerceptionComp)
-	{	//loop tra i pawn percepiti
-		for (AActor* SPawn : SeenActors)
-		{
-			if (Cast<APawn>(SPawn))
+		if (AIPerceptionComp)
+		{	//loop tra i pawn percepiti
+			for (AActor* SPawn : SeenActors)
 			{
-				AIPerceptionComp->GetActorsPerception(SPawn, PercInfo);
-				//salva l'attore percepito
-				SensedActor = PercInfo.Target;
-				//nested loop attraverso gli stimoli raccolti da questo pawn
-				TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
-				for (const FAIStimulus& CStim : CurrentStimuli)
+				if (Cast<APawn>(SPawn))
 				{
-					//Salva Lo Stimolo percepito
-					CurrentStimulus = CStim;
+					AIPerceptionComp->GetActorsPerception(SPawn, PercInfo);
+					//salva l'attore percepito
+					SensedActor = PercInfo.Target;
+					//nested loop attraverso gli stimoli raccolti da questo pawn
+					TArray<FAIStimulus> CurrentStimuli = PercInfo.LastSensedStimuli;
+					for (const FAIStimulus& CStim : CurrentStimuli)
+					{
+						//Salva Lo Stimolo percepito
+						CurrentStimulus = CStim;
 
-					if (CStim.Type == sightid)
-					{
-						ProcessLastVisionStimulus();
-					}
-					else if (CStim.Type == hearid && CStim.IsActive())
-					{
-						ProcessLastHearingStimulus();
-					}
-					else
-					{
-						UE_LOG(LogTemp, Warning, TEXT("Stimulus not active or not recognized"));
+						if (CStim.Type == sightid)
+						{
+							ProcessLastVisionStimulus();
+						}
+						else if (CStim.Type == hearid && CStim.IsActive())
+						{
+							ProcessLastHearingStimulus();
+						}
+						else
+						{
+							UE_LOG(LogTemp, Warning, TEXT("Stimulus not active or not recognized"));
+						}
 					}
 				}
-			}
 
+			}
 		}
 	}
 }
@@ -248,7 +250,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
-				BP_PlayHearingAnim();
+				//BP_PlayHearingAnim();
 				VoiceNamesCheck(FName("Hearing"));
 				 UE_LOG(LogTemp, Warning, TEXT("bada Attento rumore")) 
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr, ReactionTime);
@@ -568,14 +570,15 @@ void AMostriciattoloAIController::SetNPCSatateAsFermo()
 void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 {
 	if (IsPawnPossessed()) { UE_LOG(LogTemp, Warning, TEXT("bada tranquillo possessed"))return; }
-	 UE_LOG(LogTemp, Warning, TEXT("DioCan Tranquillo")) 
+	
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 2);
 	GetBlackboardComponent()->SetValueAsObject(FName("SuspectActor"), nullptr);
 	GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), nullptr);
 	GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), nullptr);
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), FVector::ZeroVector);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), FVector::ZeroVector);
-	
+	SensedActor = nullptr;
+	CurrentStimulus.MarkExpired();
 }
 void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 {

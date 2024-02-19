@@ -86,6 +86,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Behaviour")
 	float LastSeenTime = 0.f;
+	UPROPERTY(BlueprintReadWrite, Category = "Behaviour")
+	bool CanSense = true;
 
 	void AlertClosestGuards(AActor* EnemyToSet);
 
