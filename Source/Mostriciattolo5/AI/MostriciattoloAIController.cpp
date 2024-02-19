@@ -248,6 +248,7 @@ void AMostriciattoloAIController::ProcessLastHearingStimulus()
 			//se il rumore non è minaccioso lo caca solo se è tranquillo
 			else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 			{
+				BP_PlayHearingAnim();
 				VoiceNamesCheck(FName("Hearing"));
 				 UE_LOG(LogTemp, Warning, TEXT("bada Attento rumore")) 
 				SetNPCSatateAsAttento(GoToPoint, CurrentStimulus.StimulusLocation,nullptr, ReactionTime);

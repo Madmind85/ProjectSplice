@@ -93,6 +93,8 @@ public:
 	void BP_VoiceFX(FName VoiceName);
 	UFUNCTION(BlueprintImplementableEvent)
 	void MakeAlertSound(FVector SoundLocation);
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_PlayHearingAnim();
 
 protected:
 	
