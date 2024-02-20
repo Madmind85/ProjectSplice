@@ -578,8 +578,11 @@ void AMostriciattoloAIController::SetNPCSatateAsTranquillo()
 	GetBlackboardComponent()->SetValueAsVector(FName("SuspectPoint"), FVector::ZeroVector);
 	GetBlackboardComponent()->SetValueAsVector(FName("MoveToLocation"), FVector::ZeroVector);
 	SensedActor = nullptr;
+	CurrentNPCTarget = nullptr;
 	CurrentStimulus.MarkExpired();
+	GetAIPerceptionComponent()->ForgetAll();
 }
+
 void AMostriciattoloAIController::SetNPCSatateAsMinacciato()
 {
 	if (IsPawnPossessed()) { return; }
@@ -640,8 +643,7 @@ void AMostriciattoloAIController::SetNPCSatateAsInseguendo(AActor* Target)
 	if (IsPawnPossessed()) {  UE_LOG(LogTemp, Warning, TEXT("bada possessed")) return; }
 	if (Target)
 	{
-			MostriciattoloGM->BP_StartStopChaseSound(true);
-		
+		MostriciattoloGM->BP_StartStopChaseSound(true);
 		IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
 		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 7);
 		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
