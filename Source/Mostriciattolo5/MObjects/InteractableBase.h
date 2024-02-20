@@ -19,6 +19,8 @@ public:
 	class USkeletalMeshComponent* Root;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName InteractableActorName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool CanPickUp = true;
 
 	void ActivateInteractablePhysic();
 	void DeactivateInteractablePhysic();
