@@ -49,7 +49,7 @@ void UValueOverTimeComponent::BeginPlay()
 		
 		if (bCanRotateNPCToFocus)
 		{ 
-			RotateNPCTowardsFocus();
+			RotateNPCTowardsFocus(DeltaTime);
 		}
 		
 	}
@@ -207,7 +207,7 @@ void UValueOverTimeComponent::BeginPlay()
 	}
 
 
-	void UValueOverTimeComponent::RotateNPCTowardsFocus()
+	void UValueOverTimeComponent::RotateNPCTowardsFocus(float DeltaTime)
 	{
 		
 		if (OwnerChar->IsBeingPossessed)
@@ -221,14 +221,14 @@ void UValueOverTimeComponent::BeginPlay()
 		{
 			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocus->GetActorLocation());
 
-			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, RotationToFocusDegrees, RotationToFocusSpeed);
+			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, DeltaTime, RotationToFocusSpeed);
 			NewRot.Pitch = 5.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}
 		else
 		{
 			FRotator Rot = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), NPCFocusLocation);
-			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, RotationToFocusDegrees,RotationToFocusSpeed);
+			FRotator NewRot = FMath::RInterpTo(OwnerChar->GetActorRotation(), Rot, DeltaTime,RotationToFocusSpeed);
 			NewRot.Pitch = 0.f;
 			OwnerChar->SetActorRotation(NewRot);
 		}

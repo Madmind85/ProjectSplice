@@ -66,8 +66,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Focus")
 	float RotationToFocusSpeed = 1.0f;
-	UPROPERTY(EditDefaultsOnly, Category = "Focus")
-	float RotationToFocusDegrees = 11.f;
+
 
 	//****ACTOR TELEPORT****//
 	void MoveActorSmoothly(float DeltaS);
@@ -88,7 +87,7 @@ private:
 	bool IsFacingFocus();
 	bool bCanRotateNPCToFocus = false;
 	void IsFacingFocusCheck();
-	void RotateNPCTowardsFocus();
+	void RotateNPCTowardsFocus(float DeltaTime);
 	AActor* NPCFocus;
 	FVector NPCFocusLocation;
 };
