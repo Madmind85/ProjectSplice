@@ -2,7 +2,7 @@
 	"BuildId": "25360045",
 	"Modules": 
 	{
-		"KaiLocomotion": "UnrealEditor-KaiLocomotion.dll",
-		"KaiLocomotionEditor": "UnrealEditor-KaiLocomotionEditor.dll"
+		"KaiLocomotion": "UnrealEditor-KaiLocomotion-0010.dll",
+		"KaiLocomotionEditor": "UnrealEditor-KaiLocomotionEditor-0010.dll"
 	}
 }

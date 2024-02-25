@@ -66,6 +66,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Focus")
 	float RotationToFocusSpeed = 1.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Focus")
+	float RotationToFocusDegrees = 11.f;
 
 	//****ACTOR TELEPORT****//
 	void MoveActorSmoothly(float DeltaS);
