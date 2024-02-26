@@ -131,7 +131,7 @@ public:
 
 
 	UCapsuleComponent* GetPossessSocket();
-
+	void SetContRotation(FRotator NewRotation);
 
 	
 protected:

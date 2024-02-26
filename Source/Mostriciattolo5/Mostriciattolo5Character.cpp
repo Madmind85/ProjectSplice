@@ -230,6 +230,14 @@ UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 	return PossessSocket;
 }
 
+void AMostriciattolo5Character::SetContRotation(FRotator NewRotation)
+{
+	if (Controller)
+	{
+		Controller->SetControlRotation(NewRotation);
+	}
+}
+
 
 
 
