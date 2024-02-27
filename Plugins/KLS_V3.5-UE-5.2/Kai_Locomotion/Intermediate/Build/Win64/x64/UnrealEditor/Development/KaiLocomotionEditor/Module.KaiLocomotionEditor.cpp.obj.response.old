@@ -1,12 +1,12 @@
-D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp
+E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp
 /I .
-/I D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotionEditor\Private
+/I E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotionEditor\Private
 /I Developer\MessageLog\Public
 /I Developer
-/I D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\UnrealEditor\Inc\KaiLocomotionEditor\UHT
+/I E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\UnrealEditor\Inc\KaiLocomotionEditor\UHT
 /I Editor\AnimationBlueprintEditor\Private
-/I D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source
-/I D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotionEditor\Public
+/I E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source
+/I E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotionEditor\Public
 /I Runtime\TraceLog\Public
 /I Runtime\Core\Public
 /I Runtime
@@ -278,8 +278,8 @@ D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64
 /I Runtime\MovieSceneCapture\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AnimationDataController\UHT
 /I Developer\AnimationDataController\Public
-/I D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\UnrealEditor\Inc\KaiLocomotion\UHT
-/I D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public
+/I E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\UnrealEditor\Inc\KaiLocomotion\UHT
+/I E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Source\KaiLocomotion\Public
 /I ..\Plugins\Experimental\Animation\PoseSearch\Intermediate\Build\Win64\UnrealEditor\Inc\PoseSearch\UHT
 /I ..\Plugins\Experimental\Animation\PoseSearch\Source\Runtime\Public
 /I ..\Plugins\Experimental\Animation\PoseSearch\Source
@@ -317,17 +317,17 @@ D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64
 /external:I ThirdParty\mimalloc\include
 /external:I ThirdParty\LibTiff\Source\Win64
 /external:I ThirdParty\LibTiff\Source
-/external:I "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\INCLUDE"
+/external:I D:\VisualStudio\VSIDE\VC\Tools\MSVC\14.34.31933\INCLUDE
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\ucrt"
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\shared"
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\um"
 /external:I "C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\winrt"
-/FI"D:\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h"
-/FI"D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Definitions.KaiLocomotionEditor.h"
-/Yu"D:\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h"
-/Fp"D:\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h.pch"
-/Fo"D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp.obj"
-/sourceDependencies D:\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp.dep.json
+/FI"E:\UnrealProjectsSC\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h"
+/FI"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Definitions.KaiLocomotionEditor.h"
+/Yu"E:\UnrealProjectsSC\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h"
+/Fp"E:\UnrealProjectsSC\ProjectSplice\Intermediate\Build\Win64\x64\Mostriciattolo5Editor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.InclOrderUnreal5_1.h.pch"
+/Fo"E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp.obj"
+/sourceDependencies E:\UnrealProjectsSC\ProjectSplice\Plugins\KLS_V3.5-UE-5.2\Kai_Locomotion\Intermediate\Build\Win64\x64\UnrealEditor\Development\KaiLocomotionEditor\Module.KaiLocomotionEditor.cpp.dep.json
 /Zc:inline
 /nologo
 /Oi
