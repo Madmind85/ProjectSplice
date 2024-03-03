@@ -186,7 +186,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool IsSpammingPossess = false;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName,UClass*> ArmorParts;
 	UPROPERTY(BlueprintReadWrite)
 	float WeaponChargeTime = 0.f;
 	UPROPERTY(BlueprintReadWrite)

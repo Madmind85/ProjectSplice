@@ -18,8 +18,10 @@
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Weapons/MWeapon.h"
 #include "Weapons/MWeapon.h"
+#include "Mostriciattolo5/Weapons/Armor.h"
 #include "Engine/TargetPoint.h"
 #include "DrawDebugHelpers.h"
+
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 
 class AMWeapon;
@@ -148,7 +150,7 @@ void AMostriciattolo5Character::BeginPlay()
 
 	Health = MaxHealth;
 	
-
+	
 	//Setta i pugni
 	if (!MFist) { SetFist(); }
 	InitWeapon();
