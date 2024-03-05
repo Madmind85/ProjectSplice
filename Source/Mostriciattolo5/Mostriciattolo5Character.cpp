@@ -17,7 +17,7 @@
 #include "Mostriciattolo5/AI/MostriciattoloAIController.h"
 #include "Mostriciattolo5/Interfaces/Int_Guardie.h"
 #include "Weapons/MWeapon.h"
-#include "Weapons/MWeapon.h"
+#include "Engine/DamageEvents.h"
 #include "Mostriciattolo5/Weapons/Armor.h"
 #include "Engine/TargetPoint.h"
 #include "DrawDebugHelpers.h"
@@ -102,6 +102,40 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 		if (!MFist) { SetFist(); }
 		MFist->WeaponAttack(bAIShooting, nullptr);
 	}
+}
+
+bool AMostriciattolo5Character::DamageArmor(FName HitBoneName)
+{
+	UE_LOG(LogTemp, Warning, TEXT("armor"))
+		if (HitBoneName == FName("lowerarm_r") || HitBoneName == FName("hand_r") || HitBoneName == FName("index_metacarpal_r") || HitBoneName == FName("middle_metacarpal_r"))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("armor bone name ok"))
+			AArmor* Armo = *ArmorParts.Find(FName("ArmLowRight"));
+			if (Armo)
+			{
+				Armo->TakeDamage(123.f);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	if (HitBoneName == FName("lowerarm_l") || HitBoneName == FName("hand_l") || HitBoneName == FName("index_metacarpal_l") || HitBoneName == FName("middle_metacarpal_l"))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("armor bone name ok left"))
+		AArmor* Armo = *ArmorParts.Find(FName("ArmLowLeft"));
+		if (Armo)
+		{
+			Armo->TakeDamage(123.f);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+		return false;
 }
 
 void AMostriciattolo5Character::Tick(float DeltaSeconds)
@@ -727,6 +761,8 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	
+	
 	//applicail  danno
 	Health -= DamageApplied;
 	Health = FMath::Clamp(Health, 0.f, MaxHealth);

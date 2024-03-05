@@ -213,9 +213,13 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 				//TODO spostare su interface
 				AMostriciattolo5Character* HitCharacter = Cast<AMostriciattolo5Character>(HitActor);
 
-				FPointDamageEvent DamageEvent(CurrentDamage, Hit, ShotDirection, nullptr);
-
-				HitActor->TakeDamage(CurrentDamage, DamageEvent, OwnerController, this);
+				if (!HitCharacter->DamageArmor(Hit.BoneName))
+				{
+					FPointDamageEvent DamageEvent(CurrentDamage, Hit, ShotDirection, nullptr);
+					HitActor->TakeDamage(CurrentDamage, DamageEvent, OwnerController, this);
+				}
+				
+			
 
 				BP_ShootEffect();
 				if (HitCharacter)

@@ -37,3 +37,10 @@ void AArmor::Tick(float DeltaTime)
 
 }
 
+void AArmor::TakeDamage(float Damage)
+{
+	UE_LOG(LogTemp, Warning, TEXT(" armor %s took"), *AttchSocketName.ToString());
+	 UE_LOG(LogTemp, Warning, TEXT("%f Damage, armor"), Damage) 
+		 
+}
+

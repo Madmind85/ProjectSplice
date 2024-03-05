@@ -24,7 +24,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* SK_Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName AttchSocketName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CurrentHP = 0.f;
+
+	UFUNCTION(BlueprintCallable)
+	void TakeDamage(float Damage);
+
 private:
 	UPROPERTY(EditAnyWhere)
 	TArray<USkeletalMesh*> ArmorMeshes;
+	UPROPERTY(EditAnywhere)
+	float MaxHp = 15.f;
+	
 };

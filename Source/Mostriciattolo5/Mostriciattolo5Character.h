@@ -16,6 +16,7 @@
 
 
 class AGun;
+class AArmor;
 class AMWeapon;
 class AAIController;
 
@@ -56,6 +57,9 @@ public:
 
 	AMostriciattolo5Character();
 
+	virtual void Tick(float DeltaSeconds) override;
+
+
 	//INPUT
 	/** Called for movement input */
 	UFUNCTION(BlueprintCallable)
@@ -66,7 +70,10 @@ public:
 	/** attacca con arma equipaggiata,a mani nude se senza arma o spara seranged, chiamato da input attack*/
 	UFUNCTION(BlueprintCallable)
 	void Attack(bool bAIShooting, AActor* AI_Target);
-	virtual void Tick(float DeltaSeconds) override;
+
+	/** ritorna vero se trova un'armatura attaccata al socket di riferimento per questo osso, se la trova fa danno all'armatura*/
+	UFUNCTION(BlueprintCallable)
+	bool DamageArmor(FName HitBoneName);
 
 
 	// Int_MCharacter
@@ -187,7 +194,9 @@ public:
 	bool IsSpammingPossess = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TMap<FName,UClass*> ArmorParts;
+	TMap<FName,AArmor*> ArmorParts;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<AArmor>> ArmorToSpawn;
 	UPROPERTY(BlueprintReadWrite)
 	float WeaponChargeTime = 0.f;
 	UPROPERTY(BlueprintReadWrite)
