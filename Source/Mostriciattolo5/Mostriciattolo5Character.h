@@ -73,7 +73,7 @@ public:
 
 	/** ritorna vero se trova un'armatura attaccata al socket di riferimento per questo osso, se la trova fa danno all'armatura*/
 	UFUNCTION(BlueprintCallable)
-	bool DamageArmor(FName HitBoneName);
+	bool DamageArmor(FName HitBoneName, float Damage);
 
 
 	// Int_MCharacter
@@ -400,6 +400,6 @@ private:
 	AActor* NPCFocus = nullptr;
 
 	
-
+	bool DamageArmorPart(FName ArmorPart);
 };
 

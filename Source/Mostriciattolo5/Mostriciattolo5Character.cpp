@@ -104,46 +104,40 @@ void AMostriciattolo5Character::Attack(bool bAIShooting, AActor* AI_Target)
 	}
 }
 
-bool AMostriciattolo5Character::DamageArmor(FName HitBoneName)
+bool AMostriciattolo5Character::DamageArmor(FName HitBoneName,float Damage )
 {
-	UE_LOG(LogTemp, Warning, TEXT("armor"))
-		if (HitBoneName == FName("lowerarm_r") || HitBoneName == FName("hand_r") || HitBoneName == FName("index_metacarpal_r") || HitBoneName == FName("middle_metacarpal_r"))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("armor bone name ok"))
-				if (ArmorParts.Contains(FName("ArmLowRight")))
-				{
-					AArmor* Armo = *ArmorParts.Find(FName("ArmLowRight"));
-					if (Armo)
-					{
-						Armo->TakeDamage(123.f);
 
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				}
-		}
+	if (HitBoneName == FName("lowerarm_r") || HitBoneName == FName("hand_r") || HitBoneName == FName("index_metacarpal_r") || HitBoneName == FName("middle_metacarpal_r"))
+	{
+		DamageArmorPart(FName("ArmLowRight"));
+	}
+
 	if (HitBoneName == FName("lowerarm_l") || HitBoneName == FName("hand_l") || HitBoneName == FName("index_metacarpal_l") || HitBoneName == FName("middle_metacarpal_l"))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("armor bone name ok left"))
-
-			if (ArmorParts.Contains(FName("ArmLowLeft")))
+		DamageArmorPart(FName("ArmLowLeft"));
+	}	
+	
+	if (HitBoneName == FName("upperarm_l") || HitBoneName == FName("upperarm_twist_01_l") || HitBoneName == FName("upperarm_twist_02_l") )
+	{
+			if (ArmorParts.Contains(FName("ArmUpLeft")))
 			{
-				AArmor* Armo = *ArmorParts.Find(FName("ArmLowLeft"));
-					if (Armo)
-					{
-						Armo->TakeDamage(123.f);
+				AArmor* Armo = *ArmorParts.Find(FName("ArmUpLeft"));
+				if (Armo)
+				{
+					Armo->TakeDamage(123.f);
 
-							return true;
-					}
-					else
-					{
-						return false;
-					}
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 	}
+	
+		
+		
+
 		return false;
 }
 
@@ -901,6 +895,25 @@ void AMostriciattolo5Character::SetFaction(ActorFaction NewFaction)
 {
 	IsTarget = NewFaction;
 	SetFactionLights();
+}
+
+bool AMostriciattolo5Character::DamageArmorPart(FName ArmorPart)
+{
+	if (ArmorParts.Contains(ArmorPart))
+	{
+		AArmor* Armo = *ArmorParts.Find(ArmorPart);
+		if (Armo)
+		{
+			Armo->TakeDamage(123.f);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return false;
 }
 /*void AMostriciattolo5Character::TurnCameraToTargetr()
 {
