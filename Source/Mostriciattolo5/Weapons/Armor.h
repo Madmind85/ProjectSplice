@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Armor.generated.h"
 
+
 UCLASS()
 class MOSTRICIATTOLO5_API AArmor : public AActor
 {
@@ -22,8 +23,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USkeletalMeshComponent* SK_Mesh;
+
+	UPROPERTY(BlueprintReadWrite)
+	class AMostriciattolo5Character* OwnerChar;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//UCapsuleComponent* CapsuleC;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName AttchSocketName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -31,6 +36,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TakeDamage(float Damage);
+	UFUNCTION(BlueprintCallable)
+	void SetRandomMesh(USkeletalMeshComponent* SKMesh);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_SetPhysics();
 
 private:
 	UPROPERTY(EditAnyWhere)

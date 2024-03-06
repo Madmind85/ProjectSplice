@@ -2,32 +2,23 @@
 
 
 #include "Mostriciattolo5/Weapons/Armor.h"
+#include "Mostriciattolo5/Mostriciattolo5Character.h"
+
+
 // Sets default values
 AArmor::AArmor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SK_Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(FName("SK_Mesh"));
-	SK_Mesh->SetupAttachment(RootComponent);
+
+	
 }
 
 // Called when the game starts or when spawned
 void AArmor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (ArmorMeshes.Num() > 0)
-	{
-		int32 RandomIndex = FMath::RandRange(0,ArmorMeshes.Num()-1);
-		if (ArmorMeshes[RandomIndex])
-		{
-			USkeletalMesh* RandomMesh = ArmorMeshes[RandomIndex];
-			if (RandomMesh)
-			{
-				SK_Mesh->SetSkeletalMeshAsset(RandomMesh);
-			}
-		}
-	}
+	
 }
 
 // Called every frame
@@ -39,8 +30,25 @@ void AArmor::Tick(float DeltaTime)
 
 void AArmor::TakeDamage(float Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT(" armor %s took"), *AttchSocketName.ToString());
-	 UE_LOG(LogTemp, Warning, TEXT("%f Damage, armor"), Damage) 
-		 
+	//DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	BP_SetPhysics();
+	//DetachAllSceneComponents(RootComponent, FDetachmentTransformRules::KeepWorldTransform);
+	
+}
+
+void AArmor::SetRandomMesh(USkeletalMeshComponent* SKMesh)
+{
+	if (ArmorMeshes.Num() > 0)
+	{
+		int32 RandomIndex = FMath::RandRange(0, ArmorMeshes.Num() - 1);
+		if (ArmorMeshes[RandomIndex])
+		{
+			USkeletalMesh* RandomMesh = ArmorMeshes[RandomIndex];
+			if (RandomMesh && SKMesh)
+			{
+				SKMesh->SetSkeletalMeshAsset(RandomMesh);
+			}
+		}
+	}
 }
 
