@@ -157,9 +157,10 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 		{		
 			//senon è nel cono interno 
 			if (!CheckInnerSightAngle(SensedActor, SightRadiusForInnerConeCheck))
-			{	//Mentre sta inseguendo il mostro se lo vede con la coda dell' occhio non lo perde 
-				if (GetNpcAIStatus() != NPCStatus::Aggressivo) { return; }
-				if (GetNpcAIStatus() != NPCStatus::Inseguendo) { UpdateLastSeenT(); return; }
+			{	
+				//Mentre sta inseguendo il mostro se lo vede con la coda dell' occhio non lo perde 
+				if (GetNpcAIStatus() == NPCStatus::Aggressivo) { return; }
+				if (GetNpcAIStatus() == NPCStatus::Inseguendo) { UpdateLastSeenT(); return; }
 				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle nemico"))
 				VoiceNamesCheck(FName("PeripheralSight"));
 				//suspect actor si setta solo quando è il cadavere
