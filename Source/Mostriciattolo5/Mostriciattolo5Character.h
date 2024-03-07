@@ -400,6 +400,6 @@ private:
 	AActor* NPCFocus = nullptr;
 
 	
-	bool DamageArmorPart(FName ArmorPart);
+	bool DamageArmorPart(FName ArmorPart, float Damage);
 };
 

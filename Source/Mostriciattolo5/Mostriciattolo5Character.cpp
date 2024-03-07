@@ -109,35 +109,37 @@ bool AMostriciattolo5Character::DamageArmor(FName HitBoneName,float Damage )
 
 	if (HitBoneName == FName("lowerarm_r") || HitBoneName == FName("hand_r") || HitBoneName == FName("index_metacarpal_r") || HitBoneName == FName("middle_metacarpal_r"))
 	{
-		DamageArmorPart(FName("ArmLowRight"));
+		return DamageArmorPart(FName("ArmLowRight"), Damage);
 	}
-
 	if (HitBoneName == FName("lowerarm_l") || HitBoneName == FName("hand_l") || HitBoneName == FName("index_metacarpal_l") || HitBoneName == FName("middle_metacarpal_l"))
 	{
-		DamageArmorPart(FName("ArmLowLeft"));
+		return DamageArmorPart(FName("ArmLowLeft"), Damage);
 	}	
-	
 	if (HitBoneName == FName("upperarm_l") || HitBoneName == FName("upperarm_twist_01_l") || HitBoneName == FName("upperarm_twist_02_l") )
 	{
-			if (ArmorParts.Contains(FName("ArmUpLeft")))
-			{
-				AArmor* Armo = *ArmorParts.Find(FName("ArmUpLeft"));
-				if (Armo)
-				{
-					Armo->TakeDamage(123.f);
-
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
+		return DamageArmorPart(FName("ArmUpLeft"), Damage);
+	}
+	if (HitBoneName == FName("upperarm_R") || HitBoneName == FName("upperarm_twist_01_R") || HitBoneName == FName("upperarm_twist_02_R"))
+	{
+		return DamageArmorPart(FName("ArmUpRight"), Damage);
+	}
+	if (HitBoneName == FName("thigh_l") || HitBoneName == FName("thigh_twist_01_l") || HitBoneName == FName("thigh_twist_02_l"))
+	{
+		return DamageArmorPart(FName("LegUpLeft"), Damage);
+	}
+	if (HitBoneName == FName("thigh_r") || HitBoneName == FName("thigh_twist_01_r") || HitBoneName == FName("thigh_twist_02_r"))
+	{
+		return DamageArmorPart(FName("LegUpRight"), Damage);
+	}
+	if (HitBoneName == FName("calf_l")  )
+	{
+		return DamageArmorPart(FName("LegLowLeft"), Damage);
+	}
+	if (HitBoneName == FName("calf_r")  )
+	{
+		return DamageArmorPart(FName("LegLowRight"), Damage);
 	}
 	
-		
-		
-
 		return false;
 }
 
@@ -897,14 +899,14 @@ void AMostriciattolo5Character::SetFaction(ActorFaction NewFaction)
 	SetFactionLights();
 }
 
-bool AMostriciattolo5Character::DamageArmorPart(FName ArmorPart)
+bool AMostriciattolo5Character::DamageArmorPart(FName ArmorPart, float Damage)
 {
 	if (ArmorParts.Contains(ArmorPart))
 	{
 		AArmor* Armo = *ArmorParts.Find(ArmorPart);
 		if (Armo)
 		{
-			Armo->TakeDamage(123.f);
+			Armo->TakeDamage(Damage);
 
 			return true;
 		}
