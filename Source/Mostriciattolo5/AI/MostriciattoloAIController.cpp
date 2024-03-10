@@ -10,6 +10,7 @@
 #include "Perception/AISense_Sight.h"
 #include "Mostriciattolo5\Mostriciattolo5GameMode.h"
 #include "NavigationSystem.h"
+#include "Mostriciattolo5/Mostriciattolo5Character.h"
 #include "GameFramework/Character.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Perception/AISense_Hearing.h"
@@ -32,15 +33,21 @@ void AMostriciattoloAIController::BeginPlay()
 
 	GetBlackboardComponent()->SetValueAsObject(FName("Mostriciattolo"), MPlayerPawn);
 	*/
-
-	bool bIsPatroller = IInt_MCharacter::Execute_Int_IsPatroller(CurrentPawn);
-	
-	GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), bIsPatroller);
-
 	if (CurrentPawn)
 	{
-		GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());	
-		GetBlackboardComponent()->SetValueAsVector(FName("InitialRotation"), CurrentPawn->GetActorLocation()+ CurrentPawn->GetActorForwardVector()* -120.f);
+		bool bIsPatroller = Cast<AMostriciattolo5Character>(CurrentPawn)->IsPatroller;
+		//bIsPatroller = IInt_MCharacter::Execute_Int_IsPatroller(CurrentPawn);
+
+		if (GetBlackboardComponent())
+		{
+			GetBlackboardComponent()->SetValueAsBool(FName("IsPatroller"), bIsPatroller);
+		}
+
+		if (CurrentPawn)
+		{
+			GetBlackboardComponent()->SetValueAsVector(FName("GuardPosition"), CurrentPawn->GetActorLocation());
+			GetBlackboardComponent()->SetValueAsVector(FName("InitialRotation"), CurrentPawn->GetActorLocation() + CurrentPawn->GetActorForwardVector() * -120.f);
+		}
 	}
 	
 

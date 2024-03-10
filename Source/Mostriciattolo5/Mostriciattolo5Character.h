@@ -250,6 +250,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float Health;
+	UPROPERTY(EditAnywhere, Category = "Behavior")
+	bool IsPatroller = true;
 
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -350,8 +352,7 @@ private:
 	void DetectWall();
 
 
-	UPROPERTY(EditAnywhere, Category = "Behavior")
-	bool IsPatroller = true;
+	
 	UPROPERTY(EditAnywhere, Category = "Behavior")
 	class ATargetPoint* InitialRotTarget = nullptr;
 
