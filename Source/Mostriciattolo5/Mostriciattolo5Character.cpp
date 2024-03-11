@@ -682,8 +682,11 @@ void AMostriciattolo5Character::C_OnDeath()
 	{
 		Depossess();
 	}
+	BP_OnDeath();
+
 	AController* Cont = GetController();
 	AMostriciattoloAIController* AICont = Cast<AMostriciattoloAIController>(Cont);
+	
 	if (AICont)
 	{
 		AICont->OnDeathController();
@@ -695,8 +698,6 @@ void AMostriciattolo5Character::C_OnDeath()
 		IInt_Guardie::Execute_Int_SetNPCDead(Cont);
 	}
 	*/
-	
-	BP_OnDeath();
 }
 
 void AMostriciattolo5Character::SetWeapon(AMWeapon* WeaponToSet)
@@ -792,6 +793,8 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			
 		}
 
+		C_OnDeath();
+
 		if (Contr)
 		{
 			bool bDestructed = Contr->SelfDestruct();
@@ -806,7 +809,7 @@ float AMostriciattolo5Character::TakeDamage(float DamageAmount, FDamageEvent con
 			}
 		}
 
-		C_OnDeath();
+		
 		return DamageApplied;
 	}
 	else

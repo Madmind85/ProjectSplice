@@ -204,30 +204,28 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 			
 		}	
-	
 		
 	}
 
 	else if (Killer)//non scansionato(dopo killer si resetta)
 	{	
-		//se sta inseguendo qualcuno non si caca il cadavere
-		if (GetNpcAIStatus() == NPCStatus::Inseguendo || GetNpcAIStatus() == NPCStatus::Aggressivo)
+		//se non è trqanquillo non si caca il cadavere
+		if (GetNpcAIStatus() == NPCStatus::Tranquillo)
 		{
-			return;
-		}
-		//sistemare in modo da non hiamarlo in continuazione
-		//VoiceNamesCheck(FName("CorpseSight"));
+			//sistemare in modo da non hiamarlo in continuazione
+			//VoiceNamesCheck(FName("CorpseSight"));
 
-		ACharacter* MChar = Cast<ACharacter>(SensedActor);
-		if (MChar)
-		{
-			USkeletalMeshComponent* MMesh = MChar->GetMesh();
-			SetNPCSatateAsAttento(MMesh->GetComponentLocation(), MMesh->GetComponentLocation(), SensedActor,0.2f);
-			UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere con killer"))
-		}
-		else
-		{
-			SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor, 0.2f);
+			ACharacter* MChar = Cast<ACharacter>(SensedActor);
+			if (MChar)
+			{
+				USkeletalMeshComponent* MMesh = MChar->GetMesh();
+				SetNPCSatateAsAttento(MMesh->GetComponentLocation(), MMesh->GetComponentLocation(), SensedActor, 0.2f);
+				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  vista cadavere con killer"))
+			}
+			else
+			{
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), SensedActor->GetActorLocation(), SensedActor, 0.2f);
+			}
 		}
 	}
 }
