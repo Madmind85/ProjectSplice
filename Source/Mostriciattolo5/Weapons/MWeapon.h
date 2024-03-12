@@ -20,13 +20,15 @@ public:
 	bool BeingHeld = false;
 	UFUNCTION(BlueprintCallable)
 	void WeaponAnim();
+	UPROPERTY(BlueprintReadWrite)
+	bool bCanAttack = true;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	bool bIsAiming = false;
-	bool bCanAttack = true;
+	
 	void ResetCanAttack();
 	
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -80,6 +82,8 @@ public:
 	FName CameraShakeName = FName("Shoot1");
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
 	USoundBase* WeaponAttackSound = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+	int32 ComboIndex = 0;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SetIsAiming(bool IsAiming);
