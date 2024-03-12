@@ -916,7 +916,7 @@ void AMostriciattolo5Character::InteractSphereTrace()
 	FCollisionQueryParams QParams;
 
 	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, FQuat::Identity, FCollisionObjectQueryParams::AllObjects, Sphere, QParams);
-	DrawDebugSphere(GetWorld(), Start, InteractSphereRadius, 35.f, FColor::Emerald, false, 0.35f);
+	//DrawDebugSphere(GetWorld(), Start, InteractSphereRadius, 35.f, FColor::Emerald, false, 0.35f);
 	if (Hit.GetActor())
 	{
 

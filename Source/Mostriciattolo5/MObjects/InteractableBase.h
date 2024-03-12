@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Mostriciattolo5/Interfaces/Int_Interacteble.h"
 #include "InteractableBase.generated.h"
 
+
 UCLASS()
-class MOSTRICIATTOLO5_API AInteractableBase : public AActor
+class MOSTRICIATTOLO5_API AInteractableBase : public AActor, public IInt_Interacteble
 {
 	GENERATED_BODY()
 	
@@ -24,6 +26,11 @@ public:
 
 	void ActivateInteractablePhysic();
 	void DeactivateInteractablePhysic();
+
+	// Int_Interactable
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void  Int_UseObject();
+	virtual void Int_UseObject_Implementation();
 
 protected:
 	// Called when the game starts or when spawned

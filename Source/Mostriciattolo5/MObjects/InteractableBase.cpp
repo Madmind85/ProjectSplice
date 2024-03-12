@@ -32,6 +32,10 @@ void AInteractableBase::DeactivateInteractablePhysic()
 	//Root->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void AInteractableBase::Int_UseObject_Implementation()
+{
+}
+
 // Called when the game starts or when spawned
 void AInteractableBase::BeginPlay()
 {
