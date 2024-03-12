@@ -29,7 +29,7 @@ protected:
 
 	bool bIsAiming = false;
 	
-	void ResetCanAttack();
+	
 	
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//USkeletalMeshComponent* Mesh;
@@ -105,6 +105,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetHitCollisionActive(bool NewCollisionActive);
+
+	void ResetCanAttack();
 
 private:
 	void InterceptTarget();

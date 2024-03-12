@@ -211,6 +211,10 @@ void AMostriciattolo5Character::BeginPlay()
 	//trova la value over time component
 	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
 
+	float SphereChackInterval = FMath::RandRange(0.3f, 0.35f);
+	FTimerHandle  THand;
+	GetWorld()->GetTimerManager().SetTimer(THand, this, &AMostriciattolo5Character::InteractSphereTrace, SphereChackInterval, true, SphereChackInterval);
+	
 }
 
 bool AMostriciattolo5Character::Int_IsPatroller_Implementation()
@@ -691,6 +695,7 @@ void AMostriciattolo5Character::C_OnDeath()
 	{
 		AICont->OnDeathController();
 	}
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 	/*
 	if (Cont->GetClass()->ImplementsInterface(UInt_Guardie::StaticClass()))
 	{
@@ -900,6 +905,22 @@ void AMostriciattolo5Character::SetFaction(ActorFaction NewFaction)
 {
 	IsTarget = NewFaction;
 	SetFactionLights();
+}
+
+void AMostriciattolo5Character::InteractSphereTrace()
+{
+	FHitResult Hit;
+	FVector Start = GetActorLocation();
+	FVector End = GetActorLocation() + 5.f;
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(InteractSphereRadius);
+	FCollisionQueryParams QParams;
+
+	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, FQuat::Identity, FCollisionObjectQueryParams::AllObjects, Sphere, QParams);
+	DrawDebugSphere(GetWorld(), Start, InteractSphereRadius, 35.f, FColor::Emerald, false, 0.35f);
+	if (Hit.GetActor())
+	{
+
+	} 
 }
 
 bool AMostriciattolo5Character::DamageArmorPart(FName ArmorPart, float Damage)

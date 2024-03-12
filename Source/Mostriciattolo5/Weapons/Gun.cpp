@@ -146,6 +146,8 @@ void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
 		{
 			SetIsAiming(false);
 			WeaponAnim();
+			FTimerHandle Timer;
+			GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack, AttackDelay, false);
 		}
 		else
 		{
@@ -242,6 +244,8 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("weapon anim"))
 			WeaponAnim();
+		FTimerHandle Timer;
+		GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack, AttackDelay, false);
 	}
 }
 

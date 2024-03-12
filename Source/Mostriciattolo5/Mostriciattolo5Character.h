@@ -400,7 +400,10 @@ private:
 
 	AActor* NPCFocus = nullptr;
 
-	
+	UPROPERTY(EditDefaultsOnly)
+	float InteractSphereRadius = 100.f;
+
+	void InteractSphereTrace();
 	bool DamageArmorPart(FName ArmorPart, float Damage);
 };
 

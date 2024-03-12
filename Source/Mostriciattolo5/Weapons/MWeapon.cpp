@@ -154,7 +154,7 @@ void AMWeapon::WeaponAnim()
 		bCanAttack = false;
 		BP_WeaponAnim();
 		FTimerHandle Timer;
-		//reset canattackSpostato su animazione
+		//reset canattackSpostato su animazione e per il fucile su gun
 		//GetWorld()->GetTimerManager().SetTimer(Timer, this, &AMWeapon::ResetCanAttack, AttackDelay, false);
 	}
 }
