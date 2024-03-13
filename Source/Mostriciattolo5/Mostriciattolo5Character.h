@@ -294,7 +294,7 @@ public:
 	void SetFactionLights();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void BP_ManageObstacle(bool IsVaultable);
+	void BP_ManageObstacle(Obstacles ObstacleType);
 
 
 	/** Su on death */

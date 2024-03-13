@@ -25,3 +25,11 @@ enum class ActorFaction : uint8
 	Compromesso = 1  UMETA(DisplayName = "Compromesso"),
 	Nemico = 2 UMETA(DisplayName = "Nemico"),
 };
+
+UENUM(BlueprintType)
+enum class Obstacles : uint8
+{
+	Vaulting = 0 UMETA(DisplayName = "Vaulting"),
+	Mantling = 1  UMETA(DisplayName = "Mantling"),
+	Block = 2 UMETA(DisplayName = "Block"),
+};
