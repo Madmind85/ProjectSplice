@@ -931,11 +931,15 @@ void AMostriciattolo5Character::InteractLineTrace()
 		{
 			if (HitActor->ActorHasTag(FName("Vaulting")))
 			{
-				BP_ManageObstacle(true);
+				BP_ManageObstacle(Obstacles::Vaulting);
 			}
 			if (HitActor->ActorHasTag(FName("Mantling")))
 			{
-				BP_ManageObstacle(false);
+				BP_ManageObstacle(Obstacles::Mantling);
+			}
+			if (HitActor->ActorHasTag(FName("Block")))
+			{
+				BP_ManageObstacle(Obstacles::Block);
 			}
 		}
 	}
