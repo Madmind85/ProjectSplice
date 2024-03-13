@@ -293,6 +293,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetFactionLights();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ManageObstacle(bool IsVaultable);
+
 
 	/** Su on death */
 	UFUNCTION(BlueprintCallable)
@@ -360,6 +363,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Stats")
 	float MaxHealth = 30.f;
 	
+	/**quanto piu in basso del centro deve partire la linea per intercettare ostacoli per il vault o mantling , default 50, piu aumneti piu va in basso*/
+	UPROPERTY(EditDefaultsOnly, Category = "Interact")
+	float ObstacleLineHeight = 50.f;
+
 	FVector MStartLocation;
 	FVector MTargetLocation;
 	float MStartTime;
@@ -403,7 +410,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float InteractSphereRadius = 100.f;
 
-	void InteractSphereTrace();
+	void InteractLineTrace();
 	bool DamageArmorPart(FName ArmorPart, float Damage);
 };
 

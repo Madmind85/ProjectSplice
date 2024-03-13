@@ -210,11 +210,13 @@ void AMostriciattolo5Character::BeginPlay()
 	}
 	//trova la value over time component
 	ValueOverTimeComponent = FindComponentByClass<UValueOverTimeComponent>();
+	if (IsTarget != ActorFaction::Nemico )
+	{
+		float SphereChackInterval = FMath::RandRange(0.3f, 0.35f);
+		FTimerHandle  THand;
+		GetWorld()->GetTimerManager().SetTimer(THand, this, &AMostriciattolo5Character::InteractLineTrace, SphereChackInterval, true, SphereChackInterval);
+	}
 
-	float SphereChackInterval = FMath::RandRange(0.3f, 0.35f);
-	FTimerHandle  THand;
-	GetWorld()->GetTimerManager().SetTimer(THand, this, &AMostriciattolo5Character::InteractSphereTrace, SphereChackInterval, true, SphereChackInterval);
-	
 }
 
 bool AMostriciattolo5Character::Int_IsPatroller_Implementation()
@@ -907,20 +909,36 @@ void AMostriciattolo5Character::SetFaction(ActorFaction NewFaction)
 	SetFactionLights();
 }
 
-void AMostriciattolo5Character::InteractSphereTrace()
+void AMostriciattolo5Character::InteractLineTrace()
 {
-	FHitResult Hit;
-	FVector Start = GetActorLocation();
-	FVector End = GetActorLocation() + 5.f;
-	FCollisionShape Sphere = FCollisionShape::MakeSphere(InteractSphereRadius);
-	FCollisionQueryParams QParams;
-
-	bool bHit = GetWorld()->SweepSingleByObjectType(Hit, Start, End, FQuat::Identity, FCollisionObjectQueryParams::AllObjects, Sphere, QParams);
-	//DrawDebugSphere(GetWorld(), Start, InteractSphereRadius, 35.f, FColor::Emerald, false, 0.35f);
-	if (Hit.GetActor())
+	if (!IsBeingPossessed)
 	{
 
-	} 
+		FHitResult Hit;
+		FVector Start = GetActorLocation();
+		Start.Z -= ObstacleLineHeight;
+		FVector End = GetActorLocation() + GetActorForwardVector() * 45.f;
+		End.Z -= ObstacleLineHeight;
+		FCollisionShape Sphere = FCollisionShape::MakeSphere(InteractSphereRadius);
+
+
+		bool bHit = GetWorld()->LineTraceSingleByObjectType(Hit, Start, End, FCollisionObjectQueryParams::AllStaticObjects);
+		//SweepSingleByObjectType(Hit, Start, End, FQuat::Identity, FCollisionObjectQueryParams::AllObjects, Sphere, QParams);
+	//DrawDebugSphere(GetWorld(), Start, InteractSphereRadius, 35.f, FColor::Emerald, false, 0.35f);
+		DrawDebugLine(GetWorld(), Start, End, FColor::Emerald, false, 0.1f);
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor)
+		{
+			if (HitActor->ActorHasTag(FName("Vaulting")))
+			{
+				BP_ManageObstacle(true);
+			}
+			if (HitActor->ActorHasTag(FName("Mantling")))
+			{
+				BP_ManageObstacle(false);
+			}
+		}
+	}
 }
 
 bool AMostriciattolo5Character::DamageArmorPart(FName ArmorPart, float Damage)
