@@ -224,6 +224,13 @@ void AGun::PullTrigger(bool bAIShooting, AActor* AI_Target)
 					UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
 					ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
 				}
+				else
+				{
+					FPointDamageEvent DamageEvent(0.f, Hit, ShotDirection, nullptr);
+					HitActor->TakeDamage(0.f, DamageEvent, OwnerController, this);
+					UParticleSystemComponent* ProjectileEffectComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ProjectileEffect, Hit.Location, ShotDirection.Rotation());
+					ProjectileEffectComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.05f));
+				}
 				
 			
 
