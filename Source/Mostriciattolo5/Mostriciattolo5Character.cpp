@@ -244,6 +244,11 @@ bool AMostriciattolo5Character::Int_GetIsThreatened_Implementation()
 	return IsActorThreatened;
 }
 
+bool AMostriciattolo5Character::Int_GetCanBeTarget_Implementation()
+{
+	return CanBeTarget;
+}
+
 void AMostriciattolo5Character::Int_UpdateAlertTime_Implementation()
 {
 	UpdateAlertTime();

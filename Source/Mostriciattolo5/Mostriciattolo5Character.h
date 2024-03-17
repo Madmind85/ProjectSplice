@@ -124,6 +124,9 @@ public:
 	bool Int_GetIsThreatened();
 	bool Int_GetIsThreatened_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetCanBeTarget();
+	bool Int_GetCanBeTarget_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_UpdateAlertTime();
 	void Int_UpdateAlertTime_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

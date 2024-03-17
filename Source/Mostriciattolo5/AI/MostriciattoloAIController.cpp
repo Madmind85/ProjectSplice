@@ -155,7 +155,7 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 	ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 	NPCStatus CurrentStatus = GetNpcAIStatus();
 	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
-
+	
 	
 
 	if (!bIsDead)
@@ -196,6 +196,8 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			}
 			else
 			{
+				bool bCanBeTarget = IInt_MCharacter::Execute_Int_GetCanBeTarget(SensedActor);
+				GetBlackboardComponent()->SetValueAsBool(FName("CanBeTarget"), bCanBeTarget);
 				VoiceNamesCheck(FName("GuardSight"));
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
