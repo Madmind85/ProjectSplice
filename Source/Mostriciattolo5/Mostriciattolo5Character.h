@@ -127,6 +127,9 @@ public:
 	bool Int_GetCanBeTarget();
 	bool Int_GetCanBeTarget_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsInRestrictedArea();
+	bool Int_GetIsInRestrictedArea_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_UpdateAlertTime();
 	void Int_UpdateAlertTime_Implementation();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -212,6 +215,8 @@ public:
 	ActorFaction IsTarget = ActorFaction::Neutrale;
 	UPROPERTY(BlueprintReadWrite)
 	bool TSelectModeOn = false;
+	UPROPERTY(BlueprintReadWrite);
+	bool IsInRestrictedArea = false;
 	//forse mettere private con getter
 	UPROPERTY(BlueprintReadWrite)
 	AMostriciattolo5Character* PreviousActor = nullptr;

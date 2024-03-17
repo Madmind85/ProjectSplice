@@ -249,6 +249,11 @@ bool AMostriciattolo5Character::Int_GetCanBeTarget_Implementation()
 	return CanBeTarget;
 }
 
+bool AMostriciattolo5Character::Int_GetIsInRestrictedArea_Implementation()
+{
+	return IsInRestrictedArea;
+}
+
 void AMostriciattolo5Character::Int_UpdateAlertTime_Implementation()
 {
 	UpdateAlertTime();
