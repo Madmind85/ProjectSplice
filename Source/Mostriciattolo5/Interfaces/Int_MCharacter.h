@@ -56,6 +56,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool Int_GetIsThreatened();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetCanBeTarget();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_UpdateAlertTime();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	float Int_GetAlertTime();
