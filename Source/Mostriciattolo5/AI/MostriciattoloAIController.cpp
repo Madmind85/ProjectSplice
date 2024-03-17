@@ -75,6 +75,8 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 	}
 }
 
+
+
 NPCStatus AMostriciattoloAIController::GetNpcAIStatus()
 {
 	UBlackboardComponent* BB1 = GetBlackboardComponent();
@@ -188,25 +190,43 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 			if (!CheckInnerSightAngle(SensedActor, SightRadiusForInnerConeCheck))
 			{
 				//mentre sta sparando a un npc se lo vede con lacoda dell'occhio non lo perde (updatelast seen)mentre se vede il mostro lo ignora(non è sicuro di cosa sia)
-				if (GetNpcAIStatus() != NPCStatus::Aggressivo) { UpdateLastSeenT(); return; }
-				if (GetNpcAIStatus() != NPCStatus::Inseguendo) { return; }
+				if (GetNpcAIStatus() == NPCStatus::Aggressivo) { UpdateLastSeenT(); return; }
+				if (GetNpcAIStatus() == NPCStatus::Inseguendo) { return; }
 				VoiceNamesCheck(FName("PeripheralSight"));
 				 UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle")) 
 				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr, ReactionTime);
 			}
 			else
 			{
-				bool bCanBeTarget = IInt_MCharacter::Execute_Int_GetCanBeTarget(SensedActor);
-				GetBlackboardComponent()->SetValueAsBool(FName("CanBeTarget"), bCanBeTarget);
 				VoiceNamesCheck(FName("GuardSight"));
 				//momento in cui lo ha visto perl'ultima volta
 				UpdateLastSeenT();
 				AlertClosestGuards(SensedActor);
 				SetNPCSatateAsAggressivo(SensedActor);
 			}
-			
 		}	
-		
+		else if (Faction == ActorFaction::Abusivo)
+		{
+			//senon è nel cono interno 
+			if (!CheckInnerSightAngle(SensedActor, SightRadiusForInnerConeCheck))
+			{
+				//mentre sta sparando a un npc se lo vede con lacoda dell'occhio non lo perde (updatelast seen)mentre se vede il mostro lo ignora(non è sicuro di cosa sia)
+				if (GetNpcAIStatus() == NPCStatus::Aggressivo) { UpdateLastSeenT(); return; }
+				if (GetNpcAIStatus() == NPCStatus::Abusivo) { UpdateLastSeenT(); return; }
+				if (GetNpcAIStatus() == NPCStatus::Inseguendo) { return; }
+				VoiceNamesCheck(FName("PeripheralSight"));
+				UE_LOG(LogTemp, Warning, TEXT("Attento da Outer  sight angle"))
+				SetNPCSatateAsAttento(SensedActor->GetActorLocation(), CurrentStimulus.StimulusLocation, nullptr, ReactionTime);
+			}
+			else
+			{
+				VoiceNamesCheck(FName("GuardSight"));
+				//momento in cui lo ha visto perl'ultima volta
+				UpdateLastSeenT();
+				AlertClosestGuards(SensedActor);
+				SetNPCSatateAsAbusivo(SensedActor);
+			}
+		}
 	}
 
 	else if (Killer)//non scansionato(dopo killer si resetta)
@@ -559,7 +579,7 @@ bool AMostriciattoloAIController::CheckInnerSightAngle(AActor* CharacterInSight,
 
 void AMostriciattoloAIController::SetNPCSatateAsMorto()
 {
-	//Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6 /Inseguendo = 7
+	//Morto = 0 /Fermo = 1 /Tranquillo = 2 /Minacciato = 3 /Attento = 4 /Minaccioso = 5 /Aggressivo = 6 /Inseguendo = 7 / Abusivo = 8
 
 	GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 0);
 	SetPawnAim(false);
@@ -626,7 +646,22 @@ void AMostriciattoloAIController::SetNPCSatateAsMinaccioso(AActor* ThreatenedAct
 	}
 
 }
-
+void AMostriciattoloAIController::SetNPCSatateAsAbusivo(AActor* Target)
+{
+	if (IsPawnPossessed()) { return; }
+	if (Target)
+	{
+		GetBlackboardComponent()->SetValueAsEnum(FName("CurrentStatus"), 8);
+		GetBlackboardComponent()->SetValueAsObject(FName("CurrentEnemy"), Target);
+		//TODO creare funzione su interface per prendere aimtarget da Target
+		GetBlackboardComponent()->SetValueAsObject(FName("AimTarget"), Target);
+		bool bIsPossessed = Execute_Int_IsActorPossessed(Target);
+		if (bIsPossessed)
+		{
+			IInt_MCharacter::Execute_Int_UpdateAlertTime(Target);
+		}
+	}
+}
 void AMostriciattoloAIController::SetNPCSatateAsAggressivo(AActor* Target)
 {
 	//if (IsPawnPossessed()) { return; } //crash

@@ -80,6 +80,8 @@ public:
 	void SetNPCSatateAsAggressivo(AActor* Target);
 	UFUNCTION(BlueprintCallable)
 	void SetNPCSatateAsInseguendo(AActor* Target);
+	UFUNCTION(BlueprintCallable)
+	void SetNPCSatateAsAbusivo(AActor* Target);
 
 	UFUNCTION(BlueprintPure)
 	NPCStatus GetNpcAIStatus();
