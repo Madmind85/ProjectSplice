@@ -37,6 +37,8 @@ public:
 	void Int_SetNPCSatateAsAggressivo(AActor* CurrentEnemy);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	NPCStatus Int_GetCurrentNPCState();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetBlackboardValueAsBool(FName Name, bool bValue);
 	
 	
 

@@ -101,11 +101,8 @@ void AMWeapon::InterceptTarget()
 	CQParams.AddIgnoredActor(this);
 	CQParams.AddIgnoredActor(GetOwner());
 
-
-
-
 	bool bHit = GetWorld()->SweepSingleByChannel(Hit, Start, End, Rot, ECollisionChannel::ECC_GameTraceChannel1, CollSphere, CQParams);
-	//DrawDebugSphere(GetWorld(), Start, 10.f, 20, FColor::Emerald, false, 0.6f);
+	DrawDebugSphere(GetWorld(), Start, 10.f, 20, FColor::Emerald, false, 0.6f);
 	//UKismetSystemLibrary::SphereTraceSingleByProfile(this, Start, End, CollisionSphereRadius, FName("Pawn"), false, ActorsToIgnore, EDrawDebugTrace::None, Hit, true, FColor::Red, FColor::Green, 0.2f);
 
 	FPointDamageEvent DamageEvent(WeaponDamage, Hit, GetOwner()->GetActorRotation().Vector(), nullptr);

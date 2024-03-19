@@ -159,6 +159,7 @@ protected:
 	float WeaponCharge_Explode = 7.f;
 
 	
+	
 
 protected:
 	// APawn interface
@@ -260,6 +261,8 @@ public:
 	float Health;
 	UPROPERTY(EditAnywhere, Category = "Behavior")
 	bool IsPatroller = true;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Behavior")
+	bool IsInTightArea = false;
 
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

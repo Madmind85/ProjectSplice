@@ -217,6 +217,16 @@ void AMostriciattolo5Character::BeginPlay()
 		GetWorld()->GetTimerManager().SetTimer(THand, this, &AMostriciattolo5Character::InteractLineTrace, SphereChackInterval, true, SphereChackInterval);
 	}
 
+	//setta il valore sulla blackboard se parte da una zonaristretta
+		//Execute_Int_SetBlackboardValueAsBool(GetController(), FName("TightArea"), IsInTightArea);
+	if (GetController())
+	{
+		AMostriciattoloAIController* AICon = Cast<AMostriciattoloAIController>(GetController());
+		if (AICon)
+		{
+			AICon->SetBBValueAsBool(FName("TightArea"), IsInTightArea);
+		}
+	}
 }
 
 bool AMostriciattolo5Character::Int_IsPatroller_Implementation()

@@ -46,7 +46,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	NPCStatus Int_GetCurrentNPCState();
 	virtual NPCStatus Int_GetCurrentNPCState_Implementation();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Int_SetBlackboardValueAsBool(FName Name, bool bValue);
+	void Int_SetBlackboardValueAsBool_Implementation(FName Name, bool bValue);
 
+	void SetBBValueAsBool(FName Name, bool bValue);
 
 	UFUNCTION(BlueprintCallable)
 	void OnDeathController();

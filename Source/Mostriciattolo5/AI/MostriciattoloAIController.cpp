@@ -511,6 +511,17 @@ NPCStatus AMostriciattoloAIController::Int_GetCurrentNPCState_Implementation()
 	return GetNpcAIStatus();
 }
 
+void AMostriciattoloAIController::Int_SetBlackboardValueAsBool_Implementation(FName Name, bool bValue)
+{
+	GetBlackboardComponent()->SetValueAsBool(Name, bValue);
+	 UE_LOG(LogTemp, Warning, TEXT("porcatroia")) 
+}
+
+void AMostriciattoloAIController::SetBBValueAsBool(FName Name, bool bValue)
+{
+	GetBlackboardComponent()->SetValueAsBool(Name, bValue);
+}
+
 void AMostriciattoloAIController::OnDeathController()
 {
 		//SetNPCSatateAsFermo();
