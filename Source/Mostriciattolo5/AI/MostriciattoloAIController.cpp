@@ -73,6 +73,12 @@ void AMostriciattoloAIController::Tick(float DeltaTime)
 		//}
 		CanAlertGuards = true;
 	}
+	if (GetWorld()->GetTimeSeconds() >= NoSeeTime + LastSeenT)
+	{
+		SensedActor = nullptr;
+		GetBlackboardComponent()->SetValueAsBool(FName("TargetInSight"), false);
+
+	}
 }
 
 
@@ -537,6 +543,7 @@ void AMostriciattoloAIController::UpdateLastSeenT()
 {
 	LastSeenT = GetWorld()->GetTimeSeconds();
 	GetBlackboardComponent()->SetValueAsBool(FName("TargetVisible"),true);
+	GetBlackboardComponent()->SetValueAsBool(FName("TargetInSight"), true);
 	UE_LOG(LogTemp, Warning, TEXT("LastSeenT updated to %f"), LastSeenT);
 }
 
