@@ -540,7 +540,11 @@ AMWeapon* AMostriciattolo5Character::GetFist()
 	if (!MFist) { SetFist(); }
 	return MFist;
 }
-
+AMWeapon* AMostriciattolo5Character::GetFist_L()
+{
+	if (!MFist_L) { SetFist(); }
+	return MFist_L;
+}
 bool AMostriciattolo5Character::GetIsAiming()
 {
 	AMWeapon* CurrentW;
@@ -751,6 +755,12 @@ void AMostriciattolo5Character::SetFist()
 			MFist->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_rSocket"));
 			MFist->SetOwner(this);	
 		}	
+		MFist_L = GetWorld()->SpawnActor<AMWeapon>(FistClass_L);
+		if (MFist_L)
+		{
+			MFist_L->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weapon_lSocket"));
+			MFist_L->SetOwner(this);
+		}
 }
 void AMostriciattolo5Character::DropWeapon()
 {

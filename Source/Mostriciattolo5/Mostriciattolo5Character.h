@@ -350,6 +350,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	AMWeapon* GetFist();
 	UFUNCTION(BlueprintPure)
+	AMWeapon* GetFist_L();
+	UFUNCTION(BlueprintPure)
 	bool GetIsAiming();
 
 	class AMostriciattolo5GameMode* MGameMode;
@@ -403,10 +405,14 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMWeapon> FistClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AMWeapon> FistClass_L;
 	UPROPERTY()
 	AMWeapon* MWeapon;
 	UPROPERTY()
 	AMWeapon* MFist;
+	UPROPERTY()
+	AMWeapon* MFist_L;
 
 	void SetFist();
 	void SetNotPossessedDelayed();
