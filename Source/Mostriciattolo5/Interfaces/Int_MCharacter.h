@@ -69,4 +69,6 @@ public:
 	void Int_ResetVOTFocus();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void INT_SetIsAimed(bool bAimed, AActor* AimingActor );
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsAimed(AActor*& OutAimingActor);
 };

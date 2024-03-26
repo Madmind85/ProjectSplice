@@ -144,6 +144,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void INT_SetIsAimed(bool bAimed, AActor* AimingActor);
 	void INT_SetIsAimed_Implementation(bool bAimed, AActor* AimingActor);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool Int_GetIsAimed(AActor*& OutAimingActor);
+	bool Int_GetIsAimed_Implementation(AActor*& OutAimingActor);
 
 	UCapsuleComponent* GetPossessSocket();
 	void SetContRotation(FRotator NewRotation);

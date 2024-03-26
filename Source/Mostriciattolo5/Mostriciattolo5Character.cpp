@@ -297,6 +297,12 @@ void AMostriciattolo5Character::INT_SetIsAimed_Implementation(bool bAimed, AActo
 	SetIsAimed(bAimed, AimingActor);
 }
 
+bool AMostriciattolo5Character::Int_GetIsAimed_Implementation(AActor*& OutAimingActor)
+{
+	OutAimingActor = aAimingActor;
+	return bIsAiming;
+}
+
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 {
 	return PossessSocket;

@@ -159,11 +159,13 @@ void AMostriciattoloAIController::OnActorSeen(TArray<AActor*> SeenActors)
 
 void AMostriciattoloAIController::ProcessLastVisionStimulus()
 {
+	//se l'actor sentito non implementa lòa character iterface non lo calcoliamo
+	if (!SensedActor->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass())){return;}
+
 	bool bIsDead = IInt_MCharacter::Execute_Int_IsActorDead(SensedActor);
 	ActorFaction Faction = IInt_MCharacter::Execute_Int_GetIsTarget(SensedActor);
 	NPCStatus CurrentStatus = GetNpcAIStatus();
 	AActor* Killer = IInt_MCharacter::Execute_Int_GetKillerActor(SensedActor);
-	
 	
 
 	if (!bIsDead)
@@ -231,6 +233,19 @@ void AMostriciattoloAIController::ProcessLastVisionStimulus()
 				UpdateLastSeenT();
 				AlertClosestGuards(SensedActor);
 				SetNPCSatateAsAbusivo(SensedActor);
+			}
+		}
+		//se è neutrale ma ci punta il fuicile diventiamo minacciosi
+		else if (GetNpcAIStatus() == NPCStatus::Tranquillo)
+		{
+			AActor* AimingActor;
+			if (GetPawn())
+			{
+				IInt_MCharacter::Execute_Int_GetIsAimed(GetPawn(), AimingActor);
+				if (AimingActor && AimingActor == SensedActor)
+				{
+					SetNPCSatateAsMinaccioso(AimingActor);
+				}
 			}
 		}
 	}
