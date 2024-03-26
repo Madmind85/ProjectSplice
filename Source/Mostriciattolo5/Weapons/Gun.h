@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "MWeapon.h"
+#include "Mostriciattolo5/Interfaces/Int_Mcharacter.h"
 #include "Gun.generated.h"
 
 class UDecalComponent;
@@ -119,6 +120,8 @@ private:
 	bool AIHitCheck();
 
 	void H_SetShootValues(float Recoil, float Damage, FVector2D Force, FName CameraShake, USoundBase* ShotSound);
+
+	AActor* LastAimed = nullptr;
 
 	float RandShootError = 0.f;
 };

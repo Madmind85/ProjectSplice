@@ -292,6 +292,11 @@ void AMostriciattolo5Character::Int_ResetVOTFocus_Implementation()
 	}
 }
 
+void AMostriciattolo5Character::INT_SetIsAimed_Implementation(bool bAimed, AActor* AimingActor)
+{
+	SetIsAimed(bAimed, AimingActor);
+}
+
 UCapsuleComponent* AMostriciattolo5Character::GetPossessSocket()
 {
 	return PossessSocket;
@@ -924,6 +929,12 @@ AActor* AMostriciattolo5Character::GetNPCFocus()
 	return NPCFocus;
 }
 
+void AMostriciattolo5Character::SetIsAimed(bool bIsAimed, AActor* AimingActor)
+{
+	IsAimed = bIsAimed;
+	aAimingActor = AimingActor;
+}
+
 void AMostriciattolo5Character::SetNotPossessedDelayed()
 {
 	IsBeingPossessed = false;
@@ -1099,6 +1110,12 @@ void AMostriciattolo5Character::RunAIBehaviorTree()
 void AMostriciattolo5Character::UpdateAlertTime()
 {
 	AlertTime = MaxAlertTime;
+}
+
+bool AMostriciattolo5Character::GetisAimed(AActor*& OutAimigActor)
+{
+	OutAimigActor = aAimingActor;
+	return IsAimed;
 }
 
 bool AMostriciattolo5Character::GetIsVisibleOnScreen(AMostriciattolo5Character* ActorToBeSeen)

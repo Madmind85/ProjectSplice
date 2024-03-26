@@ -118,6 +118,31 @@ void AGun::LaserAiming()
 		
 		if (bHit)
 		{
+			if (Hit.GetActor())
+			{
+				//se il nuovo bersaglio mirato è diverso da quello precedente
+				if (LastAimed && LastAimed != Hit.GetActor())
+				{
+					UE_LOG(LogTemp, Warning, TEXT("last aimed Actor = %s"), *LastAimed->GetName())
+					UE_LOG(LogTemp, Warning, TEXT("new aimed Actor = %s"), *Hit.GetActor()->GetName())
+						//setta il vecchio bersaglio come non mirato e quello nuovo come mirato
+					if (LastAimed->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+						{
+							IInt_MCharacter::Execute_INT_SetIsAimed(LastAimed, false, nullptr);
+						}
+					if (Hit.GetActor()->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+						{
+							if (GetOwner())
+							{
+								IInt_MCharacter::Execute_INT_SetIsAimed(Hit.GetActor(), true, GetOwner());
+							}	
+						}
+						
+						LastAimed = Hit.GetActor();
+				}
+				if (!LastAimed) { LastAimed = Hit.GetActor(); }
+			}
+			
 			if (LaserDot && LaserRay)
 			{
 				LaserDot->SetWorldLocation(Hit.Location);

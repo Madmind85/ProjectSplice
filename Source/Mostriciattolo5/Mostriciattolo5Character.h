@@ -141,7 +141,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_ResetVOTFocus();
 	void Int_ResetVOTFocus_Implementation();
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void INT_SetIsAimed(bool bAimed, AActor* AimingActor);
+	void INT_SetIsAimed_Implementation(bool bAimed, AActor* AimingActor);
 
 	UCapsuleComponent* GetPossessSocket();
 	void SetContRotation(FRotator NewRotation);
@@ -187,6 +189,7 @@ public:
 	void MClearFocus();
 	void SetNotPossessedTimer();
 	AActor* GetNPCFocus();
+	void SetIsAimed(bool bIsAimed, AActor* AimingActor);
 
 	/** Returns CameraBoom subobject 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -283,6 +286,7 @@ public:
 	bool FixWallRotRealTime = false;
 	UPROPERTY(BlueprintReadWrite)
 	FVector WallNormal;
+
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnDeath();
@@ -341,6 +345,8 @@ public:
 	void RunAIBehaviorTree();
 	UFUNCTION(BlueprintCallable)
 	void UpdateAlertTime();
+	UFUNCTION(BlueprintCallable)
+	bool GetisAimed(AActor*& OutAimigActor);
 
 
 	UFUNCTION(BlueprintPure)
@@ -353,6 +359,7 @@ public:
 	AMWeapon* GetFist_L();
 	UFUNCTION(BlueprintPure)
 	bool GetIsAiming();
+
 
 	class AMostriciattolo5GameMode* MGameMode;
 	bool bIsAiming = false;
@@ -429,5 +436,8 @@ private:
 
 	void InteractLineTrace();
 	bool DamageArmorPart(FName ArmorPart, float Damage);
+
+	bool IsAimed;
+	AActor* aAimingActor = nullptr;
 };
 

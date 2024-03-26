@@ -67,4 +67,6 @@ public:
 	void Int_SetVOTFocus(AActor* NewFocus, FVector NewFocusLocation);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Int_ResetVOTFocus();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void INT_SetIsAimed(bool bAimed, AActor* AimingActor );
 };
