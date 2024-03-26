@@ -161,6 +161,14 @@ void AGun::SetIsAiming(bool IsAiming)
 		LaserDot->SetVisibility(IsAiming);
 		LaserRay->SetVisibility(IsAiming);
 	}
+	if (!IsAiming)
+	{
+		if (LastAimed && LastAimed->GetClass()->ImplementsInterface(UInt_MCharacter::StaticClass()))
+		{
+			IInt_MCharacter::Execute_INT_SetIsAimed(LastAimed, false, nullptr);
+		}
+		LastAimed = nullptr;
+	}
 }
 
 void AGun::WeaponAttack(bool AIAttack, AActor* AI_Target)
